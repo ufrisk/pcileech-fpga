@@ -1,0 +1,144 @@
+##############################################################
+#
+# Xilinx Core Generator version 14.7
+# Date: Mon Oct 09 21:10:18 2017
+#
+##############################################################
+#
+#  This file contains the customisation parameters for a
+#  Xilinx CORE Generator IP GUI. It is strongly recommended
+#  that you do not manually alter this file as it may cause
+#  unexpected and unsupported behavior.
+#
+##############################################################
+#
+#  Generated from component: xilinx.com:ip:s6_pcie:2.4
+#
+##############################################################
+#
+# BEGIN Project Options
+SET addpads = false
+SET asysymbol = true
+SET busformat = BusFormatAngleBracketNotRipped
+SET createndf = false
+SET designentry = Verilog
+SET device = xc6slx45t
+SET devicefamily = spartan6
+SET flowvendor = Other
+SET formalverification = false
+SET foundationsym = false
+SET implementationfiletype = Ngc
+SET package = fgg484
+SET removerpms = false
+SET simulationfiles = Behavioral
+SET speedgrade = -3
+SET verilogsim = true
+SET vhdlsim = false
+# END Project Options
+# BEGIN Select
+SELECT Spartan-6_Integrated_Block_for_PCI_Express xilinx.com:ip:s6_pcie:2.4
+# END Select
+# BEGIN Parameters
+CSET acceptable_l0_latency=No_limit
+CSET acceptable_l1_latency=No_limit
+CSET bar0_64bit=false
+CSET bar0_enabled=true
+CSET bar0_prefetchable=false
+CSET bar0_scale=Megabytes
+CSET bar0_size=1
+CSET bar0_type=Memory
+CSET bar1_64bit=false
+CSET bar1_enabled=false
+CSET bar1_prefetchable=false
+CSET bar1_scale=Bytes
+CSET bar1_size=1
+CSET bar1_type=N/A
+CSET bar2_64bit=false
+CSET bar2_enabled=false
+CSET bar2_prefetchable=false
+CSET bar2_scale=Bytes
+CSET bar2_size=128
+CSET bar2_type=N/A
+CSET bar3_64bit=false
+CSET bar3_enabled=false
+CSET bar3_prefetchable=false
+CSET bar3_scale=Bytes
+CSET bar3_size=1
+CSET bar3_type=N/A
+CSET bar4_64bit=false
+CSET bar4_enabled=false
+CSET bar4_prefetchable=false
+CSET bar4_scale=Bytes
+CSET bar4_size=1
+CSET bar4_type=N/A
+CSET bar5_enabled=false
+CSET bar5_prefetchable=false
+CSET bar5_scale=Kilobytes
+CSET bar5_size=1
+CSET bar5_type=N/A
+CSET base_class_menu=Network_controller
+CSET cardbus_cis_pointer=00000000
+CSET class_code_base=02
+CSET class_code_interface=00
+CSET class_code_sub=00
+CSET component_name=s6_pcie_v2_4
+CSET cpl_finite=false
+CSET d0_pme_support=true
+CSET d0_power_consumed=0
+CSET d0_power_consumed_factor=0
+CSET d0_power_dissipated=0
+CSET d0_power_dissipated_factor=0
+CSET d1_pme_support=true
+CSET d1_power_consumed=0
+CSET d1_power_consumed_factor=0
+CSET d1_power_dissipated=0
+CSET d1_power_dissipated_factor=0
+CSET d1_support=true
+CSET d2_pme_support=true
+CSET d2_power_consumed=0
+CSET d2_power_consumed_factor=0
+CSET d2_power_dissipated=0
+CSET d2_power_dissipated_factor=0
+CSET d2_support=true
+CSET d3_power_consumed=0
+CSET d3_power_consumed_factor=0
+CSET d3_power_dissipated=0
+CSET d3_power_dissipated_factor=0
+CSET d3hot_pme_support=true
+CSET device_id=0666
+CSET device_port_type=PCI_Express_Endpoint_device
+CSET device_specific_initialization=false
+CSET dsn_enabled=true
+CSET enable_aspm_l1_support=false
+CSET enable_slot_clock_cfg=false
+CSET expansion_rom_enabled=false
+CSET expansion_rom_scale=Kilobytes
+CSET expansion_rom_size=2
+CSET expose_unused_transceiver_ports=false
+CSET ext_pci_cfg_space=false
+CSET extended_tag_field=true
+CSET force_no_scrambling=false
+CSET gt_channel=Channel_0
+CSET gt_loc=X0Y0
+CSET legacy_interrupt=INTA
+CSET max_payload_size=512_bytes
+CSET multiple_message_capable=1_vector
+CSET override_low_latency=false
+CSET pci_cfg_space=false
+CSET perf_level=High
+CSET phantom_functions=No_function_number_bits_used
+CSET ref_clk_freq=125_MHz
+CSET revision_id=01
+CSET sub_class_interface_menu=Ethernet_controller
+CSET subsystem_id=0666
+CSET subsystem_vendor_id=10EE
+CSET trans_buf_pipeline=Buffer_Write_and_Read
+CSET trim_tlp_digest=true
+CSET vendor_id=10EE
+CSET xlnx_ref_board=SP605_Rev_A-D
+# END Parameters
+# BEGIN Extra information
+MISC pkg_timestamp=2013-10-13T18:02:40Z
+# END Extra information
+GENERATE
+# CRC: 8a8f0861

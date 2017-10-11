@@ -1,0 +1,121 @@
+###############################################################################
+# Define Device, Package And Speed Grade
+###############################################################################
+
+CONFIG PART = xc6slx45t-fgg484-3;
+
+###############################################################################
+# Pinout and Related I/O Constraints for FT601 FIFO
+###############################################################################
+
+#=======================================
+# FIFO PINs
+#=======================================
+NET "FT601_RESET_N"     LOC = "H11"  |IOSTANDARD=LVCMOS25;             # FMC_LA10_N  # On board is active HIGH
+NET "FT601_CLK"         LOC = "T12"  |IOSTANDARD=LVCMOS25;             # FMC_LA18_P_CC
+NET "FT601_RXF_N"       LOC = "B2"   |IOSTANDARD=LVCMOS25;             # FMC_LA07_P  #for M600 mode, ACK_N
+NET "FT601_TXE_N"       LOC = "A2"   |IOSTANDARD=LVCMOS25;             # FMC_LA07_N
+NET "FT601_SIWU_N"      LOC = "A20"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA08_N
+NET "FT601_RD_N"        LOC = "F10"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA00_N_CC
+NET "FT601_OE_N"        LOC = "G9"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA00_P_CC
+NET "FT601_WR_N"        LOC = "B20"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA08_P  #for M600 mode, REQ_N
+NET "FT601_BE[0]"       LOC = "D19"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA15_N
+NET "FT601_BE[1]"       LOC = "D18"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA15_P
+NET "FT601_BE[2]"       LOC = "F8"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA09_N
+NET "FT601_BE[3]"       LOC = "F7"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA09_P
+NET "FT601_DATA[0]"     LOC = "Y18"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA32_N
+NET "FT601_DATA[1]"     LOC = "AB17" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA33_N
+NET "FT601_DATA[2]"     LOC = "W17"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA32_P
+NET "FT601_DATA[3]"     LOC = "Y17"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA33_P
+NET "FT601_DATA[4]"     LOC = "AB15" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA30_N
+NET "FT601_DATA[5]"     LOC = "V15"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA31_N
+NET "FT601_DATA[6]"     LOC = "Y15"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA30_P
+NET "FT601_DATA[7]"     LOC = "U16"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA31_P
+NET "FT601_DATA[8]"     LOC = "AB16" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA28_N
+NET "FT601_DATA[9]"     LOC = "U15"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA29_N
+NET "FT601_DATA[10]"    LOC = "AA16" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA28_P
+NET "FT601_DATA[11]"    LOC = "T15"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA29_P
+NET "FT601_DATA[12]"    LOC = "AB14" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA24_N
+NET "FT601_DATA[13]"    LOC = "Y14"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA25_N
+NET "FT601_DATA[14]"    LOC = "AA14" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA24_P
+NET "FT601_DATA[15]"    LOC = "W14"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA25_P
+NET "FT601_DATA[16]"    LOC = "AB10" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA27_N
+NET "FT601_DATA[17]"    LOC = "U13"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA26_N
+NET "FT601_DATA[18]"    LOC = "AA10" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA27_P
+NET "FT601_DATA[19]"    LOC = "U14"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA26_P
+NET "FT601_DATA[20]"    LOC = "W11"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA21_N
+NET "FT601_DATA[21]"    LOC = "W8"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA22_N
+NET "FT601_DATA[22]"    LOC = "V11"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA21_P
+NET "FT601_DATA[23]"    LOC = "V7"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA22_P
+NET "FT601_DATA[24]"    LOC = "V9"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA23_N
+NET "FT601_DATA[25]"    LOC = "U9"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA23_P
+NET "FT601_DATA[26]"    LOC = "T11"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA19_N
+NET "FT601_DATA[27]"    LOC = "R11"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA19_P
+NET "FT601_DATA[28]"    LOC = "R8"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA20_N
+NET "FT601_DATA[29]"    LOC = "R9"   |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA20_P
+NET "FT601_DATA[30]"    LOC = "AB11" |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA17_N_CC
+NET "FT601_DATA[31]"    LOC = "Y11"  |IOSTANDARD=LVCMOS25 |SLEW=FAST;  # FMC_LA17_P_CC
+
+#=======================================
+# CLOCK 
+#=======================================
+NET "FT601_CLK" TNM_NET = "FT601_CLK"; 
+TIMESPEC "TS_FT601_CLK" = PERIOD "FT601_CLK" 9.4 ns HIGH 50.00% INPUT_JITTER 800 ps PRIORITY 1;
+
+#=======================================
+# IO constraints 
+#=======================================
+NET "FT601_DATA<*>"     TNM = "M_FIFO_IO";
+NET "FT601_RXF_N"       TNM = "M_FIFO_I";
+NET "FT601_TXE_N"       TNM = "M_FIFO_I";
+NET "FT601_WR_N"        TNM = "M_FIFO_O";
+NET "FT601_RD_N"        TNM = "M_FIFO_O";
+NET "FT601_OE_N"        TNM = "M_FIFO_O";
+
+INST "i_pcileech_ft601/__d_ft601_data*" IOB = TRUE;
+INST "i_pcileech_ft601/__d_ft601_wr_n" IOB = TRUE;
+INST "i_pcileech_ft601/__d_ft601_rd_n" IOB = TRUE;
+INST "i_pcileech_ft601/__d_ft601_oe_n" IOB = TRUE;
+
+TIMEGRP "M_FIFO_IO" OFFSET = IN 2 ns VALID 6 ns BEFORE "FT601_CLK" RISING;
+TIMEGRP "M_FIFO_I"  OFFSET = IN 2 ns VALID 6 ns BEFORE "FT601_CLK" RISING;
+TIMEGRP "M_FIFO_IO" OFFSET = OUT 8 ns AFTER "FT601_CLK" RISING;
+TIMEGRP "M_FIFO_O"  OFFSET = OUT 8 ns AFTER "FT601_CLK" RISING;
+
+#=======================================
+# Exceptions 
+#=======================================
+PIN "FT601_RESET_N" TIG;
+
+###############################################################################
+# Pinout and Related I/O Constraints for PCIe and board
+###############################################################################
+
+NET SYS_LED[0] LOC = D17;
+NET SYS_LED[1] LOC = AB4;
+NET SYS_LED[2] LOC = D21;
+NET SYS_LED[3] LOC = W15;
+
+#
+# SYS reset (input) signal from PCI-E interface
+#
+NET SYS_RESET_N LOC = J7 | IOSTANDARD = LVCMOS25 | PULLUP | NODELAY;
+
+#
+# SYS clock 100 or 125 MHz (input) signal from PCI-E interface
+#
+NET SYS_CLK_N LOC = B10;
+NET SYS_CLK_P LOC = A10;
+
+#
+# Transceiver instance placement
+#
+INST i_pcileech_pcie/i_s6_pcie_v2_4/GT_i/tile0_gtpa1_dual_wrapper_i/gtpa1_dual_i LOC = GTPA1_DUAL_X0Y0;
+NET PCI_EXP_TXP LOC = B6;
+NET PCI_EXP_TXN LOC = A6;
+NET PCI_EXP_RXP LOC = D7;
+NET PCI_EXP_RXN LOC = C7;
+
+NET i_pcileech_pcie/sys_clk_c PERIOD = 8ns;
+NET i_pcileech_pcie/i_s6_pcie_v2_4/gt_refclk_out(0) TNM_NET = GT_REFCLK_OUT;
+TIMESPEC TS_GT_REFCLK_OUT = PERIOD GT_REFCLK_OUT 8ns HIGH 50 %;
