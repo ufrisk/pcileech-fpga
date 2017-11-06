@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Sat Nov 04 16:20:40 2017
+# Date: Thu Nov 02 21:54:02 2017
 #
 ##############################################################
 #
@@ -41,7 +41,7 @@ SELECT FIFO_Generator xilinx.com:ip:fifo_generator:9.3
 # BEGIN Parameters
 CSET add_ngc_constraint_axi=false
 CSET almost_empty_flag=false
-CSET almost_full_flag=true
+CSET almost_full_flag=false
 CSET aruser_width=1
 CSET awuser_width=1
 CSET axi_address_width=32
@@ -51,7 +51,7 @@ CSET axis_type=FIFO
 CSET buser_width=1
 CSET clock_enable_type=Slave_Interface_Clock_Enable
 CSET clock_type_axi=Common_Clock
-CSET component_name=fifo_34_34_deep
+CSET component_name=fifo_256_32
 CSET data_count=false
 CSET data_count_width=12
 CSET disable_timing_violations=false
@@ -134,7 +134,7 @@ CSET inject_sbit_error_rdch=false
 CSET inject_sbit_error_wach=false
 CSET inject_sbit_error_wdch=false
 CSET inject_sbit_error_wrch=false
-CSET input_data_width=34
+CSET input_data_width=256
 CSET input_depth=4096
 CSET input_depth_axis=1024
 CSET input_depth_rach=16
@@ -143,8 +143,8 @@ CSET input_depth_wach=16
 CSET input_depth_wdch=1024
 CSET input_depth_wrch=16
 CSET interface_type=Native
-CSET output_data_width=34
-CSET output_depth=4096
+CSET output_data_width=32
+CSET output_depth=32768
 CSET overflow_flag=false
 CSET overflow_flag_axi=false
 CSET overflow_sense=Active_High
@@ -168,7 +168,7 @@ CSET rach_type=FIFO
 CSET rdch_type=FIFO
 CSET read_clock_frequency=1
 CSET read_data_count=false
-CSET read_data_count_width=12
+CSET read_data_count_width=15
 CSET register_slice_mode_axis=Fully_Registered
 CSET register_slice_mode_rach=Fully_Registered
 CSET register_slice_mode_rdch=Fully_Registered
@@ -210,4 +210,4 @@ CSET wuser_width=1
 MISC pkg_timestamp=2012-11-19T12:39:56Z
 # END Extra information
 GENERATE
-# CRC: 94e3c831
+# CRC: 1925b460

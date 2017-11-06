@@ -1,11 +1,11 @@
 # 
-# Project automation script for pcileech_sp605 
+# Project automation script for sp605_ft601_v2 
 # 
 # Created for ISE version 14.7
 # 
 # This file contains several Tcl procedures (procs) that you can use to automate
 # your project by running from xtclsh or the Project Navigator Tcl console.
-# If you load this file (using the Tcl command: source pcileech_sp605.tcl), then you can
+# If you load this file (using the Tcl command: source C:/FPGA_PROJECTS/sp605_ft601_v2/pcileech_sp605.tcl), then you can
 # run any of the procs included here.
 # 
 # This script is generated assuming your project has HDL sources.
@@ -231,16 +231,18 @@ proc add_source_files {} {
 
    puts "$myScript: Adding sources to project..."
 
+   xfile add "ipcore_dir/fifo_256_32.ngc"
+   xfile add "ipcore_dir/fifo_256_32.v"
+   xfile add "ipcore_dir/fifo_32_32_deep.ngc"
+   xfile add "ipcore_dir/fifo_32_32_deep.v"
    xfile add "ipcore_dir/fifo_32_64.ngc"
    xfile add "ipcore_dir/fifo_32_64.v"
+   xfile add "ipcore_dir/fifo_34_34.ngc"
+   xfile add "ipcore_dir/fifo_34_34.v"
    xfile add "ipcore_dir/fifo_34_34_deep.ngc"
    xfile add "ipcore_dir/fifo_34_34_deep.v"
    xfile add "ipcore_dir/fifo_64_32.ngc"
    xfile add "ipcore_dir/fifo_64_32.v"
-   xfile add "ipcore_dir/fifo_64_64.ngc"
-   xfile add "ipcore_dir/fifo_64_64.v"
-   xfile add "ipcore_dir/fifo_64_64_thin.ngc"
-   xfile add "ipcore_dir/fifo_64_64_thin.v"
    xfile add "ipcore_dir/s6_pcie_v2_4/source/axi_basic_rx.v"
    xfile add "ipcore_dir/s6_pcie_v2_4/source/axi_basic_rx_null_gen.v"
    xfile add "ipcore_dir/s6_pcie_v2_4/source/axi_basic_rx_pipeline.v"
@@ -256,6 +258,7 @@ proc add_source_files {} {
    xfile add "ipcore_dir/s6_pcie_v2_4/source/s6_pcie_v2_4.v"
    xfile add "pcileech_fifo.v"
    xfile add "pcileech_ft601.v"
+   xfile add "pcileech_mux.v"
    xfile add "pcileech_pcie.v"
    xfile add "pcileech_sp605.ucf"
    xfile add "pcileech_top.v"
@@ -341,7 +344,7 @@ proc set_process_props {} {
    project set "Resource Sharing" "true" -process "Synthesize - XST"
    project set "Shift Register Extraction" "true" -process "Synthesize - XST"
    project set "User Browsed Strategy Files" ""
-   project set "VHDL Source Analysis Standard" "VHDL-93"
+   project set "VHDL Source Analysis Standard" "VHDL-200X"
    project set "Analysis Effort Level" "Standard" -process "Analyze Power Distribution (XPower Analyzer)"
    project set "Analysis Effort Level" "Standard" -process "Generate Text Power Report"
    project set "Input TCL Command Script" "" -process "Generate Text Power Report"
@@ -469,7 +472,7 @@ proc set_process_props {} {
    project set "Use Synthesis Constraints File" "true" -process "Synthesize - XST"
    project set "Verilog Include Directories" "" -process "Synthesize - XST"
    project set "Verilog Macros" "" -process "Synthesize - XST"
-   project set "Work Directory" "C:/FPGA_PROJECTS/pcileech_sp605/xst" -process "Synthesize - XST"
+   project set "Work Directory" "C:/FPGA_PROJECTS/sp605_ft601_v2/xst" -process "Synthesize - XST"
    project set "Write Timing Constraints" "false" -process "Synthesize - XST"
    project set "Other XST Command Line Options" "" -process "Synthesize - XST"
    project set "Timing Mode" "Performance Evaluation" -process "Map"

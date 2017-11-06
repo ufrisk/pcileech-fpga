@@ -7,8 +7,41 @@
 // Author: Ulf Frisk, pcileech@frizk.net
 // Special thanks to: Dmytro Oleksiuk @d_olex
 //
+// NB! The alternative RAM FIFO is commented out of this design, it's working
+// but it won't give any considerable speed increases due to other bottlenecks
+// in the design - mostly related to the PCIe interface and the synchronous
+// access pattern from the PCILeech program running on the PC.
 
 module pcileech_top (
+   // TO/FROM SYSTEM MEMORY CONTROLLER
+   /*
+   inout  [15:0]     mcb3_dram_dq,
+   output [12:0]     mcb3_dram_a,
+   output [2:0]      mcb3_dram_ba,
+   output            mcb3_dram_ras_n,
+   output            mcb3_dram_cas_n,
+   output            mcb3_dram_we_n,
+   output            mcb3_dram_odt,
+   output            mcb3_dram_reset_n,
+   output            mcb3_dram_cke,
+   output            mcb3_dram_dm,
+   inout             mcb3_dram_udqs,
+   inout             mcb3_dram_udqs_n,
+   inout             mcb3_rzq,
+   inout             mcb3_zio,
+   output            mcb3_dram_udm,
+   input             c3_sys_clk_p,
+   input             c3_sys_clk_n,
+   input             c3_sys_rst_i,
+   output            c3_calib_done,
+   output            c3_clk0,
+   output            c3_rst0,
+   inout             mcb3_dram_dqs,
+   inout             mcb3_dram_dqs_n,
+   output            mcb3_dram_ck,
+   output            mcb3_dram_ck_n,
+   */
+   
    // PCI-E FABRIC
    output            pci_exp_txp,
    output            pci_exp_txn,
@@ -43,26 +76,30 @@ module pcileech_top (
    wire              user_reset;
    wire              user_lnk_up;
 
-   // FT601/FT245 <--> FIFOs
+   // FT601/FT245 <--> FIFO CTL
    wire [31:0]       ft601_rx_data;
    wire              ft601_rx_wren;
+   
+   // FT601/FT245 <--> RAM FIFO
    wire [31:0]       ft601_tx_data;
    wire              ft601_tx_empty;
-   wire              ft601_tx_almost_empty;
    wire              ft601_tx_valid;
    wire              ft601_tx_rden;
    
+   // RAM FIFO <--> FIFO CTL
+   wire [255:0]      fifo_tx_data;
+   wire              fifo_tx_valid;
+   
    // PCIe <--> FIFOs
-   wire [63:0]       pcie_tlp_tx_data;
+   wire [33:0]       pcie_tlp_tx_data;
    wire              pcie_tlp_tx_valid;
    wire              pcie_tlp_tx_ready;
-   wire [63:0]       pcie_tlp_rx_data;
+   wire [33:0]       pcie_tlp_rx_data;
    wire              pcie_tlp_rx_valid;
    wire              pcie_tlp_rx_ready;
    wire [63:0]       pcie_cfg_tx_data;
    wire              pcie_cfg_tx_valid;
-   wire              pcie_cfg_tx_ready;
-   wire [63:0]       pcie_cfg_rx_data;
+   wire [33:0]       pcie_cfg_rx_data;
    wire              pcie_cfg_rx_valid;
    wire              pcie_cfg_rx_ready;
 
@@ -73,82 +110,152 @@ module pcileech_top (
    OBUF led_3_obuf(.O( SYS_LED[3] ), .I( led_activity ));
 
    pcileech_ft601 i_pcileech_ft601(
-      .FT601_CLK              ( FT601_CLK             ),
-      .FT601_RESET_N          ( FT601_RESET_N         ),
+      .clk                 ( FT601_CLK          ),
+      .rst                 ( ~FT601_RESET_N     ),
       // TO/FROM FT601 PADS
-      .FT601_DATA             ( FT601_DATA            ),
-      .FT601_BE               ( FT601_BE              ),
-      .FT601_TXE_N            ( FT601_TXE_N           ),
-      .FT601_RXF_N            ( FT601_RXF_N           ),
-      .FT601_SIWU_N           ( FT601_SIWU_N          ),
-      .FT601_WR_N             ( FT601_WR_N            ),
-      .FT601_RD_N             ( FT601_RD_N            ),
-      .FT601_OE_N             ( FT601_OE_N            ),
-      // FT601 CTL <--> FIFOs
-      .fifo_rx_data           ( ft601_rx_data         ),
-      .fifo_rx_wr             ( ft601_rx_wren         ),
-      .fifo_tx_data           ( ft601_tx_data         ),
-      .fifo_tx_empty          ( ft601_tx_empty        ),
-      .fifo_tx_almost_empty   ( ft601_tx_almostempty  ),
-      .fifo_tx_valid          ( ft601_tx_valid        ),
-      .fifo_tx_rd             ( ft601_tx_rden         ),
+      .FT601_DATA          ( FT601_DATA         ),
+      .FT601_BE            ( FT601_BE           ),
+      .FT601_TXE_N         ( FT601_TXE_N        ),
+      .FT601_RXF_N         ( FT601_RXF_N        ),
+      .FT601_SIWU_N        ( FT601_SIWU_N       ),
+      .FT601_WR_N          ( FT601_WR_N         ),
+      .FT601_RD_N          ( FT601_RD_N         ),
+      .FT601_OE_N          ( FT601_OE_N         ),
+      // FT601 CTL <--> FIFO CTL
+      .fifo_rx_data        ( ft601_rx_data      ),
+      .fifo_rx_wr          ( ft601_rx_wren      ),
+      .fifo_rx_keepalive   ( fifo_rx_keepalive  ),
+      // FT601 CTL <--> RAM FIFO
+      .fifo_tx_data        ( ft601_tx_data      ),
+      .fifo_tx_empty       ( ft601_tx_empty     ),
+      .fifo_tx_valid       ( ft601_tx_valid     ),
+      .fifo_tx_rd          ( ft601_tx_rden      ),
       // Activity  LED
-      .led_activity           ( led_activity          )
+      .led_activity        ( led_activity       )
    );
 
+   /*
+   pcileech_fifo_ram i_pcileech_out_buffer_ram(
+      .clk                 ( FT601_CLK          ),
+      .rst                 ( ~FT601_RESET_N     ),
+      .din                 ( fifo_tx_data       ),
+      .wr_en               ( fifo_tx_valid      ),
+      .rd_en               ( ft601_tx_rden      ),
+      .dout                ( ft601_tx_data      ),
+      .full                (                    ),
+      .almost_full         (                    ),
+      .empty               ( ft601_tx_empty     ),
+      .valid               ( ft601_tx_valid     ),
+      // TO/FROM SYSTEM MEMORY CONTROLLER
+      .mcb3_dram_dq        ( mcb3_dram_dq       ),
+      .mcb3_dram_a         ( mcb3_dram_a        ),
+      .mcb3_dram_ba        ( mcb3_dram_ba       ),
+      .mcb3_dram_ras_n     ( mcb3_dram_ras_n    ),
+      .mcb3_dram_cas_n     ( mcb3_dram_cas_n    ),
+      .mcb3_dram_we_n      ( mcb3_dram_we_n     ),
+      .mcb3_dram_odt       ( mcb3_dram_odt      ),
+      .mcb3_dram_reset_n   ( mcb3_dram_reset_n  ),
+      .mcb3_dram_cke       ( mcb3_dram_cke      ),
+      .mcb3_dram_dm        ( mcb3_dram_dm       ),
+      .mcb3_dram_udqs      ( mcb3_dram_udqs     ),
+      .mcb3_dram_udqs_n    ( mcb3_dram_udqs_n   ),
+      .mcb3_rzq            ( mcb3_rzq           ),
+      .mcb3_zio            ( mcb3_zio           ),
+      .mcb3_dram_udm       ( mcb3_dram_udm      ),
+      .c3_sys_clk_p        ( c3_sys_clk_p       ),
+      .c3_sys_clk_n        ( c3_sys_clk_n       ),
+      .c3_sys_rst_i        ( c3_sys_rst_i       ),
+      .c3_calib_done       ( c3_calib_done      ),
+      .c3_clk0             ( c3_clk0            ),
+      .c3_rst0             ( c3_rst0            ),
+      .mcb3_dram_dqs       ( mcb3_dram_dqs      ),
+      .mcb3_dram_dqs_n     ( mcb3_dram_dqs_n    ),
+      .mcb3_dram_ck        ( mcb3_dram_ck       ),
+      .mcb3_dram_ck_n      ( mcb3_dram_ck_n     )
+   );
+   */
+   
+   wire [31:0] fram_din;
+   wire fram_almost_full;
+   wire fram_wr_en;
+   fifo_32_32_deep i_pcileech_out_buffer2(
+      .clk                 ( FT601_CLK          ),
+      .rst                 ( ~FT601_RESET_N     ),
+      .din                 ( fram_din           ),
+      .wr_en               ( fram_wr_en         ),
+      .rd_en               ( ft601_tx_rden      ),
+      .dout                ( ft601_tx_data      ),
+      .full                (                    ),
+      .almost_full         ( fram_almost_full   ),
+      .empty               ( ft601_tx_empty     ),
+      .valid               ( ft601_tx_valid     )
+   );
+   fifo_256_32 i_pcileech_out_buffer1(
+      .wr_clk              ( FT601_CLK          ),
+      .rd_clk              ( FT601_CLK          ),
+      .rst                 ( ~FT601_RESET_N     ),
+      .din                 ( fifo_tx_data       ),
+      .wr_en               ( fifo_tx_valid      ),
+      .rd_en               ( ~fram_almost_full  ),
+      .dout                ( fram_din           ),
+      .full                (                    ),
+      .empty               (                    ),
+      .valid               ( fram_wr_en         )
+   );
+   
+   
    pcileech_fifo i_pcileech_fifo(
-      .FT601_CLK              ( FT601_CLK             ),
-      .FT601_RESET_N          ( FT601_RESET_N         ),
-      .CLK                    ( user_clk              ),
-      .RESET                  ( user_reset            ),
-      // FT601 CTL <--> FIFOs
-      .ft601_rx_data          ( ft601_rx_data         ),
-      .ft601_rx_wren          ( ft601_rx_wren         ),
-      .ft601_tx_data          ( ft601_tx_data         ),
-      .ft601_tx_empty         ( ft601_tx_empty        ),
-      .ft601_tx_almost_empty  ( ft601_tx_almostempty  ),
-      .ft601_tx_valid         ( ft601_tx_valid        ),
-      .ft601_tx_rden          ( ft601_tx_rden         ),
+      .clk                 ( FT601_CLK          ),
+      .clk_pcie            ( user_clk           ),
+      .rst                 ( ~FT601_RESET_N     ),
+      .rst_pcie            ( user_reset | ~sys_reset_n_c ),
+      .pcie_lnk_up         ( user_lnk_up        ),
+      // FIFO CTL <--> FT601 CTL
+      .ft601_rx_data       ( ft601_rx_data      ),
+      .ft601_rx_wren       ( ft601_rx_wren      ),
+      .ft601_rx_keepalive  ( fifo_rx_keepalive  ),
+      // FIFO CTL <--> RAM FIFO
+      .ft601_tx_data       ( fifo_tx_data       ),
+      .ft601_tx_valid      ( fifo_tx_valid      ),
       // PCIe <--> FIFOs
-      .pcie_tlp_tx_data       ( pcie_tlp_tx_data      ),
-      .pcie_tlp_tx_valid      ( pcie_tlp_tx_valid     ),
-      .pcie_tlp_tx_ready      ( pcie_tlp_tx_ready     ),
-      .pcie_tlp_rx_data       ( pcie_tlp_rx_data      ),
-      .pcie_tlp_rx_valid      ( pcie_tlp_rx_valid     ),
-      .pcie_tlp_rx_ready      ( pcie_tlp_rx_ready     ),
-      .pcie_cfg_tx_data       ( pcie_cfg_tx_data      ),
-      .pcie_cfg_tx_valid      ( pcie_cfg_tx_valid     ),
-      .pcie_cfg_tx_ready      ( pcie_cfg_tx_ready     ),
-      .pcie_cfg_rx_data       ( pcie_cfg_rx_data      ),
-      .pcie_cfg_rx_valid      ( pcie_cfg_rx_valid     ),
-      .pcie_cfg_rx_ready      ( pcie_cfg_rx_ready     )
+      .pcie_tlp_tx_data    ( pcie_tlp_tx_data   ),
+      .pcie_tlp_tx_valid   ( pcie_tlp_tx_valid  ),
+      .pcie_tlp_tx_ready   ( pcie_tlp_tx_ready  ),
+      .pcie_tlp_rx_data    ( pcie_tlp_rx_data   ),
+      .pcie_tlp_rx_valid   ( pcie_tlp_rx_valid  ),
+      .pcie_tlp_rx_ready   ( pcie_tlp_rx_ready  ),
+      .pcie_cfg_tx_data    ( pcie_cfg_tx_data   ),
+      .pcie_cfg_tx_valid   ( pcie_cfg_tx_valid  ),
+      .pcie_cfg_rx_data    ( pcie_cfg_rx_data   ),
+      .pcie_cfg_rx_valid   ( pcie_cfg_rx_valid  ),
+      .pcie_cfg_rx_ready   ( pcie_cfg_rx_ready  )
    );
    
    pcileech_pcie i_pcileech_pcie(
       // TO/FROM SYSTEM
-      .pci_exp_txp            ( pci_exp_txp           ),
-      .pci_exp_txn            ( pci_exp_txn           ),
-      .pci_exp_rxp            ( pci_exp_rxp           ),
-      .pci_exp_rxn            ( pci_exp_rxn           ),
-      .user_clk               ( user_clk              ),
-      .user_reset             ( user_reset            ),
-      .user_lnk_up            ( user_lnk_up           ),
-      .sys_reset_n_c          ( sys_reset_n_c         ),
-      .sys_clk_p              ( sys_clk_p             ),
-      .sys_clk_n              ( sys_clk_n             ),
-      .sys_reset_n            ( sys_reset_n           ),
+      .pci_exp_txp         ( pci_exp_txp        ),
+      .pci_exp_txn         ( pci_exp_txn        ),
+      .pci_exp_rxp         ( pci_exp_rxp        ),
+      .pci_exp_rxn         ( pci_exp_rxn        ),
+      .user_clk            ( user_clk           ),
+      .user_reset          ( user_reset         ),
+      .user_lnk_up         ( user_lnk_up        ),
+      .sys_reset_n_c       ( sys_reset_n_c      ),
+      .sys_clk_p           ( sys_clk_p          ),
+      .sys_clk_n           ( sys_clk_n          ),
+      .sys_reset_n         ( sys_reset_n        ),
       // PCIe <--> FIFOs
-      .pcie_tlp_tx_data       ( pcie_tlp_tx_data      ),
-      .pcie_tlp_tx_valid      ( pcie_tlp_tx_valid     ),
-      .pcie_tlp_tx_ready      ( pcie_tlp_tx_ready     ),
-      .pcie_tlp_rx_data       ( pcie_tlp_rx_data      ),
-      .pcie_tlp_rx_valid      ( pcie_tlp_rx_valid     ),
-      .pcie_tlp_rx_ready      ( pcie_tlp_rx_ready     ),
-      .pcie_cfg_tx_data       ( pcie_cfg_tx_data      ),
-      .pcie_cfg_tx_valid      ( pcie_cfg_tx_valid     ),
-      .pcie_cfg_tx_ready      ( pcie_cfg_tx_ready     ),
-      .pcie_cfg_rx_data       ( pcie_cfg_rx_data      ),
-      .pcie_cfg_rx_valid      ( pcie_cfg_rx_valid     ),
-      .pcie_cfg_rx_ready      ( pcie_cfg_rx_ready     )
+      .pcie_tlp_tx_data    ( pcie_tlp_tx_data   ),
+      .pcie_tlp_tx_valid   ( pcie_tlp_tx_valid  ),
+      .pcie_tlp_tx_ready   ( pcie_tlp_tx_ready  ),
+      .pcie_tlp_rx_data    ( pcie_tlp_rx_data   ),
+      .pcie_tlp_rx_valid   ( pcie_tlp_rx_valid  ),
+      .pcie_tlp_rx_ready   ( pcie_tlp_rx_ready  ),
+      .pcie_cfg_tx_data    ( pcie_cfg_tx_data   ),
+      .pcie_cfg_tx_valid   ( pcie_cfg_tx_valid  ),
+      .pcie_cfg_rx_data    ( pcie_cfg_rx_data   ),
+      .pcie_cfg_rx_valid   ( pcie_cfg_rx_valid  ),
+      .pcie_cfg_rx_ready   ( pcie_cfg_rx_ready  )
    );
+
 endmodule

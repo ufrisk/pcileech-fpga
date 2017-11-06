@@ -85,6 +85,10 @@ TIMEGRP "M_FIFO_O"  OFFSET = OUT 8 ns AFTER "FT601_CLK" RISING;
 #=======================================
 # Exceptions 
 #=======================================
+NET "i_pcileech_ft601/oe" KEEP;
+NET "i_pcileech_ft601/oe" TPTHRU = "OUT_EN";
+TIMESPEC "TS_OE" = FROM "FT601_CLK" THRU "OUT_EN" TO "M_FIFO_IO" 11 ns;
+
 PIN "FT601_RESET_N" TIG;
 
 ###############################################################################

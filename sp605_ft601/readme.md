@@ -5,7 +5,7 @@ Once flashed it may be used together with the [PCILeech Direct Memory Access (DM
 
 Capabilities:
 =================
-* Retrieve memory from the target system over USB3 at 55-85MB/s.
+* Retrieve memory from the target system over USB3 at 50-75MB/s.
 * Access all memory of target system without the need for kernel module (KMD) unless protected with VT-d/IOMMU.
 * Enumerate/Probe accessible memory at >1GB/s.
 * Raw PCIe Transaction Layer Packet (TLP) access.
@@ -26,7 +26,7 @@ Flashing:
 =================
 1) Ensure the both the SP605 and FT601 is configured correctly with correct jumpers and switches. Please see images above.
 2) Install Xilinx ISE Development Environment.
-3) Build PCILeech SP605/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech.mcs`](https://mega.nz/#!oLZ0lbZT!6LUpE9kXdteg7fQaJlTEViJpPOsVsrzdYnFfsuXceGA).
+3) Build PCILeech SP605/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech.mcs`](https://mega.nz/#!BCRUED6R!4qhJ57cF0iMK0Ux26XOtyqdN_GLTOc2bwu6cKxj4468).
 4) Open ISE Design Suite 64-Bit Command Prompt.
 5) Make sure the JTAG USB cable is connected.
 6) Run `flash.bat` to flash the bitstream onto the SP605.
@@ -43,12 +43,24 @@ Building:
 
 Even if just opening the project for viewing it's recommended to first run build - since Xilinx proprietary IP isn't included in soruce form in github project due to licensing issues. The user will have first to rebuild IP by running `build.bat` or the Xilinx `coregen` utility before opening the project in ISE.
 
+The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties check out the [advanced build readme](build.md) for information.
+
 Future Work:
 =================
-* Increase top speed from 85MB/s by fixing known bugs and inefficiencies in design.
+* Increase memory dump speed. This is not likely to happen in the near future, but hopefully the current 50-75MB/s is still useful.
 
 Other Notes:
 =================
-Current design have known inefficiencies and bugs. This should not hurt users in any other ways than low transfer speeds (85MB/s @i7 7700K attacker, 56MB/s @i5 surface3 attacker). Attack speed should reach well over 100MB/s if redesigned. A redesign is planned for later.
-
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. The end user that have puschased a SP605 development board will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores with the `build.bat` script.
+
+Version History:
+=================
+v1.0
+* Initial Release.
+* Compatible with PCILeech v2.3-2.4
+* Download pre-built binary [here](https://mega.nz/#!oLZ0lbZT!6LUpE9kXdteg7fQaJlTEViJpPOsVsrzdYnFfsuXceGA).
+
+v2.0
+* Bug fixes and re-design.
+* Compatible with PCILeech v2.5+
+* Download pre-built binary [here](https://mega.nz/#!BCRUED6R!4qhJ57cF0iMK0Ux26XOtyqdN_GLTOc2bwu6cKxj4468).

@@ -13,7 +13,7 @@ PCILeech currently supports multiple FPGA based devices - please see the table b
 
 | Device          | Connection | Transfer Speed | PCIe Version | OS support (on attacker) | Creator         |
 | --------------- | ---------- | -------------- | ------------ | ------------------------ | --------------- |
-| [SP605/FT601](sp605_ft601)     | USB3       | 55-85 MB/s     | PCIe gen1 x1 | Windows                  | Ulf Frisk       |
+| [SP605/FT601](sp605_ft601)     | USB3       | 50-75 MB/s     | PCIe gen1 x1 | Windows                  | Ulf Frisk       |
 | [SP605/TCP](https://github.com/Cr4sh/s6_pcie_microblaze)     | TCP/IP     | 100kB/s        | PCIe gen1 x1 | Windows, Linux, Android  | Dmytro Oleksiuk |
 
 Please select the FPGA setup that best suits your needs from the above list. If performance is key the SP605 / FT601 combo is currently recommended.
@@ -24,10 +24,5 @@ Please check out [PCILeech SP605 FT601](sp605_ft601) for more information about 
 
 Future Work (SP605/FT601 design):
 =================
-* Increase top speed from 85MB/s.
 * Add Linux and Android support to PCILeech.
-* Fix known bugs and inefficiencies in the SP506/FT601 design.
-
-Other Notes:
-=================
-The SP605/FT601 design have known inefficiencies and bugs. This should not hurt users in any other ways than low transfer speeds (85MB/s @i7 7700K attacker, 56MB/s @i5 surface3 attacker). Attack speed should reach well over 100MB/s if redesigned. A re-design is planned for later.
+* Increase memory dump speed.

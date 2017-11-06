@@ -23,22 +23,21 @@ module pcileech_pcie(
    input          sys_reset_n,
    
    // Tx tlp data (to FT601/FIFOs)
-   output [63:0]  pcie_tlp_tx_data,
+   output [33:0]  pcie_tlp_tx_data,
    output         pcie_tlp_tx_valid,
    input          pcie_tlp_tx_ready,
    
    // Rx tlp data (from FT601/FIFOs)
-   input [63:0]   pcie_tlp_rx_data,
+   input [33:0]   pcie_tlp_rx_data,
    input          pcie_tlp_rx_valid,
    output         pcie_tlp_rx_ready,
    
    // Tx cfg data (to FT601/FIFOs)
    output [63:0]  pcie_cfg_tx_data,
    output         pcie_cfg_tx_valid,
-   input          pcie_cfg_tx_ready,
    
    // Rx cfg data (from FT601/FIFOs)
-   input [63:0]   pcie_cfg_rx_data,
+   input [33:0]   pcie_cfg_rx_data,
    input          pcie_cfg_rx_valid,
    output         pcie_cfg_rx_ready
    );
@@ -65,7 +64,6 @@ module pcileech_pcie(
    
    // PCIe RX
    wire [31:0]    m_axis_rx_tdata;     // ->
-   wire [3:0]     m_axis_rx_tkeep;     // ->
    wire           m_axis_rx_tlast;     // ->
    wire           m_axis_rx_tvalid;    // ->
    wire           m_axis_rx_tready;    // <-
@@ -74,7 +72,6 @@ module pcileech_pcie(
    wire [7:0]     cfg_bus_number;      // ->
    wire [4:0]     cfg_device_number;   // ->
    wire [2:0]     cfg_function_number; // ->
-   wire [15:0]    cfg_status;          // ->
    wire [15:0]    cfg_command;         // ->
    
    wire [31:0]    cfg_do;              // ->
@@ -103,23 +100,14 @@ module pcileech_pcie(
    // PCIe TLP RX/TX <--> FIFO below
    // ----------------------------------------------------------------------------
    assign pcie_tlp_tx_valid = m_axis_rx_tvalid; 
-   assign pcie_tlp_tx_data[07:00] = 8'h77;									// MAGIC
-   assign pcie_tlp_tx_data[09:08] = 2'b11;									// 00=cfg, 11=pcie
-   assign pcie_tlp_tx_data[10:10] = m_axis_rx_tlast;
-   assign pcie_tlp_tx_data[11:11] = cfg_command_bus_master_enable;
-   assign pcie_tlp_tx_data[12:12] = cfg_command_interrupt_disable;
-   assign pcie_tlp_tx_data[13:13] = cfg_command_serr_en;
-   assign pcie_tlp_tx_data[14:14] = cfg_command_mem_enable;
-   assign pcie_tlp_tx_data[15:15] = cfg_command_io_enable;
-   assign pcie_tlp_tx_data[23:16] = cfg_bus_number;
-   assign pcie_tlp_tx_data[28:24] = cfg_device_number;
-   assign pcie_tlp_tx_data[31:29] = cfg_function_number;
-   assign pcie_tlp_tx_data[63:32] = m_axis_rx_tdata;
+   assign pcie_tlp_tx_data[32] = m_axis_rx_tlast;
+   assign pcie_tlp_tx_data[33] = cfg_command_bus_master_enable;
+   assign pcie_tlp_tx_data[31:0] = m_axis_rx_tdata;
    assign m_axis_rx_tready = pcie_tlp_tx_ready;
    
    assign s_axis_tx_tvalid = pcie_tlp_rx_valid;  
-   assign s_axis_tx_tdata = pcie_tlp_rx_data[63:32];
-   assign s_axis_tx_tlast = pcie_tlp_rx_data[10];
+   assign s_axis_tx_tdata = pcie_tlp_rx_data[31:0];
+   assign s_axis_tx_tlast = pcie_tlp_rx_data[32];
    assign s_axis_tx_tkeep = 4'hf;
    assign pcie_tlp_rx_ready = s_axis_tx_tready;
    
@@ -182,7 +170,7 @@ module pcileech_pcie(
       .tx_cfg_gnt               ( 1'b1                 ),
       // transaction Rx
       .m_axis_rx_tdata          ( m_axis_rx_tdata      ),
-      .m_axis_rx_tkeep          ( m_axis_rx_tkeep      ),
+      .m_axis_rx_tkeep          (                      ),
       .m_axis_rx_tlast          ( m_axis_rx_tlast      ),
       .m_axis_rx_tvalid         ( m_axis_rx_tvalid     ),
       .m_axis_rx_tready         ( m_axis_rx_tready     ),
@@ -202,7 +190,7 @@ module pcileech_pcie(
       .cfg_err_posted           ( 1'b0                 ),
       .cfg_err_locked           ( 1'b0                 ),
       .cfg_err_tlp_cpl_header   ( 48'h0                ),
-      .cfg_err_cpl_rdy          ( cfg_err_cpl_rdy      ),
+      .cfg_err_cpl_rdy          (                      ),
       // interrupt generation
       .cfg_interrupt            ( 1'b0                 ),
       .cfg_interrupt_rdy        (                      ),
@@ -222,7 +210,7 @@ module pcileech_pcie(
       .cfg_bus_number           ( cfg_bus_number       ), // ->
       .cfg_device_number        ( cfg_device_number    ), // ->
       .cfg_function_number      ( cfg_function_number  ), // ->
-      .cfg_status               ( cfg_status           ), // ->
+      .cfg_status               (                      ), // ->
       .cfg_command              ( cfg_command          ), // ->
       .cfg_dstatus              (                      ), // ->
       .cfg_dcommand             (                      ), // ->

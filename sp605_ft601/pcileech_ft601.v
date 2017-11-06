@@ -7,33 +7,30 @@
 // Author: Ulf Frisk, pcileech@frizk.net
 // Special thanks to: Dmytro Oleksiuk @d_olex
 //
-
-module pcileech_ft601 (
+module pcileech_ft601(
+   input                clk,
+   input                rst,
    // TO/FROM PADS
-   input                FT601_CLK,
-   input                FT601_RESET_N,
    inout [31:0]         FT601_DATA,
    inout [3:0]          FT601_BE,
    input                FT601_RXF_N,
    input                FT601_TXE_N,
    output               FT601_WR_N,
-   output reg           FT601_SIWU_N = 1'b1,
+   output               FT601_SIWU_N,
    output               FT601_RD_N,
    output               FT601_OE_N,
-
    // TO/FROM FIFO
    output reg [31:0]    fifo_rx_data,
    output reg           fifo_rx_wr,
-   
+   output reg           fifo_rx_keepalive,
    input [31:0]         fifo_tx_data,
    input                fifo_tx_empty,
-   input                fifo_tx_almost_empty,
    input                fifo_tx_valid,
    output reg           fifo_tx_rd,
-   
    // Activity  LED
    output reg           led_activity
    );
+   assign FT601_SIWU_N = 1'b1;
    
    // OE (output enable) to data/byte-enable line
    reg oe = 1'b0;
@@ -48,30 +45,31 @@ module pcileech_ft601 (
    assign FT601_WR_N = __d_ft601_wr_n;
    assign FT601_RD_N = __d_ft601_rd_n;
    assign FT601_OE_N = __d_ft601_oe_n;
-
    // DATA
    wire [31:0] ft601_data_rx;
    reg [31:0] ft601_data_tx;
    reg [31:0] __d_ft601_data;
    assign FT601_DATA = oe ? __d_ft601_data : 32'hzzzzzzzz;
    assign FT601_BE = oe ? 4'b1111 : 4'bzzzz;
-   // data endianess conversions for rx data
-   assign ft601_data_rx[7:0] = FT601_DATA[31:24];
-   assign ft601_data_rx[15:8] = FT601_DATA[23:16];
-   assign ft601_data_rx[23:16] = FT601_DATA[15:8];
-   assign ft601_data_rx[31:24] = FT601_DATA[7:0];
+   // RX DATA (and TXE) : (incl. endianess conversion).
+   reg         __d_ft601_txe_n;
+   reg         __d_ft601_rxf_n = 1'b1;
+   reg [31:0]  __d_ft601_data_rx;
    
-   
-
-   // Clock results into ft245 output registers. It's not possible to assign
-   // them directly due to timing constraints. This solution won't violate
-   // timing (as much) but we'll delay the data 1 cycle.
-   always @ ( posedge FT601_CLK )
+   // CLK
+   always @ ( posedge clk )
       begin
+         led_activity <= ft601_wr | ft601_rd;
+         __d_ft601_txe_n <= FT601_TXE_N;
+         __d_ft601_rxf_n <= FT601_RXF_N;
          __d_ft601_wr_n <= ~ft601_wr;
          __d_ft601_rd_n <= ~ft601_rd;
          __d_ft601_oe_n <= ~ft601_oe;
-         led_activity <= ft601_wr | ft601_rd;
+         // data endianess conversions for rx data
+         __d_ft601_data_rx[7:0] = FT601_DATA[31:24];
+         __d_ft601_data_rx[15:8] = FT601_DATA[23:16];
+         __d_ft601_data_rx[23:16] = FT601_DATA[15:8];
+         __d_ft601_data_rx[31:24] = FT601_DATA[7:0];      
          // data endianess conversions for tx data
          __d_ft601_data[7:0] <= ft601_data_tx[31:24];
          __d_ft601_data[15:8] <= ft601_data_tx[23:16];
@@ -81,21 +79,22 @@ module pcileech_ft601 (
 
    // STATE MACHINE FT245 BUS
    `define S_IDLE             4'h0
-   `define S_RX_WAIT          4'h1
+   `define S_RX_WAIT1         4'h1
    `define S_RX_WAIT2         4'h2
-   `define S_RX_ACTIVE        4'h3
-   `define S_TX_WAIT          4'h4
-   `define S_TX_RETX          4'h5
-   `define S_TX_ACTIVE        4'h6
-   `define S_TX_FINISH        4'h7
-   `define S_TX_FINISH_EFIFO  4'h8
-   `define RESET           oe <= 1; ft601_oe <= 0; ft601_rd <= 0; ft601_wr <= 0; fifo_rx_wr <= 0; fifo_tx_rd <= 0;
-   reg [4:0]      state = `S_IDLE;
-   reg [127:0]    tx_last;
-   reg [3:0]      tx_last_f = 4'b0000;
+   `define S_RX_WAIT3         4'h3
+   `define S_RX_ACTIVE        4'h4
+   `define S_TX_WAIT          4'h5
+   `define S_TX_RETX          4'h6
+   `define S_TX_ACTIVE        4'h7
+   `define S_TX_FINISH        4'h8
+   `define S_TX_FINISH_EFIFO  4'h9
+   `define RESET              oe <= 1; ft601_oe <= 0; ft601_rd <= 0; ft601_wr <= 0; fifo_rx_wr <= 0; fifo_tx_rd <= 0;
+   reg [3:0]      state = `S_IDLE;
+   reg [159:0]    tx_last;
+   reg [4:0]      tx_last_f = 5'b00000;
    reg            tx_last_en = 1'b0;
-   always @ ( posedge FT601_CLK )
-      if ( ~FT601_RESET_N )
+   always @ ( posedge clk )
+      if ( rst )
          begin
             `RESET
             tx_last_en <= 1'b0;
@@ -105,18 +104,18 @@ module pcileech_ft601 (
       else case ( state )
          `S_IDLE:
             begin
-               if ( ~FT601_TXE_N & tx_last_en )
+               if ( ~__d_ft601_txe_n & tx_last_en )
                   state <= `S_TX_RETX;
-               else if ( ~FT601_TXE_N & ~fifo_tx_empty )
+               else if ( ~__d_ft601_txe_n & ~fifo_tx_empty )
                   begin
                      fifo_tx_rd <= 1'b1;
                      state <= `S_TX_WAIT;
                   end
-               else if ( ~FT601_RXF_N )
+               else if ( ~__d_ft601_rxf_n )
                   begin
                      oe <= 1'b0;
                      ft601_oe <= 1'b1;
-                     state <= `S_RX_WAIT;
+                     state <= `S_RX_WAIT1;
                   end
             end
          `S_TX_WAIT:
@@ -130,13 +129,13 @@ module pcileech_ft601 (
                tx_last_en <= 1'b0;
                tx_last_f <= tx_last_f << 1;
                tx_last <= tx_last << 32;
-               ft601_wr <= tx_last_f[3];
-               ft601_data_tx <= tx_last[127:96];
-               if ( ~fifo_tx_empty & (tx_last_f[2:0] == 3'b100) )
+               ft601_wr <= tx_last_f[4];
+               ft601_data_tx <= tx_last[159:128];
+               if ( ~fifo_tx_empty & (tx_last_f[3:0] == 4'b1000) )
                   fifo_tx_rd <= 1'b1;
-               if ( ~fifo_tx_empty & (tx_last_f == 4'b1000) )
+               if ( ~fifo_tx_empty & (tx_last_f == 5'b10000) )
                   state <= `S_TX_ACTIVE;
-               if ( tx_last_f == 4'b0000 ) begin
+               if ( tx_last_f == 5'b00000 ) begin
                   `RESET
                   state <= `S_TX_FINISH;
                end
@@ -147,16 +146,16 @@ module pcileech_ft601 (
                tx_last <= (tx_last << 32) | fifo_tx_data;
                tx_last_f <= (tx_last_f << 1) | fifo_tx_valid;
                // NORMAL TX
-               if ( ~FT601_TXE_N & ~fifo_tx_almost_empty ) begin
+               if ( ~__d_ft601_txe_n ) begin
                   ft601_wr <= 1'b1;
                end
                // FIFO EMPTY -> TX LAST WORD & FINISH
-               if ( ~FT601_TXE_N & fifo_tx_empty ) begin
+               if ( ~__d_ft601_txe_n & fifo_tx_empty ) begin
                   ft601_wr <= 1'b1;
                   state <= `S_TX_FINISH_EFIFO;
                end
                // FT601 FULL -> FINISH
-               if ( FT601_TXE_N ) begin
+               if ( __d_ft601_txe_n ) begin
                   tx_last_en <= 1'b1;
                   `RESET
                   state <= `S_TX_FINISH;
@@ -173,12 +172,12 @@ module pcileech_ft601 (
             begin
                // SET tx_last_en (if required) SO THAT LAST WORDS WON'T BE LOST & FINISH
                `RESET
-               if( tx_last_f[2:0] == 3'b000 )
+               if( tx_last_f[3:0] == 4'b0000 )
                   state <= `S_IDLE;
-               else if ( FT601_TXE_N )
+               else if ( __d_ft601_txe_n )
                   begin
-                     tx_last <= (tx_last << 64);
-                     tx_last_f <= (tx_last_f << 2);
+                     tx_last <= (tx_last << 96);
+                     tx_last_f <= (tx_last_f << 3);
                      tx_last_en <= 1'b1;
                      state <= `S_IDLE;
                   end
@@ -188,26 +187,55 @@ module pcileech_ft601 (
                      tx_last_f <= (tx_last_f << 1);
                   end
             end
-         `S_RX_WAIT:
+         // RX data from the FT601. The receiver FIFO is assumed to always be
+         // non-full. If receiver FIFO is full data will still be received but
+         // lost.
+         `S_RX_WAIT1:
             begin
                ft601_rd <= 1'b1;
                state <= `S_RX_WAIT2;
             end
          `S_RX_WAIT2:
-            begin
-               state <= `S_RX_ACTIVE;
-            end
+            state <= `S_RX_WAIT3;
+         `S_RX_WAIT3:
+            state <= `S_RX_ACTIVE;
          `S_RX_ACTIVE:
-            begin
-               if ( ~FT601_RXF_N ) begin
+            if ( ~__d_ft601_rxf_n )
+               begin
                   fifo_rx_wr <= 1'b1;
-                  fifo_rx_data <= ft601_data_rx;
+                  fifo_rx_data <= __d_ft601_data_rx;
                end
-               if ( FT601_RXF_N ) begin
+            else
+               begin
                   `RESET
                   state <= `S_IDLE;
                end
-            end
       endcase
-
+   
+   // keepalive logic - if an even 1024 bytes are transmitted the receiving
+   // driver won't detect that it's the end of the transmission and resulting
+   // in it failing. to avoid this a retransmit is sometimes needed.
+   time     time_master_count = 0;
+   time     time_last_rx = 0;
+   time     time_last_tx = 0;
+   reg      f_rx_keepalive_sent;
+   `define  KEEPALIVE_CONDITION ((time_master_count > time_last_rx + 1000) & (time_master_count > time_last_tx + 1000)) // 1000 == 10uS @ 100MHz
+   always @ ( posedge clk )
+      if ( rst )
+         begin
+            time_last_rx <= 0;
+            time_last_tx <= 0;
+            time_master_count <= 0;
+            f_rx_keepalive_sent <= 0;
+         end
+      else
+         begin
+            time_master_count <= time_master_count + 1;
+            f_rx_keepalive_sent <= ~ft601_rd & (f_rx_keepalive_sent | `KEEPALIVE_CONDITION);
+            fifo_rx_keepalive <= ~f_rx_keepalive_sent & `KEEPALIVE_CONDITION;
+            if( ft601_rd )
+               time_last_rx <= time_master_count;
+            if( ft601_wr | __d_ft601_txe_n )
+               time_last_tx <= time_master_count;
+         end
 endmodule
