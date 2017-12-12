@@ -51,7 +51,7 @@ Future Work:
 
 Other Notes:
 =================
-The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. The end user that have puschased a SP605 development board will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores with the `build.bat` script.
+The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have puschased a SP605 development board will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores with the `build.bat` script.
 
 Version History:
 =================
