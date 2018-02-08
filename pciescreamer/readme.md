@@ -1,0 +1,88 @@
+PCIeScreamer PCIe to USB3:
+=================
+This project contains software and HDL code for the [PCIeScreamer FPGA PCIe board](https://shop.lambdaconcept.com).
+Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) to perform DMA attacks, dump memory or perform research.
+
+Capabilities:
+=================
+* Retrieve memory from the target system over USB3 at 100MB/s.
+* Access all memory of target system without the need for kernel module (KMD) unless protected with VT-d/IOMMU.
+* Enumerate/Probe accessible memory at >1GB/s.
+* Raw PCIe Transaction Layer Packet (TLP) access.
+
+For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) abilities and capabilities.
+
+For information about other supported FPGA based devices please check out [PCILeech FPGA](https://github.com/ufrisk/pcileech-fpga/).
+
+The Hardware:
+=================
+* LambdaConcept PCIeScreamer PCIe board. ([LambdaConcept](http://shop.lambdaconcept.com/home/11-pciescreamer.html))
+
+For more information about the hardware, and alternative software, please check out the [PCIeScreamer wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
+
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/e4e9ae4bf5fe0f723d6afe30703ac97df7e2c905/__gh_pciescreamer2.jpg" height="400"/>
+
+Please also note that the DIP-switch SW2 should be configured as: 1: ON, 2: OFF, 3: OFF.
+
+Flashing (Xilinx/Diligent programming cable):
+=================
+Please note that this instruction applies to Xilinx Vivado compatible programming cables, such as Diligent HS2. This instruction will <i>not</i> work with the LambdaConcept programming cable.
+1) Install Vivado WebPACK or Lab Edition (only for flashing).
+2) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](
+https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8).
+3) Open Vivado Tcl Shell command prompt.
+4) cd into the directory of your unpacked files, or this directory (forward slash instead of backslash in path).
+5) Make sure the JTAG USB cable is connected.
+6) Run `source vivado_flash_hs2.tcl -notrace` to flash the PCILeech bitstream onto the PCIeScreamer board.
+7) Finished !!!
+
+Flashing (LambdaConcept programming cable):
+=================
+Please note that this instruction applies to the LambdaConcept programming cable. OpenOCD is recommended when using the LambdaConcept programming cable. The LambdaConcept programming cable is not supported by Xilinx Vivado.
+1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](
+https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8).
+2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept PCIeScreamer Wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
+
+Building:
+=================
+1) Install Xilinx Vivado WebPACK 2017.4 or later.
+2) Open Vivado Tcl Shell command prompt.
+3) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
+4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
+5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
+6) Finished !!!
+
+Building the project may take a very long time (~1 hour).
+
+The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default.
+
+Stability Issues:
+=================
+The current software/hardware combo is not completely stable. The PCIe link to the target system may experience instability, degradation or total loss of connectivity in some cases. In some cases the link intermittently becomes unavailable resulting in lost DMA/TLP packets. PCILeech mitigates this to some degree.
+
+The PCIeScreamer is:
+* Most likely OK if connected directly to PCIe slot of target system (degradation of link not likely).
+* Likely OK if connected directly to ExpressCard adapter such as BPlus PE3A. (degradation of link to PCIe gen1 likely).
+* Most likely NOT OK if connected to PCIe extension cable. (total loss of connectivity).
+
+Furthermore, if connected to source which does not provide sufficient power, such as ExpressCard slot with PE3A adapter, it is recommended to use external power to the PCeScreamer to increase stability. 5V-15V is recommended. This is not needed if connected directly to PCIe slot in target computer.
+
+If stability is paramount the more expensive SP605 or AC701 hardware is currently recommended.
+
+Other Notes:
+=================
+The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
+
+Future Work:
+=================
+* Increase stability.
+* Increase performance (will follow when stability is improved).
+* Add interoperability (UDP-bridge) with LambdaConcept toolchain.
+
+Version History:
+=================
+v3.0
+* Initial Release.
+* Compatible with PCILeech v2.6
+* Download pre-built binary [here](
+https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8).

@@ -5,24 +5,26 @@ Using FPGA based devices have many advantages over using the USB3380 hardware th
 FPGA based hardware provides full access to 64-bit memory space without having to rely on a kernel module running on the target system. 
 FPGA based devices are also more stable compared to the USB3380. FPGA based devices may also send raw PCIe Transaction Layer Packets TLPs - allowing for more specialized research.
 
-For information about PCILeech itself please check out the [PCILeech](https://github.com/ufrisk/pcileech/) project.
-
 Supported Devices:
 =================
 PCILeech currently supports multiple FPGA based devices - please see the table below:
 
-| Device          | Connection | Transfer Speed | PCIe Version | OS support (on attacker) | Creator         |
-| --------------- | ---------- | -------------- | ------------ | ------------------------ | --------------- |
-| [SP605/FT601](sp605_ft601)     | USB3       | 50-75 MB/s     | PCIe gen1 x1 | Windows                  | Ulf Frisk       |
-| [SP605/TCP](https://github.com/Cr4sh/s6_pcie_microblaze)     | TCP/IP     | 100kB/s        | PCIe gen1 x1 | Windows, Linux, Android  | Dmytro Oleksiuk |
+| Device                       | Connection | Transfer Speed | PCIe Version | OS support<br>(on attacker) | Creator         |
+| ---------------------------- | ---------- | -------------- | ------------ | ------------------------ | --------------- |
+| [AC701/FT601](ac701_ft601)   | USB3       | 150 MB/s       | PCIe gen2 x4 | Windows                  | Ulf Frisk       |
+| [PCIeScreamer](pciescreamer) | USB3       | 100 MB/s       | PCIe gen2 x1 | Windows                  | Ramtin Amin<br>Ulf Frisk |
+| [SP605/FT601](sp605_ft601)   | USB3       | 75 MB/s        | PCIe gen1 x1 | Windows                  | Ulf Frisk       |
+| [SP605/TCP](https://github.com/Cr4sh/s6_pcie_microblaze) | TCP/IP | 100kB/s | PCIe gen1 x1 | Windows, Linux, Android  | Dmytro Oleksiuk |
 
-Please select the FPGA setup that best suits your needs from the above list. If performance is key the SP605 / FT601 combo is currently recommended.
+Please select the FPGA setup that best suits your needs from the above list. If performance is key the AC701 is currently recommended.
 
-Please check out [PCILeech SP605 FT601](sp605_ft601) for more information about the usage, building and flashing of the SP605/FT601 combo. The images below depicts the SP605 / FT601 combo used for PCILeech PCIe access over USB3.
+Please check out the individual FPGA projects in the table above for more information about the purchase, usage, building and flashing of the devices. Each device have different advantages and disadvantages.
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/d01be0e485fde5ba09d84be35ca2970038e18577/_gh_fpga_ft601.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/d01be0e485fde5ba09d84be35ca2970038e18577/_gh_fpga_sp605.jpg" height="300"/>
+The images below depicts the SP605, PCIeScreamer and AC701 devices used for PCILeech PCIe access over USB3.
 
-Future Work (SP605/FT601 design):
+<img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_sp605_front.jpg" height="230"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2dec37bf6f495b419fd78ff616beede45af6cec1/_gh_pciescreamer1.jpg" height="230"/><img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_ac701_front.jpg" height="230"/>
+
+Future Work:
 =================
-* Add Linux and Android support to PCILeech.
-* Increase memory dump speed.
+* Add Linux and Android support to PCILeech for FPGA devices.
+* Add support for more FPGA devices.
