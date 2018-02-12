@@ -11,10 +11,10 @@ module pcileech_pcie_a7_x4(
     input           clk,
 
     // PCIe fabric
-    output  [3:0]   pci_exp_txp,
-    output  [3:0]   pci_exp_txn,
-    input   [3:0]   pci_exp_rxp,
-    input   [3:0]   pci_exp_rxn,
+    output  [1:0]   pci_exp_txp,
+    output  [1:0]   pci_exp_txn,
+    input   [1:0]   pci_exp_rxp,
+    input   [1:0]   pci_exp_rxn,
     input           sys_clk_p,
     input           sys_clk_n,
     input           sys_rst_n,

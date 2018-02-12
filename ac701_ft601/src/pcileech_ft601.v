@@ -27,8 +27,10 @@ module pcileech_ft601(
    input                fifo_tx_empty,
    input                fifo_tx_valid,
    output reg           fifo_tx_rd,
-   // Activity  LED
-   output reg           led_activity
+   // Activity LED
+   output reg           led_activity,
+   // Transfer Strategy - prioritize: 0 = transmit, 1 = receive
+   input                xfer_prio_rx
    );
    assign FT601_SIWU_N = 1'b1;
    
@@ -106,7 +108,7 @@ module pcileech_ft601(
             begin
                if ( ~__d_ft601_txe_n & tx_last_en )
                   state <= `S_TX_RETX;
-               else if ( ~__d_ft601_txe_n & ~fifo_tx_empty )
+               else if ( ~xfer_prio_rx & ~__d_ft601_txe_n & ~fifo_tx_empty )
                   begin
                      fifo_tx_rd <= 1'b1;
                      state <= `S_TX_WAIT;
@@ -117,6 +119,11 @@ module pcileech_ft601(
                      ft601_oe <= 1'b1;
                      state <= `S_RX_WAIT1;
                   end
+               else if ( ~__d_ft601_txe_n & ~fifo_tx_empty )
+                 begin
+                    fifo_tx_rd <= 1'b1;
+                    state <= `S_TX_WAIT;
+                 end
             end
          `S_TX_WAIT:
             begin

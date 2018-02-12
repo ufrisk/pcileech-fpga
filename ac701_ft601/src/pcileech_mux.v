@@ -6,9 +6,8 @@
 // efficient transmission over the FT601 together with some additional info.
 //
 // The port with the lowest number will always be prioritized if it has data.
-// The receiving FIFO must always have free space.
 //
-// (c) Ulf Frisk, 2017
+// (c) Ulf Frisk, 2017-2018
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -18,6 +17,7 @@ module pcileech_mux(
    // output
    output reg [255:0]   dout,
    output reg           valid = 0,
+   input                rd_en,          // inverse of almost_full in receiver FIFO
    // port0: input highest priority
    input  [31:0]        p0_din,
    input  [1:0]         p0_ctx,
@@ -66,10 +66,10 @@ module pcileech_mux(
       else
          begin
             // request data
-            p0_req_data <= p0_has_data;
-            p1_req_data <= p1_has_data & ~p0_has_data;
-            p2_req_data <= p2_has_data & ~p1_has_data & ~p0_has_data;
-            p3_req_data <= p3_has_data & ~p2_has_data & ~p1_has_data & ~p0_has_data;
+            p0_req_data <= rd_en & p0_has_data;
+            p1_req_data <= rd_en & p1_has_data & ~p0_has_data;
+            p2_req_data <= rd_en & p2_has_data & ~p1_has_data & ~p0_has_data;
+            p3_req_data <= rd_en & p3_has_data & ~p2_has_data & ~p1_has_data & ~p0_has_data;
             // count
             if( `MUX_WR && (mux_count < 6) )
                begin

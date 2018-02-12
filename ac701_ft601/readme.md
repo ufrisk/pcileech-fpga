@@ -28,7 +28,7 @@ Flashing:
 =================
 1) Ensure the both the AC701 and FT601 is configured correctly with correct jumpers and switches. Please see images above.
 2) Install Vivado WebPACK or Lab Edition (only for flashing).
-3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech_ac701_ft601.bin`](https://mega.nz/#!VCgGSJQR!z3UuWJtKcUCLcUuRMSZ1ViRf3fWU3LBL-bB-a08G7Bc).
+3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech_ac701_ft601.bin`](https://mega.nz/#!kbA3BTRJ!8nXUVN7sJDTOHgtuCGlkmdKR5q_Wgzpsd-y-F6eQ5Jk).
 4) Open Vivado Tcl Shell command prompt.
 5) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
 6) Make sure the JTAG USB cable is connected.
@@ -60,3 +60,8 @@ v3.0
 * Initial Release.
 * Compatible with PCILeech v2.6
 * Download pre-built binary [here](https://mega.nz/#!VCgGSJQR!z3UuWJtKcUCLcUuRMSZ1ViRf3fWU3LBL-bB-a08G7Bc).
+
+v3.1
+* Bug fixes.
+* More optimization in build step to resolve timing issues.
+* Download pre-built binary [here](https://mega.nz/#!kbA3BTRJ!8nXUVN7sJDTOHgtuCGlkmdKR5q_Wgzpsd-y-F6eQ5Jk).
