@@ -50,6 +50,14 @@ Building:
 5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
 6) Finished !!!
 
+Alternatively, you can build using Vivado in batch mode from the shell, with:
+
+2a) source /opt/Xilinx/Vivado/2018.?/settings64.sh
+3a) cd pcileech-fpga/pciescreamer
+4a) vivado -mode batch -notrace -source vivado_generate_project.tcl
+5a) vivado -mode batch -notrace -source vivado_build.tcl pciescreamer/pciescreamer.xpr
+6a) Finished !!!
+
 Building the project may take a very long time (~1 hour). Sometimes the build will fail if the directory path is too long. If build fails try re-run it while pcileech-fpga is placed in C:\Temp or any other place with short directory path.
 
 The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties check out the [advanced build readme](build.md) for information.
