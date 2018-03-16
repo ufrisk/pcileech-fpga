@@ -28,8 +28,7 @@ Flashing (Xilinx/Diligent programming cable):
 =================
 Please note that this instruction applies to Xilinx Vivado compatible programming cables, such as Diligent HS2. This instruction will <i>not</i> work with the LambdaConcept programming cable.
 1) Install Vivado WebPACK or Lab Edition (only for flashing).
-2) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](
-https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8).
+2) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY).
 3) Open Vivado Tcl Shell command prompt.
 4) cd into the directory of your unpacked files, or this directory (forward slash instead of backslash in path).
 5) Make sure the JTAG USB cable is connected.
@@ -39,8 +38,7 @@ https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8).
 Flashing (LambdaConcept programming cable):
 =================
 Please note that this instruction applies to the LambdaConcept programming cable. OpenOCD is recommended when using the LambdaConcept programming cable. The LambdaConcept programming cable is not supported by Xilinx Vivado.
-1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](
-https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8).
+1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY).
 2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept PCIeScreamer Wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
 
 Building:
@@ -83,6 +81,9 @@ Version History:
 =================
 v3.0
 * Initial Release.
-* Compatible with PCILeech v2.6
-* Download pre-built binary [here](
-https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8).
+* Compatible with PCILeech v2.6.
+* Download pre-built binary [here](https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8). <br>SHA256: `4e8c0e536f543a9a1266ff65530dcefd2a7909a7fe98f7e1696a3aed1d5da136`
+
+v3.2
+* Bug fixes - USB and Timing.
+* Download pre-built binary [here](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY). <br>SHA256: `bbd506082532cae75a006ee310967dd695ea5068548d851c958a597d504641bf`

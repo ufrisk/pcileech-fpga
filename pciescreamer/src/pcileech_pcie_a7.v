@@ -54,7 +54,7 @@ module pcileech_pcie_a7(
     assign cfg_dsn = { PCI_EXP_EP_DSN_2, PCI_EXP_EP_DSN_1 };
     
     // system interface
-    wire sys_clk_c;
+    (* dont_touch = "true" *) wire sys_clk_c;
     wire user_clk;
     wire user_reset;
        
