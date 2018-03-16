@@ -72,15 +72,15 @@ NET "FT601_WR_N"        TNM = "M_FIFO_O";
 NET "FT601_RD_N"        TNM = "M_FIFO_O";
 NET "FT601_OE_N"        TNM = "M_FIFO_O";
 
-INST "i_pcileech_ft601/__d_ft601_data*" IOB = TRUE;
-INST "i_pcileech_ft601/__d_ft601_wr_n" IOB = TRUE;
+INST "i_pcileech_ft601/txo_dout*" IOB = TRUE;
+INST "i_pcileech_ft601/txo_valid_n" IOB = TRUE;
 INST "i_pcileech_ft601/__d_ft601_rd_n" IOB = TRUE;
 INST "i_pcileech_ft601/__d_ft601_oe_n" IOB = TRUE;
 
-TIMEGRP "M_FIFO_IO" OFFSET = IN 2 ns VALID 6 ns BEFORE "FT601_CLK" RISING;
-TIMEGRP "M_FIFO_I"  OFFSET = IN 2 ns VALID 6 ns BEFORE "FT601_CLK" RISING;
-TIMEGRP "M_FIFO_IO" OFFSET = OUT 8 ns AFTER "FT601_CLK" RISING;
-TIMEGRP "M_FIFO_O"  OFFSET = OUT 8 ns AFTER "FT601_CLK" RISING;
+TIMEGRP "M_FIFO_IO" OFFSET = IN  6 ns VALID 6.5 ns BEFORE "FT601_CLK" RISING;
+TIMEGRP "M_FIFO_I"  OFFSET = IN  6 ns VALID 6.5 ns BEFORE "FT601_CLK" RISING;
+TIMEGRP "M_FIFO_IO" OFFSET = OUT 9 ns VALID 5.8 ns AFTER "FT601_CLK" RISING;
+TIMEGRP "M_FIFO_O"  OFFSET = OUT 9 ns VALID 5.8 ns AFTER "FT601_CLK" RISING;
 
 #=======================================
 # Exceptions 

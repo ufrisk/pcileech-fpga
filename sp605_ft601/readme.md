@@ -26,7 +26,7 @@ Flashing:
 =================
 1) Ensure the both the SP605 and FT601 is configured correctly with correct jumpers and switches. Please see images above.
 2) Install Xilinx ISE Development Environment.
-3) Build PCILeech SP605/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech.mcs`](https://mega.nz/#!BCRUED6R!4qhJ57cF0iMK0Ux26XOtyqdN_GLTOc2bwu6cKxj4468).
+3) Build PCILeech SP605/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech.mcs`](https://mega.nz/#!Nf5nnA6S!lWqwUEnuLLLbUtTfyq3zbW7IS9xqSi-EuSx7ZLFd41c).
 4) Open ISE Design Suite 64-Bit Command Prompt.
 5) Make sure the JTAG USB cable is connected.
 6) Run `flash.bat` to flash the bitstream onto the SP605.
@@ -45,10 +45,6 @@ Even if just opening the project for viewing it's recommended to first run build
 
 The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties check out the [advanced build readme](build.md) for information.
 
-Future Work:
-=================
-* Increase memory dump speed. This is not likely to happen in the near future, but hopefully the current 50-75MB/s is still useful.
-
 Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have puschased a SP605 development board will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores with the `build.bat` script.
@@ -58,9 +54,15 @@ Version History:
 v1.0
 * Initial Release.
 * Compatible with PCILeech v2.3-2.4
-* Download pre-built binary [here](https://mega.nz/#!oLZ0lbZT!6LUpE9kXdteg7fQaJlTEViJpPOsVsrzdYnFfsuXceGA).
+* Download pre-built binary [here](https://mega.nz/#!oLZ0lbZT!6LUpE9kXdteg7fQaJlTEViJpPOsVsrzdYnFfsuXceGA). <br>SHA256: `9989a51bfa4800921834cc8262d60dbe962afe36814b9cf5f38c93a2a78c4fb7`
 
 v2.0
 * Bug fixes and re-design.
 * Compatible with PCILeech v2.5+
-* Download pre-built binary [here](https://mega.nz/#!BCRUED6R!4qhJ57cF0iMK0Ux26XOtyqdN_GLTOc2bwu6cKxj4468).
+* Download pre-built binary [here](https://mega.nz/#!BCRUED6R!4qhJ57cF0iMK0Ux26XOtyqdN_GLTOc2bwu6cKxj4468). <br>SHA256: `caaf43d53bc6cb137fb8c4b106e9fd6432524738682aec7dcd75a837c4bcd729`
+
+v2.2
+* Improved load speed.
+* Bug fixes - USB and Timing.
+* Compatible with PCILeech v2.6+
+* Download pre-built binary [here](https://mega.nz/#!Nf5nnA6S!lWqwUEnuLLLbUtTfyq3zbW7IS9xqSi-EuSx7ZLFd41c). <br>SHA256: `da19a9c32e14c5ce0d8a2c913e69487df4e21b0e850bb95198dceaa1c23e0bfd`

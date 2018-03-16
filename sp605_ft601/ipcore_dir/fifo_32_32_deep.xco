@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Sat Nov 04 15:56:35 2017
+# Date: Wed Mar 14 17:28:01 2018
 #
 ##############################################################
 #
@@ -57,14 +57,14 @@ CSET data_count_width=13
 CSET disable_timing_violations=false
 CSET disable_timing_violations_axi=false
 CSET dout_reset_value=0
-CSET empty_threshold_assert_value=2
+CSET empty_threshold_assert_value=3
 CSET empty_threshold_assert_value_axis=1022
 CSET empty_threshold_assert_value_rach=1022
 CSET empty_threshold_assert_value_rdch=1022
 CSET empty_threshold_assert_value_wach=1022
 CSET empty_threshold_assert_value_wdch=1022
 CSET empty_threshold_assert_value_wrch=1022
-CSET empty_threshold_negate_value=3
+CSET empty_threshold_negate_value=4
 CSET enable_aruser=false
 CSET enable_awuser=false
 CSET enable_buser=false
@@ -150,7 +150,7 @@ CSET overflow_flag_axi=false
 CSET overflow_sense=Active_High
 CSET overflow_sense_axi=Active_High
 CSET performance_options=Standard_FIFO
-CSET programmable_empty_type=No_Programmable_Empty_Threshold
+CSET programmable_empty_type=Single_Programmable_Empty_Threshold_Constant
 CSET programmable_empty_type_axis=No_Programmable_Empty_Threshold
 CSET programmable_empty_type_rach=No_Programmable_Empty_Threshold
 CSET programmable_empty_type_rdch=No_Programmable_Empty_Threshold
@@ -210,4 +210,4 @@ CSET wuser_width=1
 MISC pkg_timestamp=2012-11-19T12:39:56Z
 # END Extra information
 GENERATE
-# CRC: e3f47f1b
+# CRC: 200411e0

@@ -1,11 +1,11 @@
 # 
-# Project automation script for sp605_ft601_v2 
+# Project automation script for sp605_ft601_v2.2
 # 
 # Created for ISE version 14.7
 # 
 # This file contains several Tcl procedures (procs) that you can use to automate
 # your project by running from xtclsh or the Project Navigator Tcl console.
-# If you load this file (using the Tcl command: source C:/FPGA_PROJECTS/sp605_ft601_v2/pcileech_sp605.tcl), then you can
+# If you load this file (using the Tcl command: source pcileech_sp605.tcl), then you can
 # run any of the procs included here.
 # 
 # This script is generated assuming your project has HDL sources.
@@ -380,10 +380,10 @@ proc set_process_props {} {
    project set "Use DSP Block" "Auto" -process "Synthesize - XST"
    project set "UserID Code (8 Digit Hexadecimal)" "0xFFFFFFFF" -process "Generate Programming File"
    project set "Configuration Pin Done" "Pull Up" -process "Generate Programming File"
-   project set "Enable External Master Clock" "false" -process "Generate Programming File"
+   project set "Enable External Master Clock" "true" -process "Generate Programming File"
    project set "Create ASCII Configuration File" "false" -process "Generate Programming File"
    project set "Create Bit File" "true" -process "Generate Programming File"
-   project set "Enable BitStream Compression" "false" -process "Generate Programming File"
+   project set "Enable BitStream Compression" "true" -process "Generate Programming File"
    project set "Run Design Rules Checker (DRC)" "true" -process "Generate Programming File"
    project set "Enable Cyclic Redundancy Checking (CRC)" "true" -process "Generate Programming File"
    project set "Create IEEE 1532 Configuration File" "false" -process "Generate Programming File"
@@ -391,7 +391,7 @@ proc set_process_props {} {
    project set "Configuration Pin Program" "Pull Up" -process "Generate Programming File"
    project set "Place MultiBoot Settings into Bitstream" "false" -process "Generate Programming File"
    project set "Configuration Rate" "2" -process "Generate Programming File"
-   project set "Set SPI Configuration Bus Width" "1" -process "Generate Programming File"
+   project set "Set SPI Configuration Bus Width" "4" -process "Generate Programming File"
    project set "JTAG Pin TCK" "Pull Up" -process "Generate Programming File"
    project set "JTAG Pin TDI" "Pull Up" -process "Generate Programming File"
    project set "JTAG Pin TDO" "Pull Up" -process "Generate Programming File"

@@ -29,7 +29,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-module pcileech_fifo(
+module pcileech_fifo #(
+    parameter       PARAM_DEVICE_ID = 0,
+    parameter       PARAM_VERSION_NUMBER_MAJOR = 0,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 0
+) (
    input          clk,
    input          clk_pcie,
    input          rst,
@@ -38,7 +42,6 @@ module pcileech_fifo(
    
    input [31:0]   ft601_rx_data,
    input          ft601_rx_wren,
-   input          ft601_rx_keepalive,
    
    output [255:0] ft601_tx_data,
    output         ft601_tx_valid,
@@ -312,28 +315,32 @@ module pcileech_fifo(
       .p3_req_data   ( _cmd_rd_en               )
    );
    
-   // ----------------------------------------------------------------------------
-   // LOGIC FOR COMMAND / CONTROL FIFO BELOW:
-   // ----------------------------------------------------------------------------
-   
-   `define CHECK_CMD_VERSION        (_ft245_rx_dout[31:24] == 8'h01)
-   `define CHECK_CMD_PCIE_STATUS    (_ft245_rx_dout[31:24] == 8'h02)
-   
-   always @ ( posedge clk )
-      if ( rst )
-         _cmd_wr_en <= 1'b0;
-      else if ( ft601_rx_keepalive )
-         begin
-            _cmd_wr_en <= 1'b1;
-            _cmd_din[33:0] <= 34'h3ffffffff;
-         end
-      else
-         begin
-            _cmd_wr_en <= _cmd_rx_wren & (`CHECK_CMD_VERSION | `CHECK_CMD_PCIE_STATUS);
-            if ( `CHECK_CMD_VERSION )
-               _cmd_din[33:0] <= 34'h02000001;  // VERSION NUMBER 2
-            if ( `CHECK_CMD_PCIE_STATUS )
-               _cmd_din[33:0] <= 34'h00000002 | (rst_pcie << 17) | (pcie_lnk_up << 16);
-         end
+    // ----------------------------------------------------------------------------
+    // LOGIC FOR COMMAND / CONTROL FIFO BELOW:
+    // ----------------------------------------------------------------------------
+    `define CHECK_CMD_VERSION_MAJOR     (_ft245_rx_dout[31:24] == 8'h01)
+    `define CHECK_CMD_STATUS            (_ft245_rx_dout[31:24] == 8'h02)
+    // DEVICE IDs as follows:
+    // 00 = SP605/FT601
+    // 01 = PCIeScreamer (artix7-35t)
+    // 02 = AC701/FT601
+    `define CHECK_CMD_DEVICE_ID         (_ft245_rx_dout[31:24] == 8'h03)
+    `define CHECK_CMD_VERSION_MINOR     (_ft245_rx_dout[31:24] == 8'h05)
+    
+    always @ ( posedge clk )
+        if ( rst )
+            _cmd_wr_en <= 1'b0;
+        else
+            begin
+                _cmd_wr_en <= _cmd_rx_wren & (`CHECK_CMD_VERSION_MAJOR | `CHECK_CMD_VERSION_MINOR | `CHECK_CMD_DEVICE_ID | `CHECK_CMD_STATUS);
+                if ( `CHECK_CMD_VERSION_MAJOR )
+                    _cmd_din[33:0] <= 34'h00000001 | (PARAM_VERSION_NUMBER_MAJOR << 24);
+                if ( `CHECK_CMD_VERSION_MINOR )
+                    _cmd_din[33:0] <= 34'h00000005 | (PARAM_VERSION_NUMBER_MINOR << 24);
+                if ( `CHECK_CMD_STATUS )
+                    _cmd_din[33:0] <= 34'h00000002 | (pcie_lnk_up << 16) | (pcie_lnk_up << 16);
+                if ( `CHECK_CMD_DEVICE_ID )
+                    _cmd_din[33:0] <= 34'h00000003 | (PARAM_DEVICE_ID << 24);
+            end
          
 endmodule

@@ -33,7 +33,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-module pcileech_top (
+module pcileech_top #(
+   // DEVICE IDs as follows:
+   // 0 = SP605, 1 = PCIeScreamer, 2 = AC701
+   parameter       PARAM_DEVICE_ID = 0,
+   parameter       PARAM_VERSION_NUMBER_MAJOR = 2,
+   parameter       PARAM_VERSION_NUMBER_MINOR = 2
+) (
    // TO/FROM SYSTEM MEMORY CONTROLLER
    /*
    inout  [15:0]     mcb3_dram_dq,
@@ -143,15 +149,14 @@ module pcileech_top (
       .FT601_RD_N          ( FT601_RD_N         ),
       .FT601_OE_N          ( FT601_OE_N         ),
       // FT601 CTL <--> FIFO CTL
-      .fifo_rx_data        ( ft601_rx_data      ),
-      .fifo_rx_wr          ( ft601_rx_wren      ),
-      .fifo_rx_keepalive   ( fifo_rx_keepalive  ),
-      // FT601 CTL <--> RAM FIFO
-      .fifo_tx_data        ( ft601_tx_data      ),
-      .fifo_tx_empty       ( ft601_tx_empty     ),
-      .fifo_tx_valid       ( ft601_tx_valid     ),
-      .fifo_tx_rd          ( ft601_tx_rden      ),
-      // Activity  LED
+      .dout                ( ft601_rx_data      ),
+      .dout_valid          ( ft601_rx_wren      ),
+      // FT601 CTL <--> MAIN OUTPUT FIFO  
+      .din                 ( ft601_tx_data      ),
+      .din_empty           ( ft601_tx_empty     ),
+      .din_wr_en           ( ft601_tx_valid     ),
+      .din_req_data        ( ft601_tx_rden      ),
+      // Activity LED
       .led_activity        ( led_activity       )
    );
 
@@ -199,33 +204,50 @@ module pcileech_top (
    wire [31:0] fram_din;
    wire fram_almost_full;
    wire fram_wr_en;
+   wire fram_prog_empty;
+   wire out_buffer1_almost_full;
+   // FTDI have a bug ( in chip or driver ) which doesn't terminate transfer if
+   // even multiple of 1024 bytes are transmitted. Always insert five (5) MAGIC
+   // DWORD (0x66665555) in beginning of stream to mitigate this.  Since normal
+   // data size is always a multiple of 32-bytes/256-bits this will resolve the
+   // issue.
+   reg ft601_txe_n_d1;
+   always @ ( posedge FT601_CLK )
+      ft601_txe_n_d1 <= FT601_TXE_N;
+   wire ftdi_bug_workaround = fram_prog_empty & ft601_txe_n_d1 & ~fram_wr_en;
    fifo_32_32_deep i_pcileech_out_buffer2(
-      .clk                 ( FT601_CLK          ),
-      .rst                 ( ~FT601_RESET_N     ),
-      .din                 ( fram_din           ),
-      .wr_en               ( fram_wr_en         ),
-      .rd_en               ( ft601_tx_rden      ),
-      .dout                ( ft601_tx_data      ),
-      .full                (                    ),
-      .almost_full         ( fram_almost_full   ),
-      .empty               ( ft601_tx_empty     ),
-      .valid               ( ft601_tx_valid     )
+      .clk                ( FT601_CLK             ),
+      .rst                ( ~FT601_RESET_N        ),
+      .din                ( ftdi_bug_workaround ? 32'h66665555 : fram_din ),
+      .wr_en              ( fram_wr_en | ftdi_bug_workaround ),
+      .rd_en              ( ft601_tx_rden         ),
+      .dout               ( ft601_tx_data         ),
+      .full               (                       ),
+      .almost_full        ( fram_almost_full      ),
+      .empty              ( ft601_tx_empty        ),
+      .prog_empty         ( fram_prog_empty       ),
+      .valid              ( ft601_tx_valid        )
    );
    fifo_256_32 i_pcileech_out_buffer1(
-      .wr_clk              ( FT601_CLK          ),
-      .rd_clk              ( FT601_CLK          ),
-      .rst                 ( ~FT601_RESET_N     ),
-      .din                 ( fifo_tx_data       ),
-      .wr_en               ( fifo_tx_valid      ),
-      .rd_en               ( ~fram_almost_full  ),
-      .dout                ( fram_din           ),
-      .full                (                    ),
-      .empty               (                    ),
-      .valid               ( fram_wr_en         )
+      .wr_clk             ( FT601_CLK             ),
+      .rd_clk             ( FT601_CLK             ),
+      .rst                ( ~FT601_RESET_N        ),
+      .din                ( fifo_tx_data          ),
+      .wr_en              ( fifo_tx_valid         ),
+      .rd_en              ( ~fram_almost_full     ),
+      .dout               ( fram_din              ),
+      .full               (                       ),
+      .almost_full        ( out_buffer1_almost_full ),
+      .empty              (                       ),
+      .valid              ( fram_wr_en            )
    );
+   assign fifo_tx_rd_en = ~out_buffer1_almost_full;
    
-   
-   pcileech_fifo i_pcileech_fifo(
+    pcileech_fifo #(
+        .PARAM_DEVICE_ID            ( PARAM_DEVICE_ID               ),
+        .PARAM_VERSION_NUMBER_MAJOR ( PARAM_VERSION_NUMBER_MAJOR    ),
+        .PARAM_VERSION_NUMBER_MINOR ( PARAM_VERSION_NUMBER_MINOR    )    
+    ) i_pcileech_fifo (
       .clk                 ( FT601_CLK          ),
       .clk_pcie            ( user_clk           ),
       .rst                 ( ~FT601_RESET_N     ),
@@ -234,7 +256,6 @@ module pcileech_top (
       // FIFO CTL <--> FT601 CTL
       .ft601_rx_data       ( ft601_rx_data      ),
       .ft601_rx_wren       ( ft601_rx_wren      ),
-      .ft601_rx_keepalive  ( fifo_rx_keepalive  ),
       // FIFO CTL <--> RAM FIFO
       .ft601_tx_data       ( fifo_tx_data       ),
       .ft601_tx_valid      ( fifo_tx_valid      ),
