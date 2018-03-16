@@ -12,7 +12,7 @@ module pcileech_ac701_top #(
     // 0 = SP605, 1 = PCIeScreamer, 2 = AC701
     parameter       PARAM_DEVICE_ID = 2,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 3,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 1
+    parameter       PARAM_VERSION_NUMBER_MINOR = 2
 ) (
     // SYSTEM CLK (100MHz)
     input           clk,
@@ -60,7 +60,6 @@ module pcileech_ac701_top #(
     wire            ft601_tx_empty;
     wire            ft601_tx_valid;
     wire            ft601_tx_rden;
-    wire            ft601_xfer_prio_rx;
     
     // RAM FIFO <--> FIFO CTL
     wire [255:0]    fifo_tx_data;
@@ -103,17 +102,15 @@ module pcileech_ac701_top #(
         .FT601_RD_N         ( ft601_rd_n            ),
         .FT601_OE_N         ( ft601_oe_n            ),
         // FT601 CTL <--> FIFO CTL
-        .fifo_rx_data       ( ft601_rx_data         ),
-        .fifo_rx_wr         ( ft601_rx_wren         ),
-        // FT601 CTL <--> MAIN OUTPUT FIFO
-        .fifo_tx_data       ( ft601_tx_data         ),
-        .fifo_tx_empty      ( ft601_tx_empty        ),
-        .fifo_tx_valid      ( ft601_tx_valid        ),
-        .fifo_tx_rd         ( ft601_tx_rden         ),
+        .dout               ( ft601_rx_data         ),
+        .dout_valid         ( ft601_rx_wren         ),
+        // FT601 CTL <--> MAIN OUTPUT FIFO  
+        .din                ( ft601_tx_data         ),
+        .din_empty          ( ft601_tx_empty        ),
+        .din_wr_en          ( ft601_tx_valid        ),
+        .din_req_data       ( ft601_tx_rden         ),
         // Activity LED
-        .led_activity       ( led_activity          ),
-        // Transfer Strategy
-        .xfer_prio_rx       ( ft601_xfer_prio_rx    )
+        .led_activity       ( led_activity          )
     );
     
     wire [31:0] fram_din;
@@ -168,7 +165,6 @@ module pcileech_ac701_top #(
         // FIFO CTL <--> FT601 CTL
         .ft601_rx_data      ( ft601_rx_data         ),
         .ft601_rx_wren      ( ft601_rx_wren         ),
-        .ft601_xfer_prio_rx ( ft601_xfer_prio_rx    ),
         // FIFO CTL <--> RAM FIFO
         .ft601_tx_data      ( fifo_tx_data          ),
         .ft601_tx_valid     ( fifo_tx_valid         ),

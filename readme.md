@@ -26,5 +26,4 @@ The images below depicts the SP605, PCIeScreamer and AC701 devices used for PCIL
 
 Future Work:
 =================
-* Add Linux and Android support to PCILeech for FPGA devices.
 * Add support for more FPGA devices.

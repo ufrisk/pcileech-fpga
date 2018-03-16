@@ -195,6 +195,11 @@ set_output_delay -clock [get_clocks net_clk] -min 4.8 [get_ports {ft601_wr_n ft6
 set_output_delay -clock [get_clocks net_clk] -max 1.0 [get_ports {{ft601_be[*]} {ft601_data[*]}}]
 set_output_delay -clock [get_clocks net_clk] -min 4.8 [get_ports {{ft601_be[*]} {ft601_data[*]}}]
 
+set_property IOB TRUE [get_cells i_pcileech_ft601/__d_ft601_rd_n_reg]
+set_property IOB TRUE [get_cells i_pcileech_ft601/__d_ft601_oe_n_reg]
+set_property IOB TRUE [get_cells i_pcileech_ft601/txo_valid_n_reg]
+set_property IOB TRUE [get_cells i_pcileech_ft601/txo_dout_reg[*]]
+
 set_false_path -from [get_ports ft601_rst_n]
 set_false_path -from [get_pins i_pcileech_ft601/oe_reg/C] -to [get_ports {{ft601_be[*]} {ft601_data[*]} ft601_rd_n ft601_wr_n}]
 set_false_path -from [get_pins i_pcileech_pcie_a7_x4/i_pcie_7x_0/inst/inst/user_lnk_up_int_reg/C] -to [get_pins {i_pcileech_fifo/_cmd_din_reg[16]/D}]
@@ -213,6 +218,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports sys_rst_n]
 set_property PACKAGE_PIN E11 [get_ports sys_clk_n]
 set_property PACKAGE_PIN F11 [get_ports sys_clk_p]
 
+create_clock -name pcie_sys_clk_p -period 10.0 [get_nets sys_clk_p]
+create_clock -name pcie_refclk -period 10.0 [get_nets i_pcileech_pcie_a7_x4/sys_clk_c]
 
 set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design]
 set_property BITSTREAM.CONFIG.EXTMASTERCCLK_EN div-1 [current_design]

@@ -23,7 +23,6 @@ module pcileech_fifo #(
     output  [255:0] ft601_tx_data,
     output          ft601_tx_valid,
     input           ft601_tx_rd_en,
-    output reg      ft601_xfer_prio_rx = 1'b0,
     
     output  [31:0]  pcie_tlp_tx_data,
     output          pcie_tlp_tx_last,
@@ -203,8 +202,8 @@ module pcileech_fifo #(
     // DEVICE IDs as follows:
     // 00 = SP605/FT601
     // 01 = PCIeScreamer (artix7-35t)
+    // 02 = AC701/FT601
     `define CHECK_CMD_DEVICE_ID         (ft601_rx_data64[31:24] == 8'h03)
-    `define CHECK_CMD_FT601_XFER_WRITE  (ft601_rx_data64[31:24] == 8'h04)
     `define CHECK_CMD_VERSION_MINOR     (ft601_rx_data64[31:24] == 8'h05)
     
     always @ ( posedge clk )
@@ -212,17 +211,15 @@ module pcileech_fifo #(
             _cmd_wr_en <= 1'b0;
         else
             begin
-                _cmd_wr_en <= _cmd_rx_wren & (`CHECK_CMD_VERSION_MAJOR | `CHECK_CMD_VERSION_MINOR | `CHECK_CMD_DEVICE_ID | `CHECK_CMD_STATUS | `CHECK_CMD_FT601_XFER_WRITE);
+                _cmd_wr_en <= _cmd_rx_wren & (`CHECK_CMD_VERSION_MAJOR | `CHECK_CMD_VERSION_MINOR | `CHECK_CMD_DEVICE_ID | `CHECK_CMD_STATUS);
                 if ( `CHECK_CMD_VERSION_MAJOR )
                     _cmd_din[33:0] <= 34'h00000001 | (PARAM_VERSION_NUMBER_MAJOR << 24);
                 if ( `CHECK_CMD_VERSION_MINOR )
                     _cmd_din[33:0] <= 34'h00000005 | (PARAM_VERSION_NUMBER_MINOR << 24);
                 if ( `CHECK_CMD_STATUS )
-                    _cmd_din[33:0] <= 34'h00000002 | (pcie_lnk_up << 16) | (ft601_xfer_prio_rx << 18);
+                    _cmd_din[33:0] <= 34'h00000002 | (pcie_lnk_up << 16);
                 if ( `CHECK_CMD_DEVICE_ID )
                     _cmd_din[33:0] <= 34'h00000003 | (PARAM_DEVICE_ID << 24);
-                if ( `CHECK_CMD_FT601_XFER_WRITE )
-                    ft601_xfer_prio_rx <= ft601_rx_data64[32];  // FT601 TRANSFER STRATEGY, PRIORITIZE 0=TX, 1=RX.
             end
 
 endmodule
