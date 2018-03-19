@@ -5,9 +5,9 @@ Once flashed it may be used together with the [PCILeech Direct Memory Access (DM
 
 Capabilities:
 =================
-* Retrieve memory from the target system over USB3 at 100MB/s.
+* Retrieve memory from the target system over USB3 up to 100MB/s.
 * Access all memory of target system without the need for kernel module (KMD) unless protected with VT-d/IOMMU.
-* Enumerate/Probe accessible memory at >1GB/s.
+* Enumerate/Probe accessible memory.
 * Raw PCIe Transaction Layer Packet (TLP) access.
 
 For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) abilities and capabilities.
@@ -56,7 +56,7 @@ The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on th
 
 Stability Issues:
 =================
-The current software/hardware combo is not completely stable. The PCIe link to the target system may experience instability, degradation or total loss of connectivity in some cases. In some cases the link intermittently becomes unavailable resulting in lost DMA/TLP packets. PCILeech mitigates this to some degree.
+The current software/hardware combo is not completely stable. The PCIe link to the target system may experience instability, degradation or total loss of connectivity in some cases. In some cases the link intermittently becomes unavailable resulting in lost DMA/TLP packets. PCILeech mitigates this to some degree in software.
 
 The PCIeScreamer is:
 * Most likely OK if connected directly to PCIe slot of target system (degradation of link not likely).
@@ -65,17 +65,11 @@ The PCIeScreamer is:
 
 Furthermore, if connected to source which does not provide sufficient power, such as ExpressCard slot with PE3A adapter, it is recommended to use external power to the PCeScreamer to increase stability. 5V-15V is recommended. This is not needed if connected directly to PCIe slot in target computer.
 
-If stability is paramount the more expensive SP605 or AC701 hardware is currently recommended.
+If stability is paramount the SP605 or AC701 hardware is currently recommended.
 
 Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
-
-Future Work:
-=================
-* Increase stability.
-* Increase performance (will follow when stability is improved).
-* Add interoperability (UDP-bridge) with LambdaConcept toolchain.
 
 Version History:
 =================
