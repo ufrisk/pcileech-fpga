@@ -26,7 +26,7 @@ Flashing:
 =================
 1) Ensure the both the SP605 and FT601 is configured correctly with correct jumpers and switches. Please see images above.
 2) Install Xilinx ISE Development Environment.
-3) Build PCILeech SP605/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech.mcs`](https://mega.nz/#!Nf5nnA6S!lWqwUEnuLLLbUtTfyq3zbW7IS9xqSi-EuSx7ZLFd41c).
+3) Build PCILeech SP605/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech.mcs`](https://mega.nz/#!QPJm3bLT!8NrEBR-yLn-Qur7VkqsnahiPgkGp2nWw4Z9XWLLamxo).
 4) Open ISE Design Suite 64-Bit Command Prompt.
 5) Make sure the JTAG USB cable is connected.
 6) Run `flash.bat` to flash the bitstream onto the SP605.
@@ -65,4 +65,4 @@ v2.2
 * Improved load speed.
 * Bug fixes - USB and Timing.
 * Compatible with PCILeech v2.6+
-* Download pre-built binary [here](https://mega.nz/#!Nf5nnA6S!lWqwUEnuLLLbUtTfyq3zbW7IS9xqSi-EuSx7ZLFd41c). <br>SHA256: `da19a9c32e14c5ce0d8a2c913e69487df4e21b0e850bb95198dceaa1c23e0bfd`
+* Download pre-built binary [here](https://mega.nz/#!QPJm3bLT!8NrEBR-yLn-Qur7VkqsnahiPgkGp2nWw4Z9XWLLamxo). <br>SHA256: `d5077accb4af3eb2dbfa4958590feb6d26653fcf6d33690b848d1aa829c7c824`

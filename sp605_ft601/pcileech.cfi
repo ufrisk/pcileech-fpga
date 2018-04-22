@@ -1,0 +1,11 @@
+# PROMGEN: Xilinx Prom Generator P.20131013
+# Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+SOFTWARE_VERSION P.20131013
+DATE            04/22/2018 - 15:44
+SOURCE          pcileech.mcs
+DEVICE          8192K
+DATA_WIDTH      4
+FILL_DATA       0xFF
+SIGNATURE       0x702A918E
+START_ADDRESS   0x00000000 END_ADDRESS 0x0011126F DIRECTION_UP   "pcileech_top.bit" 6slx45tfgg484
