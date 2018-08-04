@@ -59,8 +59,8 @@ Stability Issues:
 The current software/hardware combo is not completely stable. The PCIe link to the target system may experience instability, degradation or total loss of connectivity in some cases. In some cases the link intermittently becomes unavailable resulting in lost DMA/TLP packets. PCILeech mitigates this to some degree in software.
 
 The PCIeScreamer is:
-* Most likely OK if connected directly to PCIe slot of target system (degradation of link not likely).
-* Likely OK if connected directly to ExpressCard adapter such as BPlus PE3A. (degradation of link to PCIe gen1 likely).
+* Most likely OK if connected directly to PCIe slot of target system (connectivity loss or degradation of link happens occasionally).
+* Likely OK if connected directly to ExpressCard adapter such as BPlus PE3A. (connectivity loss or degradation of link likely).
 * Most likely NOT OK if connected to PCIe extension cable. (total loss of connectivity).
 
 Furthermore, if connected to source which does not provide sufficient power, such as ExpressCard slot with PE3A adapter, it is recommended to use external power to the PCeScreamer to increase stability. 5V-15V is recommended. This is not needed if connected directly to PCIe slot in target computer.
