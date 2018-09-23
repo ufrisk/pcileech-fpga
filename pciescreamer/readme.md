@@ -38,7 +38,7 @@ Please note that this instruction applies to Xilinx Vivado compatible programmin
 Flashing (LambdaConcept programming cable):
 =================
 Please note that this instruction applies to the LambdaConcept programming cable. OpenOCD is recommended when using the LambdaConcept programming cable. The LambdaConcept programming cable is not supported by Xilinx Vivado.
-1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!VKI3HSiB!PqfghoIJNn6k8ScxIACtZyMRVg6sr1wC3zQ1zca95oM).
+1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY).
 2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept PCIeScreamer Wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
 
 Building:
