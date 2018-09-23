@@ -12,7 +12,7 @@ module pcileech_pciescreamer_top #(
     // 0 = SP605, 1 = PCIeScreamer, 2 = AC701
     parameter       PARAM_DEVICE_ID = 1,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 3,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 2
+    parameter       PARAM_VERSION_NUMBER_MINOR = 3
 ) (
     // SYSTEM CLK (100MHz)
     input           clk,
@@ -31,6 +31,23 @@ module pcileech_pciescreamer_top #(
     input           sys_clk_p,
     input           sys_clk_n,
     input           sys_rst_n,
+    
+    // DDR
+    output [13:0]   DDR3_addr,
+    output [2:0]    DDR3_ba,
+    output          DDR3_cas_n,
+    output [0:0]    DDR3_ck_n,
+    output [0:0]    DDR3_ck_p,
+    output [0:0]    DDR3_cke,
+    output [1:0]    DDR3_dm,
+    inout [15:0]    DDR3_dq,
+    inout [1:0]     DDR3_dqs_n,
+    inout [1:0]     DDR3_dqs_p,
+    output [0:0]    DDR3_odt,
+    output          DDR3_ras_n,
+    output          DDR3_reset_n,
+    output          DDR3_we_n,
+    //output [0:0]    DDR3_cs_n,
 
     // TO/FROM FT601 PADS
     output          ft601_rst_n_pciescr,
@@ -53,20 +70,20 @@ module pcileech_pciescreamer_top #(
     // PCIe common
     wire            user_lnk_up;
     
-    // FT601/FT245 <--> FIFO CTL
+    // FT601/FT245 --> FIFO CTL
     wire [31:0]     ft601_rx_data;
     wire            ft601_rx_wren;
     
-    // FT601/FT245 <--> RAM FIFO
+    // vFIFO --> FT601/FT245
     wire [31:0]     ft601_tx_data;
     wire            ft601_tx_empty;
     wire            ft601_tx_valid;
     wire            ft601_tx_rden;
     
-    // RAM FIFO <--> FIFO CTL
-    wire [255:0]    fifo_tx_data;
-    wire            fifo_tx_valid;
-    wire            fifo_tx_rd_en;
+    // FIFO CTL --> vFIFO
+    wire [255:0]    vfifo_0_in_data;
+    wire            vfifo_0_in_valid;
+    wire            vfifo_0_in_ready;
     
     // PCIe <--> FIFOs
     wire [31:0]     pcie_tlp_tx_data;
@@ -115,43 +132,36 @@ module pcileech_pciescreamer_top #(
         .led_activity       ( led_activity          )
     );
     
-    wire [31:0] fram_din;
-    wire fram_almost_full;
-    wire fram_wr_en;
-    wire fram_prog_empty;
-    wire out_buffer1_almost_full;
-    // FTDI have a bug ( in chip or driver ) which doesn't terminate transfer if
-    // even multiple of 1024 bytes are transmitted. Always insert five (5) MAGIC
-    // DWORD (0x66665555) in beginning of stream to mitigate this.  Since normal
-    // data size is always a multiple of 32-bytes/256-bits this will resolve the
-    // issue. 
-    wire ftdi_bug_workaround = fram_prog_empty & ft601_txe_n & ~fram_wr_en;
-    fifo_32_32_deep i_pcileech_out_buffer2(
+    pcileech_vfifo_ctl i_pcileech_vfifo_ctl(
         .clk                ( clk                   ),
-        .srst               ( rst                   ),
-        .din                ( ftdi_bug_workaround ? 32'h66665555 : fram_din ),
-        .wr_en              ( fram_wr_en | ftdi_bug_workaround ),
-        .rd_en              ( ft601_tx_rden         ),
-        .dout               ( ft601_tx_data         ),
-        .full               (                       ),
-        .almost_full        ( fram_almost_full      ),
-        .empty              ( ft601_tx_empty        ),
-        .prog_empty         ( fram_prog_empty       ),
-        .valid              ( ft601_tx_valid        )
+        .rst                ( rst                   ),
+        // DDR
+        .DDR3_addr          ( DDR3_addr             ),
+        .DDR3_ba            ( DDR3_ba               ),
+        .DDR3_cas_n         ( DDR3_cas_n            ),
+        .DDR3_ck_n          ( DDR3_ck_n             ),
+        .DDR3_ck_p          ( DDR3_ck_p             ),
+        .DDR3_cke           ( DDR3_cke              ),
+        .DDR3_dm            ( DDR3_dm               ),
+        .DDR3_dq            ( DDR3_dq               ),
+        .DDR3_dqs_n         ( DDR3_dqs_n            ),
+        .DDR3_dqs_p         ( DDR3_dqs_p            ),
+        .DDR3_odt           ( DDR3_odt              ),
+        .DDR3_ras_n         ( DDR3_ras_n            ),
+        .DDR3_reset_n       ( DDR3_reset_n          ),
+        .DDR3_we_n          ( DDR3_we_n             ),
+        //.DDR3_cs_n          ( DDR3_0_cs_n           ),
+        // vFIFO --> FT601        
+        .ft601_txe_n        ( ft601_txe_n           ),
+        .ft601_tx_dout      ( ft601_tx_data         ),
+        .ft601_tx_rden      ( ft601_tx_rden         ),
+        .ft601_tx_valid     ( ft601_tx_valid        ),
+        .ft601_tx_empty     ( ft601_tx_empty        ),
+        // FIFO CTL --> vFIFO
+        .vfifo_0_in_data    ( vfifo_0_in_data       ),  // <- [255:0]
+        .vfifo_0_in_valid   ( vfifo_0_in_valid      ),  // <- (NB! valid must not be asserted two CLKs in a row)
+        .vfifo_0_in_ready   ( vfifo_0_in_ready      )   // ->
     );
-    fifo_256_32 i_pcileech_out_buffer1(
-        .clk                ( clk                   ),
-        .srst               ( rst                   ),
-        .din                ( fifo_tx_data          ),
-        .wr_en              ( fifo_tx_valid         ),
-        .rd_en              ( ~fram_almost_full     ),
-        .dout               ( fram_din              ),
-        .full               (                       ),
-        .almost_full        ( out_buffer1_almost_full ),
-        .empty              (                       ),
-        .valid              ( fram_wr_en            )
-    );
-    assign fifo_tx_rd_en = ~out_buffer1_almost_full;
     
     pcileech_fifo #(
         .PARAM_DEVICE_ID            ( PARAM_DEVICE_ID               ),
@@ -161,13 +171,13 @@ module pcileech_pciescreamer_top #(
         .clk                ( clk                   ),
         .rst                ( rst                   ),
         .pcie_lnk_up        ( user_lnk_up           ),
-        // FIFO CTL <--> FT601 CTL
+        // FT601 --> FIFO CTL
         .ft601_rx_data      ( ft601_rx_data         ),
         .ft601_rx_wren      ( ft601_rx_wren         ),
-        // FIFO CTL <--> RAM FIFO
-        .ft601_tx_data      ( fifo_tx_data          ),
-        .ft601_tx_valid     ( fifo_tx_valid         ),
-        .ft601_tx_rd_en     ( fifo_tx_rd_en         ),
+        // FIFO CTL --> vFIFO
+        .ft601_tx_data      ( vfifo_0_in_data       ),  // -> [255:0]
+        .ft601_tx_valid     ( vfifo_0_in_valid      ),  // ->
+        .ft601_tx_rd_en     ( vfifo_0_in_ready      ),  // <-
         // PCIe <--> FIFOs
         .pcie_tlp_tx_data   ( pcie_tlp_tx_data      ),  // -> [31:0]
         .pcie_tlp_tx_last   ( pcie_tlp_tx_last      ),  // ->

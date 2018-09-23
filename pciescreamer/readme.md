@@ -28,7 +28,7 @@ Flashing (Xilinx/Diligent programming cable):
 =================
 Please note that this instruction applies to Xilinx Vivado compatible programming cables, such as Diligent HS2. This instruction will <i>not</i> work with the LambdaConcept programming cable.
 1) Install Vivado WebPACK or Lab Edition (only for flashing).
-2) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY).
+2) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary (v3.2): [`pcileech_pciescreamer.bin`](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY). Alternatively try the v3.3-beta version.
 3) Open Vivado Tcl Shell command prompt.
 4) cd into the directory of your unpacked files, or this directory (forward slash instead of backslash in path).
 5) Make sure the JTAG USB cable is connected.
@@ -38,12 +38,12 @@ Please note that this instruction applies to Xilinx Vivado compatible programmin
 Flashing (LambdaConcept programming cable):
 =================
 Please note that this instruction applies to the LambdaConcept programming cable. OpenOCD is recommended when using the LambdaConcept programming cable. The LambdaConcept programming cable is not supported by Xilinx Vivado.
-1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY).
+1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!VKI3HSiB!PqfghoIJNn6k8ScxIACtZyMRVg6sr1wC3zQ1zca95oM).
 2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept PCIeScreamer Wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2017.4 or later.
+1) Install Xilinx Vivado WebPACK 2018.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -81,3 +81,7 @@ v3.0
 v3.2
 * Bug fixes - USB and Timing.
 * Download pre-built binary [here](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY). <br>SHA256: `bbd506082532cae75a006ee310967dd695ea5068548d851c958a597d504641bf`
+
+v3.3-beta
+* Internal changes - data buffering in RAM.
+* Download pre-built binary [here](https://mega.nz/#!8Wp2gYzb!dUj9WpstO9KZdA11p_VzR7PPbTDOEB1JXLoih4v9QmY). <br>SHA256: `8273595938a046969b54ca5606b833a354b664077bbbfa623905037684e2a67d`

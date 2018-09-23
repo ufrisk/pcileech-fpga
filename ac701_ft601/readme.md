@@ -28,7 +28,7 @@ Flashing:
 =================
 1) Ensure the both the AC701 and FT601 is configured correctly with correct jumpers and switches. Please see images above.
 2) Install Vivado WebPACK or Lab Edition (only for flashing).
-3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary: [`pcileech_ac701_ft601.bin`](https://mega.nz/#!NGZwkALQ!OmlTZ9TFiR0DDvl3Ybmy3U8TTEActURTxAev87hCcdA).
+3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary (v3.2): [`pcileech_ac701_ft601.bin`](https://mega.nz/#!NGZwkALQ!OmlTZ9TFiR0DDvl3Ybmy3U8TTEActURTxAev87hCcdA). Alternatively try the v3.3-beta version.
 4) Open Vivado Tcl Shell command prompt.
 5) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
 6) Make sure the JTAG USB cable is connected.
@@ -39,7 +39,7 @@ If this fails please check out the Xilinx documentation about how to manually fl
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2017.4 or later.
+1) Install Xilinx Vivado WebPACK 2018.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the ac701_ft601 directory of the cloned or unpacked code (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -69,3 +69,7 @@ v3.1
 v3.2
 * Bug fixes - USB and Timing.
 * Download pre-built binary [here](https://mega.nz/#!NGZwkALQ!OmlTZ9TFiR0DDvl3Ybmy3U8TTEActURTxAev87hCcdA). <br>SHA256: `811a4dde1820731ff07d68cc58fcf0beb8388dcb3c479c11ea27255bf24efd5f`
+
+v3.3-beta
+* Internal changes - data buffering in RAM.
+* Download pre-built binary [here](https://mega.nz/#!xPgkhAhL!RyDr6Xl4pexrTuRAa-yVdsYnEUWM3YaX20IL45RvUlk). <br>SHA256: `731edd2a4180394c9719ce869be90663808f5eea0797b3c0fd04ffd9422bb067`
