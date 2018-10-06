@@ -45,14 +45,14 @@ Building:
 =================
 1) Install Xilinx Vivado WebPACK 2018.2 or later.
 2) Open Vivado Tcl Shell command prompt.
-3) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
+3) cd into the directory pcileech-fpga/pciescreamer/ (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
 5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
 6) Finished !!!
 
-Building the project may take a very long time (~1 hour).
+Building the project may take a very long time (~1 hour). Sometimes the build will fail if the directory path is too long. If build fails try re-run it while pcileech-fpga is placed in C:\Temp or any other place with short directory path.
 
-The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default.
+The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties check out the [advanced build readme](build.md) for information.
 
 Stability Issues:
 =================
