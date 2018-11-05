@@ -70,6 +70,6 @@ v3.2
 * Bug fixes - USB and Timing.
 * Download pre-built binary [here](https://mega.nz/#!NGZwkALQ!OmlTZ9TFiR0DDvl3Ybmy3U8TTEActURTxAev87hCcdA). <br>SHA256: `811a4dde1820731ff07d68cc58fcf0beb8388dcb3c479c11ea27255bf24efd5f`
 
-v3.3-beta
-* Internal changes - data buffering in RAM.
-* Download pre-built binary [here](https://mega.nz/#!xPgkhAhL!RyDr6Xl4pexrTuRAa-yVdsYnEUWM3YaX20IL45RvUlk). <br>SHA256: `731edd2a4180394c9719ce869be90663808f5eea0797b3c0fd04ffd9422bb067`
+~~v3.3-beta~~
+* ~~Internal changes - data buffering in RAM.~~
+* ~~Download pre-built binary [here](https://mega.nz/#!xPgkhAhL!RyDr6Xl4pexrTuRAa-yVdsYnEUWM3YaX20IL45RvUlk). <br>SHA256: `731edd2a4180394c9719ce869be90663808f5eea0797b3c0fd04ffd9422bb067`~~
