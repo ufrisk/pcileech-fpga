@@ -43,6 +43,7 @@ Please note that this instruction applies to the LambdaConcept programming cable
 
 Building:
 =================
+Windows Instructions:
 1) Install Xilinx Vivado WebPACK 2018.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory pcileech-fpga/pciescreamer/ (forward slash instead of backslash in path).
@@ -50,13 +51,13 @@ Building:
 5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
 6) Finished !!!
 
-Alternatively, you can build using Vivado in batch mode from the shell, with:
-
-2a) source /opt/Xilinx/Vivado/2018.?/settings64.sh
-3a) cd pcileech-fpga/pciescreamer
-4a) vivado -mode batch -notrace -source vivado_generate_project.tcl
-5a) vivado -mode batch -notrace -source vivado_build.tcl pciescreamer/pciescreamer.xpr
-6a) Finished !!!
+Linux batch mode instructions:
+1) Install Xilinx Vivado WebPACK 2018.2 or later.
+2) source /opt/Xilinx/Vivado/2018.?/settings64.sh
+3) cd pcileech-fpga/pciescreamer
+4) vivado -mode batch -notrace -source vivado_generate_project.tcl
+5) vivado -mode batch -notrace -source vivado_build.tcl pciescreamer/pciescreamer.xpr
+6) Finished !!!
 
 Building the project may take a very long time (~1 hour). Sometimes the build will fail if the directory path is too long. If build fails try re-run it while pcileech-fpga is placed in C:\Temp or any other place with short directory path.
 
