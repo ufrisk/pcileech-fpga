@@ -674,6 +674,8 @@ set_property -name "xsim.simulate.xsim.more_options" -value "" -objects $obj
 
 # Adding sources referenced in BDs, if not already added
 
+# Upgrade IP from the currently installed Vivado version
+upgrade_ip [get_ips *]
 
 # Proc to create BD pcileech_vfifo
 proc cr_bd_pcileech_vfifo { parentCell } {
