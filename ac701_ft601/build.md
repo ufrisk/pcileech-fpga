@@ -4,7 +4,7 @@ This readme details some customizations that are possible to perform prior to bu
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2018.2 or later.
+1) Install Xilinx Vivado WebPACK 2018.3 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the ac701_ft601 directory of the cloned or unpacked code (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -20,7 +20,7 @@ Customizing PCIe device type, vendor ID and product ID:
 Please note that many combinations of device types, vendor IDs and product IDs will make computers not boot, hang and otherwise perform badly when the PCIe device is connected. If that happens please try another combination of values.
 
 * Please first generate the initial project as outlined in points 1-4 above.
-* Open the project in Vivado Web Pack 2018.2 or later by double clicking on `pcileech_ac701_ft601.xpr` in the generated pcileech_ac701_ft601 sub-folder.
+* Open the project in Vivado Web Pack 2018.3 or later by double clicking on `pcileech_ac701_ft601.xpr` in the generated pcileech_ac701_ft601 sub-folder.
 * In the PROJECT MANAGER - pciescreamer window expand: Design Sources > pcileech_ac701_top > i_pcileech_pcie_a7_x4.
 * Double click on i_pcie_7x_0 shown in the expanded hierarchy from above to open the PCIe core designer GUI.
 * Navigate to the IDs tab. Alter ID Initial Values and Class Code to custom values.
