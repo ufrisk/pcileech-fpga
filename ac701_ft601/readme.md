@@ -1,7 +1,7 @@
 PCILeech AC701 / FT601 PCIe to USB3:
 =================
 This project contains software and HDL code for the Xilinx AC701 development board used together with the FTDI FT601 add-on board.
-Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) to perform DMA attacks, dump memory or perform research.
+Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
 Capabilities:
 =================
@@ -10,7 +10,7 @@ Capabilities:
 * Enumerate/Probe accessible memory at >1GB/s.
 * Raw PCIe Transaction Layer Packet (TLP) access.
 
-For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) abilities and capabilities.
+For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) or [MemProcFS](https://github.com/ufrisk/MemProcFS/) abilities and capabilities.
 
 For information about other supported FPGA based devices please check out [PCILeech FPGA](https://github.com/ufrisk/pcileech-fpga/).
 
@@ -24,11 +24,13 @@ Please see below for correct jumper and microswitch settings:
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/d01be0e485fde5ba09d84be35ca2970038e18577/_gh_fpga_ft601.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/adc36641ce9f74f1bb210334b8f6996dc65253fb/gh_ac701_desc.jpg" height="300"/>
 
+###### GPIO_LED0 = blink on ft601 clk; GPIO_LED1 = lit; GPIO_LED2 = PCIe state; SW3 = RESET; SW5 = blink GPIO_LED1.
+
 Flashing:
 =================
 1) Ensure the both the AC701 and FT601 is configured correctly with correct jumpers and switches. Please see images above.
 2) Install Vivado WebPACK or Lab Edition (only for flashing).
-3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary (v3.4): [`pcileech_ac701_ft601.bin`](https://mega.nz/#!QWx2kQob!QiaXxbV4fiaIITCuzCbT66fWDl5cdZUxWRa849lVxy8).
+3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary (v4.0): [`pcileech_ac701_ft601.bin`](https://mega.nz/#!4DxE1AoR!0o8BiuwaU1YOACDXE1mXhzoopNKcc86Eexd5GMCBG44).
 4) Open Vivado Tcl Shell command prompt.
 5) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
 6) Make sure the JTAG USB cable is connected.
@@ -39,16 +41,7 @@ If this fails please check out the Xilinx documentation about how to manually fl
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2018.3 or later.
-2) Open Vivado Tcl Shell command prompt.
-3) cd into the ac701_ft601 directory of the cloned or unpacked code (forward slash instead of backslash in path).
-4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
-5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
-6) Finished !!!
-
-Building the project may take a very long time (~1 hour).
-
-The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties check out the [advanced build readme](build.md) for information.
+For building instructions please check out the [build readme](build.md) for information. The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties please also check out the [build readme](build.md) for information.
 
 Other Notes:
 =================
@@ -77,3 +70,7 @@ v3.2
 v3.4
 * Minor design changes and bug fixes.
 * Download pre-built binary [here](https://mega.nz/#!QWx2kQob!QiaXxbV4fiaIITCuzCbT66fWDl5cdZUxWRa849lVxy8). <br>SHA256: `811a4dde1820731ff07d68cc58fcf0beb8388dcb3c479c11ea27255bf24efd5f`
+
+v4.0
+* Major internal re-design for increased future flexibility and ease of use.
+* Download pre-built binary [here](https://mega.nz/#!4DxE1AoR!0o8BiuwaU1YOACDXE1mXhzoopNKcc86Eexd5GMCBG44). <br>SHA256: `f9873de8f63a2844585c2450fa1aff5a8edd7e8d297655a65fe9883277957d55`

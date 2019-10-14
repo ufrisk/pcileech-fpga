@@ -1,7 +1,7 @@
 PCIeScreamer PCIe to USB3:
 =================
 This project contains software and HDL code for the [PCIeScreamer FPGA PCIe board](https://shop.lambdaconcept.com).
-Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) to perform DMA attacks, dump memory or perform research.
+Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
 Capabilities:
 =================
@@ -10,7 +10,7 @@ Capabilities:
 * Enumerate/Probe accessible memory at >1GB/s.
 * Raw PCIe Transaction Layer Packet (TLP) access.
 
-For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) abilities and capabilities.
+For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) or [MemProcFS](https://github.com/ufrisk/MemProcFS/) abilities and capabilities.
 
 For information about other supported FPGA based devices please check out [PCILeech FPGA](https://github.com/ufrisk/pcileech-fpga/).
 
@@ -22,7 +22,7 @@ For more information about the hardware, and alternative software, please check 
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/e4e9ae4bf5fe0f723d6afe30703ac97df7e2c905/__gh_pciescreamer2.jpg" height="400"/>
 
-Please also note that the DIP-switch SW2 should be configured as: 1: ON, 2: OFF, 3: OFF.
+Please also note that the DIP-switch SW2 should be configured as: 1: ON, 2: OFF, 3: OFF (R01 model only).
 
 Flashing (Xilinx/Diligent programming cable):
 =================
@@ -38,8 +38,7 @@ Please note that this instruction applies to Xilinx Vivado compatible programmin
 Flashing (LambdaConcept programming cable):
 =================
 Please note that this instruction applies to the LambdaConcept programming cable. OpenOCD is recommended when using the LambdaConcept programming cable. The LambdaConcept programming cable is not supported by Xilinx Vivado.
-Please also note that the latest version only supports the R02 release of the PCIeScreamer. This latest version will work - albeit very unstable on the R01 version. Use the version 3.2 to flash the R01 version.
-1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary: [`pcileech_pciescreamer.bin`](https://mega.nz/#!8LxGWQab!nOJ5IM4yhDDnjoyBmX13l2frsvPwDEZqP7-YWz8dV0s).
+1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary (link in version history at the bottom of this readme).
 2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept PCIeScreamer Wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
 
 Building:
@@ -53,7 +52,7 @@ Building:
 
 Building the project may take a very long time (~1 hour).
 
-The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties check out the [advanced build readme](build.md) for information.
+The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties check out the [build readme](build.md) for information.
 
 Stability Issues:
 =================
@@ -90,3 +89,9 @@ v3.2 - use if using PCIeScreamer R01 board
 v3.4 - use if using PCIeScreamer R02 board
 * Minor design changes and bug fixes.
 * Download pre-built binary [here](https://mega.nz/#!8LxGWQab!nOJ5IM4yhDDnjoyBmX13l2frsvPwDEZqP7-YWz8dV0s). <br>SHA256: `ae02af2b14b098c91cf56f24f564a8b08dc395f1d473833ff893fa58836633e8`
+
+v4.0
+* Major internal re-design for increased future flexibility and ease of use.
+* Download pre-built binaries for R01 and R02 versions of the PCIeScreamer below:
+  * [R01](https://mega.nz/#!wTg2EAJL!w6ceKt1Yd7M64dwz2V0dOsACh0DzTcTq8k1fZi5Vtyg) SHA256: `c4af173d40b0023229dccd4fc21cd515a67e5565f78c00c17797c7b1e5079591`
+  * [R02](https://mega.nz/#!8WpUQKqB!zNacAGjFyyUXrYYWq4ZLGBjmmg9tA3XoJhsQOhkDk0c) SHA256: `43bc08fb3708afaa32ee091025ed358ad46b6e1a88c3eecd10ef9a02d7bdc39f`
