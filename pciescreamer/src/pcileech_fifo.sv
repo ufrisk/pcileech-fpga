@@ -19,15 +19,11 @@ module pcileech_fifo #(
     input                   clk,
     input                   rst,
     
-    input   [31:0]          ft601_rx_data,
-    input                   ft601_rx_wren,
+    IfComToFifo.mp_fifo     dcom,
     
-    output  [255:0]         ft601_tx_data,
-    output                  ft601_tx_valid,
-    input                   ft601_tx_rd_en,
-    
-    IfPCIeCfgFifo.mp_fifo   dcfg,
-    IfPCIeTlpFifo.mp_fifo   dtlp
+    IfPCIeFifoCfg.mp_fifo   dcfg,
+    IfPCIeFifoTlp.mp_fifo   dtlp,
+    IfPCIeFifoCore.mp_fifo  dpcie
     );
       
     // ----------------------------------------------------
@@ -38,60 +34,42 @@ module pcileech_fifo #(
     always @ ( posedge clk )
         tickcount64 <= tickcount64 + 1;
    
-   // ----------------------------------------------------------------------------
-   // RX FROM USB/FT601/FT245 BELOW:
-   // ----------------------------------------------------------------------------
-   // Incoming data received from FT601 is converted from 32-bit to 64-bit.
-   // This always happen regardless whether receiving FIFOs are full or not.
-   // The actual data contains a MAGIC which tells which receiving FIFO should
-   // accept the data. Receiving TYPEs are: PCIe TLP, PCIe CFG, Loopback, Command.
-   //
-   //                        /--> PCIe TLP (32-bit)
-   //                        |
-   // FT601 -->(32->64) -->--+--> PCIe CFG (64-bit)
-   //                        |
-   //                        +--> LOOPBACK (32-bit)
-   //                        |
-   //                        \--> COMMAND  (64-bit)
-   //
-
-   // ----------------------------------------------------------
-   // Convert 32-bit incoming FT601 data to 64-bit below:
-   // ----------------------------------------------------------
-    reg [63:0]  ft601_rx_data64;
-    reg [1:0]   ft601_rx_valid64_dw;
-    wire        ft601_rx_valid64 = ft601_rx_valid64_dw[0] & ft601_rx_valid64_dw[1];
-   
-    always @ ( posedge clk )
-        if ( rst | (~ft601_rx_wren & ft601_rx_valid64_dw[0] & ft601_rx_valid64_dw[1]) )
-            ft601_rx_valid64_dw <= 2'b00;
-        else if ( ft601_rx_wren )
-            begin
-                ft601_rx_data64 <= (ft601_rx_data64 << 32) | ft601_rx_data;
-                ft601_rx_valid64_dw <= (ft601_rx_valid64_dw == 2'b01) ? 2'b11 : 2'b01;
-            end
+    // ----------------------------------------------------------------------------
+    // RX FROM USB/FT601/FT245 BELOW:
+    // ----------------------------------------------------------------------------
+    // Incoming data received from FT601 is converted from 32-bit to 64-bit.
+    // This always happen regardless whether receiving FIFOs are full or not.
+    // The actual data contains a MAGIC which tells which receiving FIFO should
+    // accept the data. Receiving TYPEs are: PCIe TLP, PCIe CFG, Loopback, Command.
+    //
+    //         /--> PCIe TLP (32-bit)
+    //         |
+    // FT601 --+--> PCIe CFG (64-bit)
+    //         |
+    //         +--> LOOPBACK (32-bit)
+    //         |
+    //         \--> COMMAND  (64-bit)
+    //
             
     // ----------------------------------------------------------
     // Route 64-bit incoming FT601 data to correct receiver below:
     // ----------------------------------------------------------
-    `define CHECK_MAGIC     (ft601_rx_data64[7:0] == 8'h77)
-    `define CHECK_TYPE_TLP  (ft601_rx_data64[9:8] == 2'b00)
-    `define CHECK_TYPE_CFG  (ft601_rx_data64[9:8] == 2'b01)
-    `define CHECK_TYPE_LOOP (ft601_rx_data64[9:8] == 2'b10)
-    `define CHECK_TYPE_CMD  (ft601_rx_data64[9:8] == 2'b11)
+    `define CHECK_MAGIC     (dcom.com_dout[7:0] == 8'h77)
+    `define CHECK_TYPE_TLP  (dcom.com_dout[9:8] == 2'b00)
+    `define CHECK_TYPE_CFG  (dcom.com_dout[9:8] == 2'b01)
+    `define CHECK_TYPE_LOOP (dcom.com_dout[9:8] == 2'b10)
+    `define CHECK_TYPE_CMD  (dcom.com_dout[9:8] == 2'b11)
     
-    wire     _loop_rx_wren;
-    wire     _cmd_rx_wren;
-    assign   dtlp.tx_valid = ft601_rx_valid64 & `CHECK_MAGIC & `CHECK_TYPE_TLP;
-    assign   dcfg.tx_valid = ft601_rx_valid64 & `CHECK_MAGIC & `CHECK_TYPE_CFG;
-    assign   _loop_rx_wren = ft601_rx_valid64 & `CHECK_MAGIC & `CHECK_TYPE_LOOP;
-    assign   _cmd_rx_wren  = ft601_rx_valid64 & `CHECK_MAGIC & `CHECK_TYPE_CMD;
+    assign   dtlp.tx_valid = dcom.com_dout_valid & `CHECK_MAGIC & `CHECK_TYPE_TLP;
+    assign   dcfg.tx_valid = dcom.com_dout_valid & `CHECK_MAGIC & `CHECK_TYPE_CFG;
+    wire     _loop_rx_wren = dcom.com_dout_valid & `CHECK_MAGIC & `CHECK_TYPE_LOOP;
+    wire     _cmd_rx_wren  = dcom.com_dout_valid & `CHECK_MAGIC & `CHECK_TYPE_CMD;
     
     // Incoming TLPs are forwarded to PCIe core logic.
-    assign dtlp.tx_data = ft601_rx_data64[63:32];
-    assign dtlp.tx_last = ft601_rx_data64[10];
+    assign dtlp.tx_data = dcom.com_dout[63:32];
+    assign dtlp.tx_last = dcom.com_dout[10];
     // Incoming CFGs are forwarded to PCIe core logic.
-    assign dcfg.tx_data = ft601_rx_data64;
+    assign dcfg.tx_data = dcom.com_dout;
 
     // ----------------------------------------------------------------------------
     // TX TO USB/FT601/FT245 BELOW:
@@ -125,7 +103,7 @@ module pcileech_fifo #(
         .srst           ( rst                       ),
         .rd_en          ( _loop_rd_en               ),
         .dout           ( _loop_dout                ),
-        .din            ( {ft601_rx_data64[11:10], ft601_rx_data64[63:32]} ),
+        .din            ( {dcom.com_dout[11:10], dcom.com_dout[63:32]} ),
         .wr_en          ( _loop_rx_wren             ),
         .full           (                           ),
         .almost_full    (                           ),
@@ -136,24 +114,24 @@ module pcileech_fifo #(
     // ----------------------------------------------------------
     // COMMAND FIFO:
     // ----------------------------------------------------------
-    wire [33:0]       _cmd_dout;
-    wire              _cmd_valid;
-    wire              _cmd_empty;
-    wire              _cmd_rd_en;
-    wire              _cmd_almost_full;
-    reg               _cmd_wr_en;
-    reg [33:0]        _cmd_din;
+    wire [33:0]       _cmd_tx_dout;
+    wire              _cmd_tx_valid;
+    wire              _cmd_tx_empty;
+    wire              _cmd_tx_rd_en;
+    wire              _cmd_tx_almost_full;
+    reg               _cmd_tx_wr_en;
+    reg [33:0]        _cmd_tx_din;
     fifo_34_34 i_fifo_cmd_tx(
         .clk            ( clk                       ),
         .srst           ( rst                       ),
-        .rd_en          ( _cmd_rd_en                ),
-        .dout           ( _cmd_dout                 ),
-        .din            ( _cmd_din                  ),
-        .wr_en          ( _cmd_wr_en                ),
+        .rd_en          ( _cmd_tx_rd_en             ),
+        .dout           ( _cmd_tx_dout              ),
+        .din            ( _cmd_tx_din               ),
+        .wr_en          ( _cmd_tx_wr_en             ),
         .full           (                           ),
-        .almost_full    ( _cmd_almost_full          ),
-        .empty          ( _cmd_empty                ),
-        .valid          ( _cmd_valid                )
+        .almost_full    ( _cmd_tx_almost_full       ),
+        .empty          ( _cmd_tx_empty             ),
+        .valid          ( _cmd_tx_valid             )
     );
 
     // ----------------------------------------------------------
@@ -163,9 +141,9 @@ module pcileech_fifo #(
         .clk            ( clk                       ),
         .rst            ( rst                       ),
         // output
-        .dout           ( ft601_tx_data             ),
-        .valid          ( ft601_tx_valid            ),
-        .rd_en          ( ft601_tx_rd_en            ),
+        .dout           ( dcom.com_din              ),
+        .valid          ( dcom.com_din_wr_en        ),
+        .rd_en          ( dcom.com_din_ready        ),
         // port0: PCIe TLP (highest priority)
         .p0_din         ( dtlp.rx_data              ),
         .p0_ctx         ( {1'b0, dtlp.rx_last}      ),
@@ -185,22 +163,30 @@ module pcileech_fifo #(
         .p2_has_data    ( ~_loop_empty              ),
         .p2_req_data    ( _loop_rd_en               ),
         // port3: COMMAND (lowest priority)
-        .p3_din         ( _cmd_dout[31:0]           ),
-        .p3_ctx         ( _cmd_dout[33:32]          ),
-        .p3_wr_en       ( _cmd_valid                ),
-        .p3_has_data    ( ~_cmd_empty               ),
-        .p3_req_data    ( _cmd_rd_en                )
+        .p3_din         ( _cmd_tx_dout[31:0]        ),
+        .p3_ctx         ( _cmd_tx_dout[33:32]       ),
+        .p3_wr_en       ( _cmd_tx_valid             ),
+        .p3_has_data    ( ~_cmd_tx_empty            ),
+        .p3_req_data    ( _cmd_tx_rd_en             )
     );
    
     // ------------------------------------------------------------------------
     // COMMAND / CONTROL FIFO: REGISTER FILE: COMMON
     // ------------------------------------------------------------------------
     
-    wire    [255:0]     ro;
-    reg     [127:0]     rw;
+    localparam          RWPOS_WAIT_COMPLETE         = 18;   // WAIT FOR DRP COMPLETION
+    localparam          RWPOS_DRP_RD_EN             = 20;
+    localparam          RWPOS_DRP_WR_EN             = 21;
+    
+    wire    [271:0]     ro;
+    reg     [239:0]     rw;
     
     // special non-user accessible registers 
+    reg     [73:0]      _pcie_core_config;
     time                _cmd_timer_inactivity_base;
+    reg                 rwi_drp_rd_en;
+    reg                 rwi_drp_wr_en;
+    reg     [15:0]      rwi_drp_data;
     
     // ------------------------------------------------------------------------
     // COMMAND / CONTROL FIFO: REGISTER FILE: READ-ONLY LAYOUT/SPECIFICATION
@@ -209,7 +195,10 @@ module pcileech_fifo #(
     // MAGIC
     assign ro[15:0]     = 16'hab89;                     // +000: MAGIC
     // SPECIAL
-    assign ro[31:16]    = 0;                            // +002: SPECIAL
+    assign ro[19:16]    = 0;                            // +002: SPECIAL
+    assign ro[20]       = rwi_drp_rd_en;                //
+    assign ro[21]       = rwi_drp_wr_en;                //
+    assign ro[31:22]    = 0;                            //
     // SIZEOF / BYTECOUNT [little-endian]
     assign ro[63:32]    = $bits(ro) >> 3;               // +004: SIZEOF / BYTECOUNT [little-endian]
     // ID: VERSION & DEVICE
@@ -221,7 +210,9 @@ module pcileech_fifo #(
     assign ro[191:128]   = tickcount64;                 // +010: UPTIME (tickcount64*100MHz)
     // INACTIVITY TIMER
     assign ro[255:192]  = _cmd_timer_inactivity_base;   // +018: INACTIVITY TIMER
-    // 0020 - 
+    // PCIe DRP 
+    assign ro[271:256]  = rwi_drp_data;                 // +020: DRP: pcie_drp_do
+    // 0034
     
     // ------------------------------------------------------------------------
     // INITIALIZATION/RESET BLOCK _AND_
@@ -230,21 +221,39 @@ module pcileech_fifo #(
     
     task pcileech_fifo_ctl_initialvalues;               // task is non automatic
         begin
-            _cmd_wr_en  <= 1'b0;
+            _cmd_tx_wr_en  <= 1'b0;
                
             // MAGIC
             rw[15:0]    <= 16'hefcd;                    // +000: MAGIC
             // SPECIAL
             rw[16]      <= 0;                           // +002: enable inactivity timer
             rw[17]      <= 0;                           //       enable send count
-            rw[31:18]   <= 0;                           //       RESERVED FUTURE
+            rw[18]      <= 1;                           //       WAIT FOR PCIe DRP RD/WR COMPLETION BEFORE ACCEPT NEW FIFO READ/WRITES
+            rw[19]      <= 0;                           //       SLACK
+            rw[20]      <= 0;                           //       DRP RD EN
+            rw[21]      <= 0;                           //       DRP WR EN
+            rw[31:22]   <= 0;                           //       RESERVED FUTURE
             // SIZEOF / BYTECOUNT [little-endian]
             rw[63:32]   <= $bits(rw) >> 3;              // +004: bytecount [little endian]
             // CMD INACTIVITY TIMER TRIGGER VALUE
             rw[95:64]   <= 0;                           // +008: cmd_inactivity_timer (ticks) [little-endian]
             // CMD SEND COUNT
-            rw[127:96]   <= 0;                          // +00C: cmd_send_count [little-endian]
-            // 0010 - 
+            rw[127:96]  <= 0;                           // +00C: cmd_send_count [little-endian]
+            // PCIE INITIAL CONFIG (SPECIAL BITSTREAM)
+            rw[143:128] <= 16'h10EE;                    // +010: CFG_SUBSYS_VEND_ID
+            rw[159:144] <= 16'h0007;                    // +012: CFG_SUBSYS_ID
+            rw[175:160] <= 16'h10EE;                    // +014: CFG_VEND_ID
+            rw[191:176] <= 16'h0666;                    // +016: CFG_DEV_ID
+            rw[199:192] <= 8'h02;                       // +018: CFG_REV_ID
+            rw[200]     <= 1'b1;                        // +019: PCIE CORE RESET
+            rw[201]     <= 1'b0;                        //       PCIE SUBSYSTEM RESET
+            rw[207:202] <= 0;                           //       SLACK 
+            // PCIe DRP
+            rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di
+            rw[224+:9]  <= 0;                           // +01C: DRP: pcie_drp_addr
+            rw[233+:7]  <= 0;                           //       SLACK
+            // 01E -  
+             
         end
     endtask
     
@@ -253,19 +262,50 @@ module pcileech_fifo #(
     wire    [15:0]      _cmd_send_count_dword           = rw[63:32];
     wire                _cmd_send_count_enable          = rw[17] & (_cmd_send_count_dword != 16'h0000);
     
+    always @ ( posedge clk )
+         _pcie_core_config <= rw[201:127];
+    assign dpcie.pcie_cfg_subsys_vend_id                = _pcie_core_config[0+:16];
+    assign dpcie.pcie_cfg_subsys_id                     = _pcie_core_config[16+:16];
+    assign dpcie.pcie_cfg_vend_id                       = _pcie_core_config[32+:16];
+    assign dpcie.pcie_cfg_dev_id                        = _pcie_core_config[48+:16];
+    assign dpcie.pcie_cfg_rev_id                        = _pcie_core_config[64+:8];
+    assign dpcie.pcie_rst_core                          = _pcie_core_config[72];
+    assign dpcie.pcie_rst_subsys                        = _pcie_core_config[73];
+    assign dpcie.drp_en                                 = rw[RWPOS_DRP_WR_EN] | rw[RWPOS_DRP_RD_EN];
+    assign dpcie.drp_we                                 = rw[RWPOS_DRP_WR_EN];
+    assign dpcie.drp_addr                               = rw[224+:9];
+    assign dpcie.drp_di                                 = rw[208+:16];
+    
     // ------------------------------------------------------------------------
     // COMMAND / CONTROL FIFO: STATE MACHINE / LOGIC FOR READ/WRITE AND OTHER HOUSEKEEPING TASKS
     // ------------------------------------------------------------------------
+ 
+    wire [63:0] cmd_rx_dout;
+    wire        cmd_rx_valid;
+    wire        cmd_rx_rd_en_drp = rwi_drp_rd_en | rwi_drp_wr_en | rw[RWPOS_DRP_RD_EN] | rw[RWPOS_DRP_WR_EN];
+    wire        cmd_rx_rd_en = tickcount64[1] & ( ~rw[RWPOS_WAIT_COMPLETE] | ~cmd_rx_rd_en_drp);
+    
+    fifo_64_64_clk1_fifocmd i_fifo_cmd_rx(
+        .clk            ( clk                       ),
+        .srst           ( rst                       ),
+        .rd_en          ( cmd_rx_rd_en              ),
+        .dout           ( cmd_rx_dout               ),
+        .din            ( dcom.com_dout             ),
+        .wr_en          ( _cmd_rx_wren              ),
+        .full           (                           ),
+        .empty          (                           ),
+        .valid          ( cmd_rx_valid              )
+    );
     
     integer i_write;
-    wire [15:0] in_cmd_address_byte = ft601_rx_data64[31:16];
+    wire [15:0] in_cmd_address_byte = cmd_rx_dout[31:16];
     wire [17:0] in_cmd_address_bit  = {in_cmd_address_byte[14:0], 3'b000};
-    wire [15:0] in_cmd_value        = {ft601_rx_data64[48+:8], ft601_rx_data64[56+:8]};
-    wire [15:0] in_cmd_mask         = {ft601_rx_data64[32+:8], ft601_rx_data64[40+:8]};
+    wire [15:0] in_cmd_value        = {cmd_rx_dout[48+:8], cmd_rx_dout[56+:8]};
+    wire [15:0] in_cmd_mask         = {cmd_rx_dout[32+:8], cmd_rx_dout[40+:8]};
     wire        f_rw                = in_cmd_address_byte[15]; 
     wire [15:0] in_cmd_data_in      = (in_cmd_address_bit < (f_rw ? $bits(rw) : $bits(ro))) ? (f_rw ? rw[in_cmd_address_bit+:16] : ro[in_cmd_address_bit+:16]) : 16'h0000;
-    wire        in_cmd_read         = ft601_rx_data64[12] & _cmd_rx_wren;
-    wire        in_cmd_write        = ft601_rx_data64[13] & in_cmd_address_byte[15] & _cmd_rx_wren;
+    wire        in_cmd_read         = cmd_rx_dout[12] & cmd_rx_valid;
+    wire        in_cmd_write        = cmd_rx_dout[13] & in_cmd_address_byte[15] & cmd_rx_valid;
     
     initial pcileech_fifo_ctl_initialvalues();
     
@@ -277,31 +317,31 @@ module pcileech_fifo #(
                 // READ config
                 if ( in_cmd_read )
                     begin
-                        _cmd_wr_en      <= 1'b1;
-                        _cmd_din[31:16] <= in_cmd_address_byte;
-                        _cmd_din[15:0]  <= {in_cmd_data_in[7:0], in_cmd_data_in[15:8]};
+                        _cmd_tx_wr_en       <= 1'b1;
+                        _cmd_tx_din[31:16]  <= in_cmd_address_byte;
+                        _cmd_tx_din[15:0]   <= {in_cmd_data_in[7:0], in_cmd_data_in[15:8]};
                     end
                 // SEND COUNT ACTION
-                else if ( ~_cmd_almost_full & ~in_cmd_write & _cmd_send_count_enable )
+                else if ( ~_cmd_tx_almost_full & ~in_cmd_write & _cmd_send_count_enable )
                     begin
-                        _cmd_wr_en      <= 1'b1;
-                        _cmd_din[31:16] <= 16'hfffe;
-                        _cmd_din[15:0]  <= _cmd_send_count_dword;
-                        rw[63:32]       <= _cmd_send_count_dword - 1;
+                        _cmd_tx_wr_en       <= 1'b1;
+                        _cmd_tx_din[31:16]  <= 16'hfffe;
+                        _cmd_tx_din[15:0]   <= _cmd_send_count_dword;
+                        rw[63:32]           <= _cmd_send_count_dword - 1;
                     end
                 // INACTIVITY TIMER ACTION
-                else if ( ~_cmd_almost_full & ~in_cmd_write & _cmd_timer_inactivity_enable & (_cmd_timer_inactivity_ticks + _cmd_timer_inactivity_base < tickcount64) )
+                else if ( ~_cmd_tx_almost_full & ~in_cmd_write & _cmd_timer_inactivity_enable & (_cmd_timer_inactivity_ticks + _cmd_timer_inactivity_base < tickcount64) )
                     begin
-                        _cmd_wr_en      <= 1'b1;
-                        _cmd_din[31:16] <= 16'hffff;
-                        _cmd_din[15:0]  <= 16'hcede;
-                        rw[16]          <= 1'b0;
+                        _cmd_tx_wr_en       <= 1'b1;
+                        _cmd_tx_din[31:16]  <= 16'hffff;
+                        _cmd_tx_din[15:0]   <= 16'hcede;
+                        rw[16]              <= 1'b0;
                     end
                 else
-                    _cmd_wr_en <= 1'b0;
+                    _cmd_tx_wr_en <= 1'b0;
 
                 // WRITE config
-                if ( tickcount64 < 10 )
+                if ( tickcount64 < 8 )
                     pcileech_fifo_ctl_initialvalues();
                 else if ( in_cmd_write )
                     for ( i_write = 0; i_write < 16; i_write = i_write + 1 )
@@ -311,8 +351,23 @@ module pcileech_fifo #(
                         end
 
                 // UPDATE INACTIVITY TIMER BASE
-                if ( ft601_tx_valid | ~ft601_tx_rd_en )
-                    _cmd_timer_inactivity_base <= tickcount64;        
+                if ( dcom.com_din_wr_en | ~dcom.com_din_ready )
+                    _cmd_timer_inactivity_base <= tickcount64;  
+                    
+                // DRP READ/WRITE                        
+                if ( dpcie.drp_rdy )
+                    begin
+                        rwi_drp_rd_en   <= 1'b0;
+                        rwi_drp_wr_en   <= 1'b0;
+                        rwi_drp_data    <= dpcie.drp_do;
+                    end
+                else if ( rw[RWPOS_DRP_RD_EN] | rw[RWPOS_DRP_WR_EN] )
+                    begin
+                        rw[RWPOS_DRP_RD_EN] <= 1'b0;
+                        rw[RWPOS_DRP_WR_EN] <= 1'b0;
+                        rwi_drp_rd_en <= rwi_drp_rd_en | rw[RWPOS_DRP_RD_EN];
+                        rwi_drp_wr_en <= rwi_drp_wr_en | rw[RWPOS_DRP_WR_EN];
+                    end      
             
             end
 

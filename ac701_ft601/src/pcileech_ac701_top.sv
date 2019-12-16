@@ -15,10 +15,12 @@ module pcileech_ac701_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = PCIeScreamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 2,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 0
+    parameter       PARAM_VERSION_NUMBER_MINOR = 1
 ) (
-    // SYSTEM CLK (100MHz)
-    input           clk,
+    // SYS
+	input			sysclk_p,
+	input			sysclk_n,
+    input           ft601_clk,
 
     // SYSTEM LEDs and BUTTONs
     input           gpio_sw_south,
@@ -35,7 +37,7 @@ module pcileech_ac701_top #(
     input           pcie_rst_n,
 
     // TO/FROM FT601 PADS
-    input           ft601_rst_n,
+    output          ft601_rst_n,
     inout   [31:0]  ft601_data,
     output  [3:0]   ft601_be,
     input           ft601_rxf_n,
@@ -47,18 +49,26 @@ module pcileech_ac701_top #(
     );
     
     // SYS
-    wire rst = gpio_sw_north;
+	wire            clk;                // 100MHz
+    wire 			rst;
     
-    // FIFO CTL <--> ETH
-    wire [31:0]     ft601_dout;
-    wire            ft601_dout_valid;
-    wire [255:0]    ft601_din;
-    wire            ft601_din_wr_en;
-    wire            ft601_din_ready;
+    // FIFO CTL <--> COM CTL
+    IfComToFifo     dcom_fifo();
     
     // PCIe <--> FIFOs
-    IfPCIeCfgFifo   dcfg();
-    IfPCIeTlpFifo   dtlp();
+    IfPCIeFifoCfg   dcfg();
+    IfPCIeFifoTlp   dtlp();
+    IfPCIeFifoCore  dpcie();
+	
+    // ----------------------------------------------------
+    // CLK 50MHz -> 100MHz:
+    // ----------------------------------------------------
+       
+    clk_wiz i_clk_wiz(
+        .clk_in1_p          ( sysclk_p              ),
+		.clk_in1_n          ( sysclk_n              ),
+        .clkwiz_out_100     ( clk                   )
+    );
     
     // ----------------------------------------------------
     // TickCount64 CLK and LED OUTPUT
@@ -67,34 +77,33 @@ module pcileech_ac701_top #(
     time tickcount64 = 0;
     always @ ( posedge clk )
         tickcount64 <= tickcount64 + 1;
+
     OBUF led0_obuf(.O( gpio_led[0] ), .I( gpio_sw_south | gpio_sw_north | tickcount64[26] ));
+    assign rst = gpio_sw_north | ((tickcount64 < 64) ? 1'b1 : 1'b0);
+    assign ft601_rst_n = ~rst;
     
     // ----------------------------------------------------
-    // FT601 (Buffered)
+    // BUFFERED COMMUNICATION DEVICE (FT601)
     // ----------------------------------------------------
     
-    pcileech_ft601_buf i_pcileech_ft601_buf(
+    pcileech_com i_pcileech_com (
         // SYS
         .clk                ( clk                   ),
+        .clk_com            ( ft601_clk             ),
         .rst                ( rst                   ),
-        // TO/FROM FT601 PADS
-        .FT601_DATA         ( ft601_data            ),
-        .FT601_BE           ( ft601_be              ),
-        .FT601_TXE_N        ( ft601_txe_n           ),
-        .FT601_RXF_N        ( ft601_rxf_n           ),
-        .FT601_SIWU_N       ( ft601_siwu_n          ),
-        .FT601_WR_N         ( ft601_wr_n            ),
-        .FT601_RD_N         ( ft601_rd_n            ),
-        .FT601_OE_N         ( ft601_oe_n            ),
-        // State and Activity LEDs
-        .led_state_invert   ( gpio_sw_south         ),  // <-
         .led_state_txdata   ( gpio_led[1]           ),  // ->
-        // TO/FROM FIFO
-        .dout               ( ft601_dout            ),  // -> [31:0]
-        .dout_valid         ( ft601_dout_valid      ),  // ->
-        .din                ( ft601_din             ),  // <- [255:0]
-        .din_wr_en          ( ft601_din_wr_en       ),  // <-
-        .din_ready          ( ft601_din_ready       )   // ->       
+        .led_state_invert   ( gpio_sw_south         ),  // <-
+        // FIFO CTL <--> COM CTL
+        .dfifo              ( dcom_fifo.mp_com      ),
+        // TO/FROM FT601 PADS
+        .ft601_data         ( ft601_data            ),  // <> [31:0]
+        .ft601_be           ( ft601_be              ),  // -> [3:0]
+        .ft601_txe_n        ( ft601_txe_n           ),  // <-
+        .ft601_rxf_n        ( ft601_rxf_n           ),  // <-
+        .ft601_siwu_n       ( ft601_siwu_n          ),  // ->
+        .ft601_wr_n         ( ft601_wr_n            ),  // ->
+        .ft601_rd_n         ( ft601_rd_n            ),  // ->
+        .ft601_oe_n         ( ft601_oe_n            )   // ->
     );
     
     // ----------------------------------------------------
@@ -108,16 +117,12 @@ module pcileech_ac701_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
-        // FIFO CTL <--> FT601 CTL
-        .ft601_rx_data      ( ft601_dout            ),
-        .ft601_rx_wren      ( ft601_dout_valid      ),
-        // FIFO CTL <--> RAM FIFO
-        .ft601_tx_data      ( ft601_din             ),
-        .ft601_tx_valid     ( ft601_din_wr_en       ),
-        .ft601_tx_rd_en     ( ft601_din_ready       ),
-        // PCIe <--> FIFOs
+        // FIFO CTL <--> COM CTL
+        .dcom               ( dcom_fifo.mp_fifo     ),
+        // FIFO CTL <--> PCIe
         .dcfg               ( dcfg.mp_fifo          ),
-        .dtlp               ( dtlp.mp_fifo          )
+        .dtlp               ( dtlp.mp_fifo          ),
+        .dpcie              ( dpcie.mp_fifo         )
     );
     
     // ----------------------------------------------------
@@ -126,19 +131,20 @@ module pcileech_ac701_top #(
     
     pcileech_pcie_a7 i_pcileech_pcie_a7(
         .clk_100            ( clk                   ),
+        .pcie_rst_n         ( ~rst                  ),
         // PCIe fabric
-        .pcie_tx_p          ( pcie_tx_p[0]          ),
-        .pcie_tx_n          ( pcie_tx_n[0]          ),
-        .pcie_rx_p          ( pcie_rx_p[0]          ),
-        .pcie_rx_n          ( pcie_rx_n[0]          ),
+        .pcie_tx_p          ( pcie_tx_p             ),
+        .pcie_tx_n          ( pcie_tx_n             ),
+        .pcie_rx_p          ( pcie_rx_p             ),
+        .pcie_rx_n          ( pcie_rx_n             ),
         .pcie_clk_p         ( pcie_clk_p            ),
         .pcie_clk_n         ( pcie_clk_n            ),
-        .pcie_rst_n         ( pcie_rst_n | ~rst     ),
         // State and Activity LEDs
         .led_state          ( gpio_led[2]           ),
-        // PCIe <--> FIFOs
+        // FIFO CTL <--> PCIe
         .dfifo_cfg          ( dcfg.mp_pcie          ),
-        .dfifo_tlp          ( dtlp.mp_pcie          )
+        .dfifo_tlp          ( dtlp.mp_pcie          ),
+        .dfifo_pcie         ( dpcie.mp_pcie         ) 
     );
 
 endmodule

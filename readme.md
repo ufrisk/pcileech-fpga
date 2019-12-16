@@ -12,6 +12,7 @@ PCILeech currently supports multiple FPGA based devices - please see the table b
 | Device                       | Connection | Transfer Speed | PCIe Version  | OS support<br>(on attacker) | Creator         |
 | ---------------------------- | ---------- | -------------- | ------------- | ------------------------ | --------------- |
 | [AC701/FT601](ac701_ft601)   | USB3       | 150 MB/s       | PCIe gen2 x4* | Windows                  | Ulf Frisk       |
+| [ScreamerM2](ScreamerM2)     | USB3       | 150 MB/s       | PCIe gen2 x4* | Windows                  | Ramtin Amin<br>Ulf Frisk |
 | [PCIeScreamer](pciescreamer) | USB3       | 100 MB/s       | PCIe gen2 x1  | Windows                  | Ramtin Amin<br>Ulf Frisk |
 | [SP605/FT601](sp605_ft601)   | USB3       | 75 MB/s        | PCIe gen1 x1  | Windows                  | Ulf Frisk       |
 | [NeTV2](NeTV2)               | UDP/IP     | 7 MB/s         | PCIe gen2 x4* | Windows                  | Ulf Frisk       |
@@ -19,13 +20,14 @@ PCILeech currently supports multiple FPGA based devices - please see the table b
 
 ###### *) PCILeech FPGA uses PCIe x1 even if more PCIe lanes are available hardware-wise. This is sufficient to deliver neccessary performance.
 
-Please select the FPGA setup that best suits your needs from the above list. If performance is key the AC701 is currently recommended.
+Please select the FPGA setup that best suits your needs from the above list. If performance is key the ScreamerM2 or the AC701 is currently recommended.
 
 Please check out the individual FPGA projects in the table above for more information about the purchase, usage, building and flashing of the devices. Each device have different advantages and disadvantages.
 
-The images below depicts the SP605, PCIeScreamer and AC701 devices used for PCILeech PCIe access over USB3 and the NeTV2 for access over 100Mbit UDP/IP.
+The images below depicts the SP605, ScreamerM2, PCIeScreamer, ScreamerM2 and AC701 devices used for PCILeech PCIe access over USB3 and the NeTV2 for access over 100Mbit UDP/IP.
 
-<img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_sp605_front.jpg" height="190"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2dec37bf6f495b419fd78ff616beede45af6cec1/_gh_pciescreamer1.jpg" height="190"/><img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_ac701_front.jpg" height="190"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="190"/>
+<img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_sp605_front.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/f806a68890c94561e53caa7758a5903bb01f5670/gh_m2_1.png" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2dec37bf6f495b419fd78ff616beede45af6cec1/_gh_pciescreamer1.jpg" height="300"/>
+<img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_ac701_front.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="300"/>
 
 Future Work:
 =================

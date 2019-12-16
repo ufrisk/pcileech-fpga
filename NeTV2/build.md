@@ -7,7 +7,7 @@ NB! It is only OK to use the required network component for non-commercial purpo
 Building:
 =================
 1) Download the files [`FC1003_RMII.vh`](http://www.fpga-cores.com/FC/FC1003_RMII.vh) and [`FC1003_RMII.edn`](http://www.fpga-cores.com/dl/x7/FC1003_RMII.edn) from [fpga-cores.com](http://www.fpga-cores.com) and place them in the NeTV2/ip sub-directory.
-1) Install Xilinx Vivado WebPACK 2019.1 or later.
+1) Install Xilinx Vivado WebPACK 2019.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the NeTV2 directory of the cloned or unpacked code (forward slash instead of backslash in path).
 4) Run, depending on your NeTV2 FPGA model to generate required project files.
@@ -31,7 +31,7 @@ Please also note that changing the device and vendor ID is not in itself suffici
 * In the PROJECT MANAGER - PCILeech_NeTV2 window expand: Design Sources > pcileech_netv2_top > i_pcileech_pcie_a7.
 * Double click on i_pcie_7x_0 shown in the expanded hierarchy from above to open the PCIe core designer GUI.
 * Navigate to the IDs tab. Alter ID Initial Values and Class Code to custom values.
-* (Optionally navigate to the BARs tab and alter the Bar0 Enabled memory values currently set to kB1MB. It is not recommended to disable or go lower than 4kB).
+* (Optionally navigate to the BARs tab and alter the Bar0 Enabled memory values currently set to 4kB. It is not recommended to disable or go lower than 4kB).
 * Click OK to save the changes to the PCIe core. Click Generate in the following dialogue.
 * After the PCIe core is rebuilt - exit Vivado and resume building of the project from point 5 in the Building section above. (Optionally one may keep Vivado open and build the project by clicking on Generate Bitstream in the lower left instead).
 

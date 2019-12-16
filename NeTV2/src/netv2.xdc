@@ -3,7 +3,7 @@
 #
 set_property PACKAGE_PIN J19 [get_ports clk50]
 set_property IOSTANDARD LVCMOS33 [get_ports clk50]
-create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_ports clk50]
+# create_clock -period 20.000 -waveform {0.000 10.000} [get_ports clk50]
 
 #
 # LED BELOW
@@ -47,10 +47,10 @@ set_property IOSTANDARD LVCMOS33 [get_ports eth_mdc]
 set_property IOSTANDARD LVCMOS33 [get_ports eth_mdio]
 set_property IOSTANDARD LVCMOS33 [get_ports eth_rx_err]
 
-#
-# PCIe x1 CONFIG BELOW
-#
+set_false_path -from [get_pins {i_pcileech_fifo/_pcie_core_config_reg[*]/C}]
+set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_lnk_up_int_reg/C] -to [get_pins {i_pcileech_fifo/_cmd_tx_din_reg[16]/D}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_reset_out_reg/C]
+
 
 # NB! one of the LOC GTPE2 lines will generate a crical warning and be ignored.
 # 35T = LOC GTPE2_CHANNEL_X0Y2
@@ -61,8 +61,6 @@ set_property PACKAGE_PIN C11 [get_ports {pcie_rx_n[0]}]
 set_property PACKAGE_PIN D11 [get_ports {pcie_rx_p[0]}]
 set_property PACKAGE_PIN C5 [get_ports {pcie_tx_n[0]}]
 set_property PACKAGE_PIN D5 [get_ports {pcie_tx_p[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports pcie_rst_n]
-set_property PACKAGE_PIN E18 [get_ports pcie_rst_n]
 set_property PACKAGE_PIN E10 [get_ports pcie_clk_n]
 set_property PACKAGE_PIN F10 [get_ports pcie_clk_p]
 

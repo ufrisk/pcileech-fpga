@@ -28,7 +28,7 @@ Flashing (Xilinx/Diligent programming cable):
 =================
 Please note that this instruction applies to Xilinx Vivado compatible programming cables, such as Diligent HS2. This instruction will <i>not</i> work with the LambdaConcept programming cable.
 1) Install Vivado WebPACK or Lab Edition (only for flashing).
-2) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary for R02 (v3.4): [`pcileech_pciescreamer.bin`](https://mega.nz/#!8LxGWQab!nOJ5IM4yhDDnjoyBmX13l2frsvPwDEZqP7-YWz8dV0s). NB! for earlier R01 release download the v3.2 version of the bitstream.
+2) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary (see below in releases section).
 3) Open Vivado Tcl Shell command prompt.
 4) cd into the directory of your unpacked files, or this directory (forward slash instead of backslash in path).
 5) Make sure the JTAG USB cable is connected.
@@ -43,7 +43,7 @@ Please note that this instruction applies to the LambdaConcept programming cable
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2018.3 or later.
+1) Install Xilinx Vivado WebPACK 2019.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -64,34 +64,23 @@ No stability issues or bug fixes will take place for the R01 version of the PCIe
 
 Furthermore, if connected to source which does not provide sufficient power, such as ExpressCard slot with PE3A adapter, it is recommended to use external power to the PCeScreamer to increase stability. 5V-15V is recommended. This is not needed if connected directly to PCIe slot in target computer.
 
-If stability is paramount the more expensive SP605 or AC701 hardware is currently recommended. The PCIeScreamer R02 should be fine for most situations but the most demanding ones (e.g. offensive PCIe DMA attacking locked computers) in which the Xilinx dev boards are still prefered.
+If stability is paramount the ScreamerM2 or the more expensive SP605 or AC701 hardware is currently recommended. The PCIeScreamer R02 should be fine for most situations but the most demanding ones (e.g. offensive PCIe DMA attacking locked computers) in which the Xilinx dev boards are still prefered.
 
 Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
 
 
-Version History:
+Releases / Version History:
 =================
-v3.0
-* Initial Release.
-* Compatible with PCILeech v2.6.
-* Download pre-built binary [here](https://mega.nz/#!VCBgzZZA!kTgM-J5OM9sv0r4TraetLpOrKxisFQ9RsTIOaoKnGN8). <br>SHA256: `4e8c0e536f543a9a1266ff65530dcefd2a7909a7fe98f7e1696a3aed1d5da136`
-
-v3.2 - use if using PCIeScreamer R01 board
-* Bug fixes - USB and Timing.
-* Download pre-built binary [here](https://mega.nz/#!1LgCzDTQ!5bo20E17oYc_zA1ofwAzXFgGtiHuEoa4PyaXrPk4spY). <br>SHA256: `bbd506082532cae75a006ee310967dd695ea5068548d851c958a597d504641bf`
-
-~~v3.3-beta~~
-* ~~Internal changes - data buffering in RAM.~~
-* ~~Download pre-built binary [here](https://mega.nz/#!8Wp2gYzb!dUj9WpstO9KZdA11p_VzR7PPbTDOEB1JXLoih4v9QmY). <br>SHA256: `8273595938a046969b54ca5606b833a354b664077bbbfa623905037684e2a67d`~~
-
-v3.4 - use if using PCIeScreamer R02 board
-* Minor design changes and bug fixes.
-* Download pre-built binary [here](https://mega.nz/#!8LxGWQab!nOJ5IM4yhDDnjoyBmX13l2frsvPwDEZqP7-YWz8dV0s). <br>SHA256: `ae02af2b14b098c91cf56f24f564a8b08dc395f1d473833ff893fa58836633e8`
-
 v4.0
 * Major internal re-design for increased future flexibility and ease of use.
 * Download pre-built binaries for R01 and R02 versions of the PCIeScreamer below:
   * [R01](https://mega.nz/#!wTg2EAJL!w6ceKt1Yd7M64dwz2V0dOsACh0DzTcTq8k1fZi5Vtyg) SHA256: `c4af173d40b0023229dccd4fc21cd515a67e5565f78c00c17797c7b1e5079591`
   * [R02](https://mega.nz/#!8WpUQKqB!zNacAGjFyyUXrYYWq4ZLGBjmmg9tA3XoJhsQOhkDk0c) SHA256: `43bc08fb3708afaa32ee091025ed358ad46b6e1a88c3eecd10ef9a02d7bdc39f`
+
+v4.1
+* Minor bug-fixes and internal re-design.
+* Download pre-built binaries for R01 and R02 versions of the PCIeScreamer below:
+  * [R01](https://mega.nz/#!tbhwUaKQ!gixprx3CwhMnP9cxbJiT3U9K4MSupGyWbLwEEIEcxMQ) SHA256: `7b45c8ac6b6f4fa0a3824ecc2a69b01ab5096fb0cdc6a6c00c4cf224288dee78`
+  * [R02](https://mega.nz/#!Na4CDIRC!lkWRQgj6M_zi81OPJQYA2KZpfRlQlWVAN29WU4jIElE) SHA256: `8cb8c30cfaa514462fde6db0dc416bf06ddc94576798f0875ccd359c30e55b4c`

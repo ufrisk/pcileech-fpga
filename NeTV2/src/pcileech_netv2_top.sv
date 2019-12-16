@@ -12,22 +12,24 @@
 
 module pcileech_netv2_top #(
     // DEVICE IDs as follows:
-    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = PCIeScreamer M2, 5 = NeTV2
+    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 5,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 0,
-    parameter       PARAM_UDP_STATIC_ADDR = 32'hc0a800de
+    parameter       PARAM_VERSION_NUMBER_MINOR = 1,
+    parameter       PARAM_UDP_STATIC_ADDR = 32'hc0a800de,   // 192.168.0.222
+    parameter       PARAM_UDP_STATIC_FORCE = 1'b0,
+    parameter       PARAM_UDP_PORT = 16'h6f3a               // 28474
 ) (
     // SYS
-    input clk50,
+    input           clk50,
     
     // SYSTEM LEDs and BUTTONs
-    output led00,
-    output led01,
-    output led10,
-    output led11,
-    output led20,
-    output led21,
+    output          led00,
+    output          led01,
+    output          led10,
+    output          led11,
+    output          led20,
+    output          led21,
     
     // PCI-E FABRIC
     output  [0:0]   pcie_tx_p,
@@ -36,7 +38,6 @@ module pcileech_netv2_top #(
     input   [0:0]   pcie_rx_n,
     input           pcie_clk_p,
     input           pcie_clk_n,
-    input           pcie_rst_n,
       
     // ETH
     output          eth_clk50,
@@ -52,19 +53,16 @@ module pcileech_netv2_top #(
     );
     
     // SYS
-    wire clk;               // 100MHz
-    wire rst = 1'b0;
+    wire            clk;                // 100MHz
+    wire            rst = 1'b0;
     
-    // FIFO CTL <--> ETH
-    wire [31:0]     eth_dout;
-    wire            eth_dout_valid;
-    wire [255:0]    eth_din;
-    wire            eth_din_wr_en;
-    wire            eth_din_ready;
+    // FIFO CTL <--> COM CTL
+    IfComToFifo     dcom_fifo();
     
-    // PCIe <--> FIFOs
-    IfPCIeCfgFifo   dcfg();
-    IfPCIeTlpFifo   dtlp();
+    // FIFO CTL <--> PCIe
+    IfPCIeFifoCfg   dcfg();
+    IfPCIeFifoTlp   dtlp();
+    IfPCIeFifoCore  dpcie();
     
     // ----------------------------------------------------
     // CLK 50MHz -> 100MHz:
@@ -76,15 +74,18 @@ module pcileech_netv2_top #(
     );
 
     // ----------------------------------------------------
-    // ETH (Buffered)
+    // BUFFERED COMMUNICATION DEVICE (ETH)
     // ----------------------------------------------------
     
-    pcileech_eth_buf #(
-        .PARAM_UDP_STATIC_ADDR  ( PARAM_UDP_STATIC_ADDR )    
-    ) i_pcileech_eth_buf(
+    pcileech_com i_pcileech_com (
         // SYS
         .clk                ( clk                   ),
+        .clk_com            ( clk                   ),
         .rst                ( rst                   ),
+        .led_state_txdata   ( led10                 ),  // ->
+        .led_state_invert   ( 1'b0                  ),  // <-
+        // FIFO CTL <--> COM CTL
+        .dfifo              ( dcom_fifo.mp_com      ),
         // MAC/RMII
         .eth_clk50          ( eth_clk50             ),
         .eth_rst_n          ( eth_rst_n             ),
@@ -95,17 +96,11 @@ module pcileech_netv2_top #(
         .eth_tx_data        ( eth_tx_data           ),
         .eth_mdc            ( eth_mdc               ),
         .eth_mdio           ( eth_mdio              ),
-        // State and Activity LEDs
-        .led_state_red      ( led20                 ),  // ->
-        .led_state_green    ( led21                 ),  // ->
-        .led_state_txdata   ( led10                 ),  // ->
-        // TO/FROM FIFO
-        .dout               ( eth_dout              ),  // -> [31:0]
-        .dout_valid         ( eth_dout_valid        ),  // ->
-        .din                ( eth_din               ),  // <- [255:0]
-        .din_wr_en          ( eth_din_wr_en         ),  // <-
-        .din_ready          ( eth_din_ready         )   // ->       
-
+        .eth_cfg_static_addr ( PARAM_UDP_STATIC_ADDR    ),  // <- [31:0]
+        .eth_cfg_static_force ( PARAM_UDP_STATIC_FORCE  ),  // <-
+        .eth_cfg_port       ( PARAM_UDP_PORT        ),  // <- [15:0]
+        .eth_led_state_red  ( led20                 ),  // ->
+        .eth_led_state_green( led21                 )   // ->
     );
     
     // ----------------------------------------------------
@@ -119,16 +114,12 @@ module pcileech_netv2_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
-        // FIFO CTL <--> FT601 CTL
-        .ft601_rx_data      ( eth_dout              ),
-        .ft601_rx_wren      ( eth_dout_valid        ),
-        // FIFO CTL <--> RAM FIFO
-        .ft601_tx_data      ( eth_din               ),
-        .ft601_tx_valid     ( eth_din_wr_en         ),
-        .ft601_tx_rd_en     ( eth_din_ready         ),
-        // PCIe <--> FIFOs
+        // FIFO CTL <--> COM CTL
+        .dcom               ( dcom_fifo.mp_fifo     ),
+        // FIFO CTL <--> PCIe
         .dcfg               ( dcfg.mp_fifo          ),
-        .dtlp               ( dtlp.mp_fifo          )
+        .dtlp               ( dtlp.mp_fifo          ),
+        .dpcie              ( dpcie.mp_fifo         )
     );
     
     // ----------------------------------------------------
@@ -137,6 +128,7 @@ module pcileech_netv2_top #(
     
     pcileech_pcie_a7 i_pcileech_pcie_a7(
         .clk_100            ( clk                   ),
+        .pcie_rst_n         ( ~rst                  ),
         // PCIe fabric
         .pcie_tx_p          ( pcie_tx_p             ),
         .pcie_tx_n          ( pcie_tx_n             ),
@@ -144,12 +136,12 @@ module pcileech_netv2_top #(
         .pcie_rx_n          ( pcie_rx_n             ),
         .pcie_clk_p         ( pcie_clk_p            ),
         .pcie_clk_n         ( pcie_clk_n            ),
-        .pcie_rst_n         ( pcie_rst_n | ~rst     ),
         // State and Activity LEDs
         .led_state          ( led00                 ),
-        // PCIe <--> FIFOs
+        // FIFO CTL <--> PCIe
         .dfifo_cfg          ( dcfg.mp_pcie          ),
-        .dfifo_tlp          ( dtlp.mp_pcie          )
+        .dfifo_tlp          ( dtlp.mp_pcie          ),
+        .dfifo_pcie         ( dpcie.mp_pcie         ) 
     );
 
 endmodule

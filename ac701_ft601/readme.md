@@ -30,7 +30,7 @@ Flashing:
 =================
 1) Ensure the both the AC701 and FT601 is configured correctly with correct jumpers and switches. Please see images above.
 2) Install Vivado WebPACK or Lab Edition (only for flashing).
-3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary (v4.0): [`pcileech_ac701_ft601.bin`](https://mega.nz/#!4DxE1AoR!0o8BiuwaU1YOACDXE1mXhzoopNKcc86Eexd5GMCBG44).
+3) Build PCILeech AC701/FT601 (see below) alternatively download and unzip pre-built binary (see below in releases section).
 4) Open Vivado Tcl Shell command prompt.
 5) cd into the directory of your pcileech_ac701.bin (forward slash instead of backslash in path).
 6) Make sure the JTAG USB cable is connected.
@@ -47,7 +47,7 @@ Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have purchased a AC701 development board will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
 
-Version History:
+Releases / Version History:
 =================
 v3.0
 * Initial Release.
@@ -74,3 +74,7 @@ v3.4
 v4.0
 * Major internal re-design for increased future flexibility and ease of use.
 * Download pre-built binary [here](https://mega.nz/#!4DxE1AoR!0o8BiuwaU1YOACDXE1mXhzoopNKcc86Eexd5GMCBG44). <br>SHA256: `f9873de8f63a2844585c2450fa1aff5a8edd7e8d297655a65fe9883277957d55`
+
+v4.1
+* Minor bug-fixes and internal re-design.
+* Download pre-built binary [here](https://mega.nz/#!Ja4wGaTA!07cDnJupQQUYU2WtpjhNOhzZJ8ULNwX78l8nB_WD59E). <br>SHA256: `a57468028fffb673064cef7f9b41e268794d4b631ea4747817f79e5cafd3c1ea`

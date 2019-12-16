@@ -26,8 +26,9 @@ module pcileech_pcie_a7(
     output                  led_state,
     
     // PCIe <--> FIFOs
-    IfPCIeCfgFifo.mp_pcie   dfifo_cfg,
-    IfPCIeTlpFifo.mp_pcie   dfifo_tlp
+    IfPCIeFifoCfg.mp_pcie   dfifo_cfg,
+    IfPCIeFifoTlp.mp_pcie   dfifo_tlp,
+    IfPCIeFifoCore.mp_pcie  dfifo_pcie
     );
        
     // ----------------------------------------------------------------------------
@@ -35,12 +36,18 @@ module pcileech_pcie_a7(
     // ----------------------------------------------------------------------------
     
     IfPCIeSignals   ctx();
+    IfPCIeTlpRxTx   tlp_tx();
+    IfPCIeTlpRxTx   tlp_rx();
+    IfCfg_TlpCfg    cfg_tlpcfg();
+    IfTlp32         tlp_static();       // static tlp transmit from cfg->tlp
     wire            user_lnk_up;
     
     // system interface
     (* dont_touch = "true" *) wire pcie_clk_c;
-    wire user_clk;
-    wire user_reset;
+    wire clk_user;
+    wire rst_user;
+    wire rst_subsys = rst_user | ~pcie_rst_n | dfifo_pcie.pcie_rst_subsys;
+    wire rst_pcie = ~pcie_rst_n | dfifo_pcie.pcie_rst_core;
        
     // Buffer for differential system clock
     IBUFDS_GTE2 refclk_ibuf (.O(pcie_clk_c), .ODIV2(), .I(pcie_clk_p), .CEB(1'b0), .IB(pcie_clk_n));
@@ -59,45 +66,28 @@ module pcileech_pcie_a7(
     // ----------------------------------------------------------------------------
     
     pcileech_pcie_cfg_a7 i_pcileech_pcie_cfg_a7(
-        .rst                        ( user_reset | ~pcie_rst_n  ),
+        .rst                        ( rst_subsys                ),
         .clk_100                    ( clk_100                   ),
-        .clk_pcie                   ( user_clk                  ),
+        .clk_pcie                   ( clk_user                  ),
         .dfifo                      ( dfifo_cfg                 ),        
-        .ctx                        ( ctx                       )
+        .ctx                        ( ctx                       ),
+        .cfg_tlpcfg                 ( cfg_tlpcfg                ),
+        .tlp_static                 ( tlp_static                )
     );
     
     // ----------------------------------------------------------------------------
     // PCIe TLP RX/TX <--> FIFO below
     // ----------------------------------------------------------------------------
-    wire [63:0]     s_axis_tx_tdata;
-    wire [7:0]      s_axis_tx_tkeep;
-    wire            s_axis_tx_tlast;
-    wire            s_axis_tx_tready;
-    wire            s_axis_tx_tvalid;
-    
-    wire [63:0]     m_axis_rx_tdata;
-    wire [7:0]      m_axis_rx_tkeep;
-    wire            m_axis_rx_tlast;
-    wire            m_axis_rx_tready;
-    wire            m_axis_rx_tvalid;
     
     pcileech_pcie_tlp_a7 i_pcileech_pcie_tlp_a7(
-        .rst                        ( user_reset | ~pcie_rst_n  ),
+        .rst                        ( rst_subsys                ),
         .clk_100                    ( clk_100                   ),
-        .clk_pcie                   ( user_clk                  ),
+        .clk_pcie                   ( clk_user                  ),
         .dfifo                      ( dfifo_tlp                 ),
-
-        .s_axis_tx_tdata            ( s_axis_tx_tdata           ),  // -> [63:0]
-        .s_axis_tx_tkeep            ( s_axis_tx_tkeep           ),  // -> [7:0]
-        .s_axis_tx_tlast            ( s_axis_tx_tlast           ),  // ->
-        .s_axis_tx_tready           ( s_axis_tx_tready          ),  // <-
-        .s_axis_tx_tvalid           ( s_axis_tx_tvalid          ),  // ->
-
-        .m_axis_rx_tdata            ( m_axis_rx_tdata           ),  // <- [63:0]
-        .m_axis_rx_tkeep            ( m_axis_rx_tkeep           ),  // <- [7:0]
-        .m_axis_rx_tlast            ( m_axis_rx_tlast           ),  // <-
-        .m_axis_rx_tready           ( m_axis_rx_tready          ),  // ->
-        .m_axis_rx_tvalid           ( m_axis_rx_tvalid          )   // <-
+        .tlp_tx                     ( tlp_tx                    ),       
+        .tlp_rx                     ( tlp_rx                    ),
+        .cfg_tlpcfg                 ( cfg_tlpcfg                ),
+        .tlp_static                 ( tlp_static                )
     );
     
     // ----------------------------------------------------------------------------
@@ -111,23 +101,23 @@ module pcileech_pcie_a7(
         .pci_exp_rxp                ( pcie_rx_p                 ),  // <-
         .pci_exp_rxn                ( pcie_rx_n                 ),  // <-
         .sys_clk                    ( pcie_clk_c                ),  // <-
-        .sys_rst_n                  ( pcie_rst_n                ),  // <-
+        .sys_rst_n                  ( ~rst_pcie                 ),  // <-
     
         // s_axis_tx (transmit data)
-        .s_axis_tx_tdata            ( s_axis_tx_tdata           ),  // <- [63:0]
-        .s_axis_tx_tkeep            ( s_axis_tx_tkeep           ),  // <- [7:0]
-        .s_axis_tx_tlast            ( s_axis_tx_tlast           ),  // <-
-        .s_axis_tx_tready           ( s_axis_tx_tready          ),  // ->
+        .s_axis_tx_tdata            ( tlp_tx.data               ),  // <- [63:0]
+        .s_axis_tx_tkeep            ( tlp_tx.keep               ),  // <- [7:0]
+        .s_axis_tx_tlast            ( tlp_tx.last               ),  // <-
+        .s_axis_tx_tready           ( tlp_tx.ready              ),  // ->
         .s_axis_tx_tuser            ( 4'b0                      ),  // <- [3:0]
-        .s_axis_tx_tvalid           ( s_axis_tx_tvalid          ),  // <-
+        .s_axis_tx_tvalid           ( tlp_tx.valid              ),  // <-
     
         // s_axis_rx (receive data)
-        .m_axis_rx_tdata            ( m_axis_rx_tdata           ),  // -> [63:0]
-        .m_axis_rx_tkeep            ( m_axis_rx_tkeep           ),  // -> [7:0]
-        .m_axis_rx_tlast            ( m_axis_rx_tlast           ),  // -> 
-        .m_axis_rx_tready           ( m_axis_rx_tready          ),  // <-
+        .m_axis_rx_tdata            ( tlp_rx.data               ),  // -> [63:0]
+        .m_axis_rx_tkeep            ( tlp_rx.keep               ),  // -> [7:0]
+        .m_axis_rx_tlast            ( tlp_rx.last               ),  // -> 
+        .m_axis_rx_tready           ( tlp_rx.ready              ),  // <-
         .m_axis_rx_tuser            (                           ),  // -> [21:0]
-        .m_axis_rx_tvalid           ( m_axis_rx_tvalid          ),  // ->
+        .m_axis_rx_tvalid           ( tlp_rx.valid              ),  // ->
     
         // pcie_cfg_mgmt
         .cfg_mgmt_dwaddr            ( ctx.cfg_mgmt_dwaddr       ),  // <- [9:0]
@@ -139,6 +129,13 @@ module pcileech_pcie_a7(
         .cfg_mgmt_wr_rw1c_as_rw     ( 1'b1                      ),  // <-
         .cfg_mgmt_di                ( ctx.cfg_mgmt_di           ),  // <- [31:0]
         .cfg_mgmt_wr_en             ( ctx.cfg_mgmt_wr_en        ),  // <-
+    
+        // special core config
+        //.pcie_cfg_vend_id           ( dfifo_pcie.pcie_cfg_vend_id       ),  // <- [15:0]
+        //.pcie_cfg_dev_id            ( dfifo_pcie.pcie_cfg_dev_id        ),  // <- [15:0]
+        //.pcie_cfg_rev_id            ( dfifo_pcie.pcie_cfg_rev_id        ),  // <- [7:0]
+        //.pcie_cfg_subsys_vend_id    ( dfifo_pcie.pcie_cfg_subsys_vend_id ), // <- [15:0]
+        //.pcie_cfg_subsys_id         ( dfifo_pcie.pcie_cfg_subsys_id     ),  // <- [15:0]
     
         // pcie2_cfg_interrupt
         .cfg_interrupt_assert       ( ctx.cfg_interrupt_assert          ),  // <-
@@ -225,10 +222,19 @@ module pcileech_pcie_a7(
         .pl_upstream_prefer_deemph  ( ctx.pl_upstream_prefer_deemph     ),  // <-
         .pl_transmit_hot_rst        ( ctx.pl_transmit_hot_rst           ),  // <-
         .pl_downstream_deemph_source( ctx.pl_downstream_deemph_source   ),  // <-
+        
+        // DRP - clock domain clk_100 - write should only happen when core is in reset state ...
+        .pcie_drp_clk               ( clk_100                           ),  // <-
+        .pcie_drp_en                ( dfifo_pcie.drp_en                 ),  // <-
+        .pcie_drp_we                ( dfifo_pcie.drp_we                 ),  // <-
+        .pcie_drp_addr              ( dfifo_pcie.drp_addr               ),  // <- [8:0]
+        .pcie_drp_di                ( dfifo_pcie.drp_di                 ),  // <- [15:0]
+        .pcie_drp_rdy               ( dfifo_pcie.drp_rdy                ),  // ->
+        .pcie_drp_do                ( dfifo_pcie.drp_do                 ),  // -> [15:0]
     
         // user interface
-        .user_clk_out               ( user_clk                          ),  // ->
-        .user_reset_out             ( user_reset                        ),  // ->
+        .user_clk_out               ( clk_user                          ),  // ->
+        .user_reset_out             ( rst_user                          ),  // ->
         .user_lnk_up                ( user_lnk_up                       ),  // ->
         .user_app_rdy               (                                   )   // ->
     );

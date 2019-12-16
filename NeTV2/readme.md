@@ -31,9 +31,7 @@ Flashing (by using RPi via NeTV2 Quickstart Package):
 =====================================================
 Easiest way to flash the NeTV2 is by flashing it with the co-bundled Rasberry Pi in the Quickstart package. Please note that you need a rather long Torx screwdriver to open the case and unscrew the NeTV2 board from the case (which won't let you access PCIe and the NeTV2 ethernet).
 
-1. Download the pre-built bitstream for your NeTV2 model as found below - alternatively copy the built bitstream from _PCILeech_NeTV2/PCILeech_NeTV2.runs/impl_1/pcileech_netv2_top.bin_ if building from source.
-<br>[XC7A35T](https://mega.nz/#!da500IyB!bW1A-DgZ8sYdQxZ0Ibzk8gSMRAtSjQpZ25j49rUHoB0) SHA256: `4669105da3ec299a507d988ec56ebf14c7c9a0d57ab6bd74f2dd72c8db319954`
-<br>[XC7A100T](https://mega.nz/#!0agC2SbK!DaPNeS499POmIYr1Q_5eGn2xbjxW8d3Jy8RnFXFyQrQ) SHA256: `af5d43c942853871abf87def4e7d6feb5d7689ede6f60e28ce1a9b2ab87d09c9`
+1. Download the pre-built bitstream for your NeTV2 model as found below in releases section at bottom of this readme - alternatively copy the built bitstream from _PCILeech_NeTV2/PCILeech_NeTV2.runs/impl_1/pcileech_netv2_top.bin_ if building from source.
 2. **scp** bitstream to RPi: `scp pcileech_netv2_top.bin pi@<IPv4_addr_of_RPi>:~/pcileech_netv2_top.bin`. The default password is: **netv2mvp**
 3. **ssh** into RPi: `ssh pi@<IPv4_addr_of_RPi>`
 4. **Flash!** depending on model either:
@@ -61,10 +59,17 @@ This project as-is published on Github contains no Xilinx or fpga-cores.com prop
 
 Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
 
-Version History:
+Releases / Version History:
 =================
 v4.0
 * Initial Release.
 * Download pre-built binaries for XC7A35T and XC7A100T versions below:
   * [XC7A35T](https://mega.nz/#!da500IyB!bW1A-DgZ8sYdQxZ0Ibzk8gSMRAtSjQpZ25j49rUHoB0) SHA256: `4669105da3ec299a507d988ec56ebf14c7c9a0d57ab6bd74f2dd72c8db319954`
   * [XC7A100T](https://mega.nz/#!0agC2SbK!DaPNeS499POmIYr1Q_5eGn2xbjxW8d3Jy8RnFXFyQrQ) SHA256: `af5d43c942853871abf87def4e7d6feb5d7689ede6f60e28ce1a9b2ab87d09c9`
+
+v4.1
+* Minor bug-fixes and internal re-design.
+* Download pre-built binaries for XC7A35T and XC7A100T versions below:
+  * [XC7A35T](https://mega.nz/#!dHpAhY6K!G-NIsQR5j9baQnIELLT_mNFrzSj9pYZ-QJ8NiGAl_JU) SHA256: `d64ac026b345d60fe00d33f5f11321c7343cb0f4613e43f314a96c5e4105313f`
+  * [XC7A100T](https://mega.nz/#!cbpwzCxB!WGaqYKTylkQmMa4Qk7vGkIqztU_nlTFm0VsIaJceVKM) SHA256: `0ed1933143bb2adfadf1eb6e05b21dea4b147083a3965cd5cf86da00467241ce`
+  

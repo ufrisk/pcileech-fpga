@@ -9,11 +9,7 @@
 `timescale 1ns / 1ps
 `include "FC1003_RMII.vh"
 
-module pcileech_eth #(
-    parameter           PARAM_UDP_STATIC_ADDR = 32'hc0a800de,   // 192.168.0.222
-    parameter           PARAM_UDP_PORT = 16'h6f3a,              // 28473
-    parameter           PARAM_UDP_STATIC_FORCE = 0              // don't force static address - try dhcp for 10s before fallback to static
-) (
+module pcileech_eth (
     // SYS
     input               clk,                // 100MHz CLK
     input               rst,
@@ -28,6 +24,11 @@ module pcileech_eth #(
     output              eth_mdc,
     inout               eth_mdio,
     input               eth_rx_err,
+    
+    // CONFIG
+    input   [31:0]      cfg_static_addr,
+    input               cfg_static_force,
+    input   [15:0]      cfg_port,
     
     // State and Activity LEDs
     output              led_state_red,
@@ -60,12 +61,12 @@ module pcileech_eth #(
     // green on = tcp connection
     // ----------------------------------------------------
     
-    reg f_dhcp_is_enabled = !PARAM_UDP_STATIC_FORCE;
+    reg f_dhcp_is_enabled = 1'b1;
     wire f_dhcp_ip_ok;
     wire led_dimmer = tickcount64[9] & tickcount64[10]; 
     
     always @ ( posedge clk )
-        if ( (tickcount64 == 10 * 100000000) && !f_dhcp_ip_ok )  // 10s timeout for DHCP
+        if ( cfg_static_force | ((tickcount64 == 10 * 100000000) && !f_dhcp_ip_ok) )  // 10s timeout for DHCP
             f_dhcp_is_enabled <= 1'b0;  
     
     OBUF led_ld1_obuf(.O( led_state_red ),   .I( led_dimmer & ((!f_dhcp_is_enabled & tickcount64[25]) | rst) ));
@@ -143,7 +144,7 @@ module pcileech_eth #(
         .Clk                ( clk                   ),
         .Reset              ( rst                   ),
         .UseDHCP            ( f_dhcp_is_enabled     ),
-        .IP_Addr            ( f_dhcp_is_enabled ? 32'h00000000 : PARAM_UDP_STATIC_ADDR ),
+        .IP_Addr            ( f_dhcp_is_enabled ? 32'h00000000 : cfg_static_addr ),
         .IP_Ok              ( f_dhcp_ip_ok          ),
     
         // MAC/RMII
@@ -175,7 +176,7 @@ module pcileech_eth #(
         // UDP Basic Server
         .UDP0_Reset         ( 1'b0                  ),  // <- [Reset interface, active high]
         .UDP0_Service       ( 16'h0112              ),  // <- [15:0]
-        .UDP0_ServerPort    ( PARAM_UDP_PORT        ),  // <- [15:0]
+        .UDP0_ServerPort    ( cfg_port              ),  // <- [15:0]
         .UDP0_Connected     (                       ),  // ->
         .UDP0_OutIsEmpty    (                       ),
         .UDP0_TxData        ( din_TxData32[31:24]   ),

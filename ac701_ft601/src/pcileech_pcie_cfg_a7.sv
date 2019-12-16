@@ -14,8 +14,10 @@ module pcileech_pcie_cfg_a7(
     input                   rst,
     input                   clk_100,    // 100MHz
     input                   clk_pcie,   // 62.5MHz
-    IfPCIeCfgFifo.mp_pcie   dfifo,
-    IfPCIeSignals.mpm       ctx
+    IfPCIeFifoCfg.mp_pcie   dfifo,
+    IfPCIeSignals.mpm       ctx,
+    IfCfg_TlpCfg.cfg        cfg_tlpcfg,
+    IfTlp32.source          tlp_static
     );
 
     // ----------------------------------------------------
@@ -80,7 +82,7 @@ module pcileech_pcie_cfg_a7(
     // ------------------------------------------------------------------------
     
     wire    [383:0]     ro;
-    reg     [223:0]     rw;
+    reg     [671:0]     rw;
     
     // special non-user accessible registers 
     reg                 rwi_cfg_mgmt_rd_en;
@@ -89,6 +91,7 @@ module pcileech_pcie_cfg_a7(
     reg     [9:0]       rwi_cfgrd_addr;
     reg     [3:0]       rwi_cfgrd_byte_en;
     reg     [31:0]      rwi_cfgrd_data;
+    reg                 rwi_tlp_static_valid;
    
     // ------------------------------------------------------------------------
     // REGISTER FILE: READ-ONLY LAYOUT/SPECIFICATION
@@ -180,9 +183,10 @@ module pcileech_pcie_cfg_a7(
     // REGISTER FILE: READ-WRITE LAYOUT/SPECIFICATION
     // ------------------------------------------------------------------------
     
-    localparam integer  RWPOS_CFG_RD_EN = 16;
-    localparam integer  RWPOS_CFG_WR_EN = 17;
-    localparam integer  RWPOS_CFG_WAIT_COMPLETE = 18;
+    localparam integer  RWPOS_CFG_RD_EN             = 16;
+    localparam integer  RWPOS_CFG_WR_EN             = 17;
+    localparam integer  RWPOS_CFG_WAIT_COMPLETE     = 18;
+    localparam integer  RWPOS_CFG_STATIC_TLP_TX_EN  = 19;
     
     task pcileech_pcie_cfg_a7_initialvalues;        // task is non automatic
         begin
@@ -196,8 +200,10 @@ module pcileech_pcie_cfg_a7(
             // SPECIAL START TASK BLOCK (write 1 to start action)
             rw[16]      <= 0;                       // +002: CFG RD EN
             rw[17]      <= 0;                       //       CFG WR EN
-            rw[18]      <= 0;                       //       WAIT FOR CFG RD/WR COMPLETION BEFORE ACCEPT NEW FIFO READ/WRITES
-            rw[31:17]   <= 0;                       //       RESERVED FUTURE
+            rw[18]      <= 0;                       //       WAIT FOR PCIe CFG SPACE RD/WR COMPLETION BEFORE ACCEPT NEW FIFO READ/WRITES
+            rw[19]      <= 0;                       //       TLP_STATIC TX ENABLE
+            rw[27:20]   <= 0;                       //       RESERVED FUTURE
+            rw[31:28]   <= 4'hf;                    //       PCIe TLP TX ENABLE FOR MUX CHANNEL 0-3 [MUX[0] == RW[28] ..].
             // SIZEOF / BYTECOUNT [little-endian]
             rw[63:32]   <= $bits(rw) >> 3;          // +004: bytecount [little endian]
             // DSN
@@ -235,8 +241,12 @@ module pcileech_pcie_cfg_a7(
             rw[218]     <= 1;                       //       rx_np_req
             rw[219]     <= 1;                       //       tx_cfg_gnt
             rw[223:220] <= 0;                       //       SLACK 
-            // 001C
-            
+            // PCIe STATIC TLP TRANSMIT
+            rw[224+:16] <= 0;                       // +01C: TLP_STATIC TLP QWORD VALID [each-2bit: [0] = last, [1] = keep]
+            rw[240+:16] <= 0;                       // +01E: TLP_STATIC TLP TX SLEEP (ticks) [little-endian]
+            rw[256+:32] <= 0;                       // +020: TLP_STATIC TLP RETRANSMIT COUNT
+            rw[288+:384] <= 0;                      // +024: TLP_STATIC TLP  [4*64-bit, 8*32-bit]
+            // +054:
         end
     endtask
     
@@ -274,13 +284,23 @@ module pcileech_pcie_cfg_a7(
     assign ctx.rx_np_req                    = rw[218];
     assign ctx.tx_cfg_gnt                   = rw[219];
     
+    assign cfg_tlpcfg.tlp_tx_en             = rw[31:28];
     
+    assign tlp_static.data[264:0]           = {
+        rw[(224+2*5)+:2], rw[(288+64*5)+:64],
+        rw[(224+2*4)+:2], rw[(288+64*4)+:64],
+        rw[(224+2*3)+:2], rw[(288+64*3)+:64],
+        rw[(224+2*2)+:2], rw[(288+64*2)+:64],
+        rw[(224+2*1)+:2], rw[(288+64*1)+:64],
+        rw[(224+2*0)+:2], rw[(288+64*0)+:64]};
+    assign tlp_static.valid                 = rwi_tlp_static_valid;
+    assign tlp_static.has_data              = tlp_static.data[64] | tlp_static.data[65];
     
     // ------------------------------------------------------------------------
     // STATE MACHINE / LOGIC FOR READ/WRITE AND OTHER HOUSEKEEPING TASKS
     // ------------------------------------------------------------------------
     
-    integer i_write;
+    integer i_write, i_tlpstatic;
     wire [15:0] in_cmd_address_byte = in_dout[31:16];
     wire [17:0] in_cmd_address_bit  = {in_cmd_address_byte[14:0], 3'b000};
     wire [15:0] in_cmd_value        = {in_dout[48+:8], in_dout[56+:8]};
@@ -341,6 +361,19 @@ module pcileech_pcie_cfg_a7(
                         rwi_cfg_mgmt_wr_en <= 1'b1;
                         rwi_cfgrd_valid <= 1'b0;
                     end
+                    
+                // STATIC_TLP TRANSMIT
+                if ( rwi_tlp_static_valid )
+                    rwi_tlp_static_valid <= 1'b0;
+                else if ( tlp_static.has_data & tlp_static.req_data )
+                    rwi_tlp_static_valid <= 1'b1;
+                else if ( rw[RWPOS_CFG_STATIC_TLP_TX_EN] & (rw[256+:32] > 0) & ((tickcount64[0+:16] & rw[240+:16]) == rw[240+:16]) & ~tlp_static.has_data )
+                    begin
+                        rw[256+:32] <= rw[256+:32] - 1;     // count - 1
+                        if( rw[256+:32] == 1 )
+                            rw[RWPOS_CFG_STATIC_TLP_TX_EN] <= 1'b0;
+                    end
+                
             end
     
 endmodule
