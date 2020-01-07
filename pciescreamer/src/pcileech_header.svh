@@ -3,7 +3,7 @@
 //
 // SystemVerilog Header File for PCILeech FPGA projects.
 //
-// (c) Ulf Frisk, 2019
+// (c) Ulf Frisk, 2019-2020
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -159,13 +159,14 @@ endinterface
 
 interface IfCfg_TlpCfg;
     wire    [3:0]   tlp_tx_en;
+    wire    [15:0]  tlp_pcie_id;
     
     modport cfg(
-        output tlp_tx_en
+        output tlp_pcie_id, tlp_tx_en
     );
     
     modport tlp(
-        input tlp_tx_en
+        input tlp_pcie_id, tlp_tx_en
     );
 endinterface
 
@@ -219,6 +220,7 @@ endinterface
 // Interface connecting PCIe CORE config to FIFO
 // ------------------------------------------------------------------------
 interface IfPCIeFifoCore;
+    wire                clk100_en;
     // PCIe optional config
     wire                pcie_rst_core;
     wire                pcie_rst_subsys;
@@ -235,15 +237,33 @@ interface IfPCIeFifoCore;
     wire    [8:0]       drp_addr;
     wire    [15:0]      drp_di;
     
-
     modport mp_fifo (
         input drp_rdy, drp_do,
-        output pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di
+        output clk100_en, pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di
     );
 
     modport mp_pcie (
-        input pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di,
+        input clk100_en, pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di,
         output drp_rdy, drp_do
+    );
+endinterface
+
+interface IfFifo2CfgSpace;
+    // SHADOW CONFIGURATION SPACE WRITE
+    wire                clk;
+    wire    [9:0]       addr;
+    wire    [31:0]      data;
+    wire                wren;
+    wire                cfgtlp_en;
+    wire                cfgtlp_zero;
+    wire                filter_en;
+    
+    modport source (
+        output clk, addr, data, wren, cfgtlp_en, cfgtlp_zero, filter_en
+    );
+
+    modport sink (
+        input clk, addr, data, wren, cfgtlp_en, cfgtlp_zero, filter_en
     );
 endinterface
 
@@ -293,13 +313,36 @@ interface IfTlp128;
         output req_data
     );
 endinterface
-interface IfTlp32;
+
+interface IfTlp64;
     // [31:0]  = DWORD 1 - always valid 
     // [63:32] = DWORD 2 - depending on KEEP DWORD 2 if LAST DWORD
     // [64]    = LAST DWORD
     // [65]    = KEEP DWORD 2
-    // in total 18 dual-dword = 4 dw hdr + 32 dw data
-    wire    [66 * 4 : 0]        data;
+    // in total 6 dual-dword = 4 dw hdr + 8 dw data
+    wire    [66 * 6 : 0]        data;
+    wire                        valid;
+    wire                        has_data;
+    wire                        req_data;
+    
+    modport source (
+        output data, valid, has_data,
+        input req_data
+    );
+    
+    modport sink (
+        input data, valid, has_data,
+        output req_data
+    );
+endinterface
+
+interface IfTlp16;
+    // [31:0]  = DWORD 1 - always valid 
+    // [63:32] = DWORD 2 - depending on KEEP DWORD 2 if LAST DWORD
+    // [64]    = LAST DWORD
+    // [65]    = KEEP DWORD 2
+    // in total 2 dual-dword = 3 dw hdr + 1 dw data
+    wire    [66 * 2 : 0]        data;
     wire                        valid;
     wire                        has_data;
     wire                        req_data;

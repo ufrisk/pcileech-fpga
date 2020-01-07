@@ -3,7 +3,7 @@
 //
 // Top module for the ScreamerM2 Artix-7 board.
 //
-// (c) Ulf Frisk, 2019
+// (c) Ulf Frisk, 2019-2020
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -15,7 +15,7 @@ module pcileech_screamer_m2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 1
+    parameter       PARAM_VERSION_NUMBER_MINOR = 2
 ) (
     // SYS
     input           clk,
@@ -63,6 +63,7 @@ module pcileech_screamer_m2_top #(
     IfPCIeFifoCfg   dcfg();
     IfPCIeFifoTlp   dtlp();
     IfPCIeFifoCore  dpcie();
+    IfFifo2CfgSpace dcfgspacewr();
 	
     // ----------------------------------------------------
     // TickCount64 CLK
@@ -115,7 +116,8 @@ module pcileech_screamer_m2_top #(
         // FIFO CTL <--> PCIe
         .dcfg               ( dcfg.mp_fifo          ),
         .dtlp               ( dtlp.mp_fifo          ),
-        .dpcie              ( dpcie.mp_fifo         )
+        .dpcie              ( dpcie.mp_fifo         ),
+        .dcfgspacewr        ( dcfgspacewr.source    )
     );
     
     // ----------------------------------------------------
@@ -124,7 +126,7 @@ module pcileech_screamer_m2_top #(
     
     pcileech_pcie_a7 i_pcileech_pcie_a7(
         .clk_100            ( clk                   ),
-		.pcie_rst_n         ( ~rst                  ),
+        .rst                ( rst                   ),
         // PCIe fabric
         .pcie_tx_p          ( pcie_tx_p             ),
         .pcie_tx_n          ( pcie_tx_n             ),
@@ -137,7 +139,8 @@ module pcileech_screamer_m2_top #(
         // FIFO CTL <--> PCIe
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),
-        .dfifo_pcie         ( dpcie.mp_pcie         ) 
+        .dfifo_pcie         ( dpcie.mp_pcie         ),
+        .dcfgspacewr        ( dcfgspacewr.sink      )
     );
 
 endmodule

@@ -73,3 +73,9 @@ v4.1
   * [XC7A35T](https://mega.nz/#!dHpAhY6K!G-NIsQR5j9baQnIELLT_mNFrzSj9pYZ-QJ8NiGAl_JU) SHA256: `d64ac026b345d60fe00d33f5f11321c7343cb0f4613e43f314a96c5e4105313f`
   * [XC7A100T](https://mega.nz/#!cbpwzCxB!WGaqYKTylkQmMa4Qk7vGkIqztU_nlTFm0VsIaJceVKM) SHA256: `0ed1933143bb2adfadf1eb6e05b21dea4b147083a3965cd5cf86da00467241ce`
   
+v4.2
+* Optional custom PCIe configuration space.
+* Optional on-board static PCIe TLP transmit.
+* Download pre-built binaries for XC7A35T and XC7A100T versions below:
+  * [XC7A35T](https://mega.nz/#!ED5i3A4L!uaVsx9oR3S9-NlEQ4hlNnPZpUFwYjrm_0Otp7jmCcCk) SHA256: `86e1f6d4a109ca9e3dd063e6eab85efeea172701dac197fb691f538c7c7232fc`
+  * [XC7A100T](https://mega.nz/#!1e4CUA4A!remhPrf7qRdqfNCgVgqRtbTAX-_9HDgqTMBwqdkKU-g) SHA256: `ed07835728641de5f5f7bb5df2c56a3b104a4c3e1fd0f23a014a10102636c5aa`

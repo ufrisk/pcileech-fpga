@@ -3,7 +3,7 @@
 //
 // FIFO network / control.
 //
-// (c) Ulf Frisk, 2017-2019
+// (c) Ulf Frisk, 2017-2020
 // Author: Ulf Frisk, pcileech@frizk.net
 // Special thanks to: Dmytro Oleksiuk @d_olex
 //
@@ -23,7 +23,8 @@ module pcileech_fifo #(
     
     IfPCIeFifoCfg.mp_fifo   dcfg,
     IfPCIeFifoTlp.mp_fifo   dtlp,
-    IfPCIeFifoCore.mp_fifo  dpcie
+    IfPCIeFifoCore.mp_fifo  dpcie,
+    IfFifo2CfgSpace.source  dcfgspacewr
     );
       
     // ----------------------------------------------------
@@ -182,7 +183,7 @@ module pcileech_fifo #(
     reg     [239:0]     rw;
     
     // special non-user accessible registers 
-    reg     [73:0]      _pcie_core_config;
+    reg     [77:0]      _pcie_core_config = { 1'b0, 1'b1, 1'b1, 1'b1, 1'b0, 1'b0, 8'h02, 16'h0666, 16'h10EE, 16'h0007, 16'h10EE };
     time                _cmd_timer_inactivity_base;
     reg                 rwi_drp_rd_en;
     reg                 rwi_drp_wr_en;
@@ -240,6 +241,7 @@ module pcileech_fifo #(
             // CMD SEND COUNT
             rw[127:96]  <= 0;                           // +00C: cmd_send_count [little-endian]
             // PCIE INITIAL CONFIG (SPECIAL BITSTREAM)
+            // NB! "initial" CLK0 values may also be changed in: '_pcie_core_config = {...};' [important on PCIeScreamer].
             rw[143:128] <= 16'h10EE;                    // +010: CFG_SUBSYS_VEND_ID
             rw[159:144] <= 16'h0007;                    // +012: CFG_SUBSYS_ID
             rw[175:160] <= 16'h10EE;                    // +014: CFG_VEND_ID
@@ -247,7 +249,11 @@ module pcileech_fifo #(
             rw[199:192] <= 8'h02;                       // +018: CFG_REV_ID
             rw[200]     <= 1'b1;                        // +019: PCIE CORE RESET
             rw[201]     <= 1'b0;                        //       PCIE SUBSYSTEM RESET
-            rw[207:202] <= 0;                           //       SLACK 
+            rw[202]     <= 1'b1;                        //       CFGTLP PROCESSING ENABLE
+            rw[203]     <= 1'b1;                        //       CFGTLP ZERO DATA
+            rw[204]     <= 1'b1;                        //       CFGTLP FILTER TLP FROM USER
+            rw[205]     <= 1'b1;                        //       CLK_IS_ENABLED [if clk not started _pcie_core_config[77] will remain zero].
+            rw[207:206] <= 0;                           //       SLACK
             // PCIe DRP
             rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di
             rw[224+:9]  <= 0;                           // +01C: DRP: pcie_drp_addr
@@ -263,7 +269,7 @@ module pcileech_fifo #(
     wire                _cmd_send_count_enable          = rw[17] & (_cmd_send_count_dword != 16'h0000);
     
     always @ ( posedge clk )
-         _pcie_core_config <= rw[201:127];
+         _pcie_core_config <= rw[205:128];
     assign dpcie.pcie_cfg_subsys_vend_id                = _pcie_core_config[0+:16];
     assign dpcie.pcie_cfg_subsys_id                     = _pcie_core_config[16+:16];
     assign dpcie.pcie_cfg_vend_id                       = _pcie_core_config[32+:16];
@@ -271,6 +277,10 @@ module pcileech_fifo #(
     assign dpcie.pcie_cfg_rev_id                        = _pcie_core_config[64+:8];
     assign dpcie.pcie_rst_core                          = _pcie_core_config[72];
     assign dpcie.pcie_rst_subsys                        = _pcie_core_config[73];
+    assign dcfgspacewr.cfgtlp_en                        = _pcie_core_config[74];
+    assign dcfgspacewr.cfgtlp_zero                      = _pcie_core_config[75];
+    assign dcfgspacewr.filter_en                        = _pcie_core_config[76];
+    assign dpcie.clk100_en                              = _pcie_core_config[77];
     assign dpcie.drp_en                                 = rw[RWPOS_DRP_WR_EN] | rw[RWPOS_DRP_RD_EN];
     assign dpcie.drp_we                                 = rw[RWPOS_DRP_WR_EN];
     assign dpcie.drp_addr                               = rw[224+:9];
@@ -305,7 +315,11 @@ module pcileech_fifo #(
     wire        f_rw                = in_cmd_address_byte[15]; 
     wire [15:0] in_cmd_data_in      = (in_cmd_address_bit < (f_rw ? $bits(rw) : $bits(ro))) ? (f_rw ? rw[in_cmd_address_bit+:16] : ro[in_cmd_address_bit+:16]) : 16'h0000;
     wire        in_cmd_read         = cmd_rx_dout[12] & cmd_rx_valid;
-    wire        in_cmd_write        = cmd_rx_dout[13] & in_cmd_address_byte[15] & cmd_rx_valid;
+    wire        in_cmd_write        = cmd_rx_dout[13] & in_cmd_address_byte[15] & ~in_cmd_address_byte[14] & cmd_rx_valid;
+    assign dcfgspacewr.wren         = cmd_rx_dout[13] & in_cmd_address_byte[15] &  in_cmd_address_byte[14] & cmd_rx_valid;
+    assign dcfgspacewr.addr         = in_cmd_address_byte[11:2];
+    assign dcfgspacewr.data         = cmd_rx_dout[63:32];
+    assign dcfgspacewr.clk          = clk;
     
     initial pcileech_fifo_ctl_initialvalues();
     

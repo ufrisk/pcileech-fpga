@@ -3,7 +3,7 @@
 //
 // FT601 / FT245 controller module (v2).
 //
-// (c) Ulf Frisk, 2017-2019
+// (c) Ulf Frisk, 2017-2020
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 

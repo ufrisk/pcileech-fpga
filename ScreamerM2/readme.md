@@ -64,3 +64,9 @@ v4.1
 * Initial Release.
 * Download pre-built binaries below:
   * [ScreamerM2](https://mega.nz/#!pC4CzKxK!GwnhexGDB4kppY6naI99M2edV66_MXiY2DQ7HSAdcPM) SHA256: `589eb60b26745a0b5c4dbc8831a71b1f3edbcaf693384366a1d2d374a8400169`
+
+v4.2
+* Optional custom PCIe configuration space.
+* Optional on-board static PCIe TLP transmit.
+* Download pre-built binaries below:
+  * [ScreamerM2](https://mega.nz/#!sGwyQKTZ!zA9OjhL1_En-H_OzJA4rlqZLptcCP5in5XhK1E1kRno) SHA256: `ec9a1df74c969f970dbd5bddcc47ecdb0c38ca80a9b2d2a503dbc247553163bc`

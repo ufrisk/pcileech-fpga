@@ -3,7 +3,7 @@
 //
 // PCIe module for Artix-7.
 //
-// (c) Ulf Frisk, 2018-2019
+// (c) Ulf Frisk, 2018-2020
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -12,6 +12,7 @@
 
 module pcileech_pcie_a7(
     input                   clk_100,
+    input                   rst,
 
     // PCIe fabric
     output  [0:0]           pcie_tx_p,
@@ -20,7 +21,6 @@ module pcileech_pcie_a7(
     input   [0:0]           pcie_rx_n,
     input                   pcie_clk_p,
     input                   pcie_clk_n,
-    input                   pcie_rst_n,
     
     // State and Activity LEDs
     output                  led_state,
@@ -28,7 +28,8 @@ module pcileech_pcie_a7(
     // PCIe <--> FIFOs
     IfPCIeFifoCfg.mp_pcie   dfifo_cfg,
     IfPCIeFifoTlp.mp_pcie   dfifo_tlp,
-    IfPCIeFifoCore.mp_pcie  dfifo_pcie
+    IfPCIeFifoCore.mp_pcie  dfifo_pcie,
+    IfFifo2CfgSpace.sink    dcfgspacewr
     );
        
     // ----------------------------------------------------------------------------
@@ -39,15 +40,15 @@ module pcileech_pcie_a7(
     IfPCIeTlpRxTx   tlp_tx();
     IfPCIeTlpRxTx   tlp_rx();
     IfCfg_TlpCfg    cfg_tlpcfg();
-    IfTlp32         tlp_static();       // static tlp transmit from cfg->tlp
+    IfTlp64         tlp_static();       // static tlp transmit from cfg->tlp
     wire            user_lnk_up;
     
     // system interface
     (* dont_touch = "true" *) wire pcie_clk_c;
     wire clk_user;
     wire rst_user;
-    wire rst_subsys = rst_user | ~pcie_rst_n | dfifo_pcie.pcie_rst_subsys;
-    wire rst_pcie = ~pcie_rst_n | dfifo_pcie.pcie_rst_core;
+    wire rst_subsys = rst | rst_user | dfifo_pcie.pcie_rst_subsys;
+    wire rst_pcie = rst | dfifo_pcie.pcie_rst_core;
        
     // Buffer for differential system clock
     IBUFDS_GTE2 refclk_ibuf (.O(pcie_clk_c), .ODIV2(), .I(pcie_clk_p), .CEB(1'b0), .IB(pcie_clk_n));
@@ -87,7 +88,8 @@ module pcileech_pcie_a7(
         .tlp_tx                     ( tlp_tx                    ),       
         .tlp_rx                     ( tlp_rx                    ),
         .cfg_tlpcfg                 ( cfg_tlpcfg                ),
-        .tlp_static                 ( tlp_static                )
+        .tlp_static                 ( tlp_static                ),
+        .dcfgspacewr                ( dcfgspacewr               )
     );
     
     // ----------------------------------------------------------------------------
@@ -115,7 +117,7 @@ module pcileech_pcie_a7(
         .m_axis_rx_tdata            ( tlp_rx.data               ),  // -> [63:0]
         .m_axis_rx_tkeep            ( tlp_rx.keep               ),  // -> [7:0]
         .m_axis_rx_tlast            ( tlp_rx.last               ),  // -> 
-        .m_axis_rx_tready           ( tlp_rx.ready              ),  // <-
+        .m_axis_rx_tready           ( tlp_rx.ready | ~dfifo_pcie.clk100_en  ),  // <-
         .m_axis_rx_tuser            (                           ),  // -> [21:0]
         .m_axis_rx_tvalid           ( tlp_rx.valid              ),  // ->
     

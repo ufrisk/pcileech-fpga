@@ -36,3 +36,21 @@ It may also be a good idea to modify the device serial number (DSN) by editing t
 ```verilog
 rw[127:64]  <= 64'h0000000101000A35;    // cfg_dsn
 ```
+
+
+#### Configuration Space:
+
+It's possible to partly change the PCIe configuration space of the device. This is achieved by altering the value below from `1'b1` to `1'b0` in the file `src/pcileech_fifo.sv` (please see below). The PCIe configuration space is configured by editing the file `ip/pcileech_cfgspace.coe`. Please note that the Xilinx PCIe core will in-part override user-configured values.
+
+in `src/pcileech_fifo.sv` change:
+```verilog
+rw[203]     <= 1'b1;                        //       CFGTLP ZERO DATA
+```
+into:
+```verilog
+rw[203]     <= 1'b0;                        //       CUSTOM CONFIGURATION SPACE ENABLED
+```
+
+It's not currently possible to read the custom configuration space from within PCILeech, but on a Linux system it's possible to view it using the `lspci` command. The command line, if the vendor/device id is the default 10ee:0666, is:
+
+Linux lspci command line: `lspci -n 10ee:0666 -xxxx`.

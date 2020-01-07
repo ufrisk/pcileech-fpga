@@ -78,3 +78,8 @@ v4.0
 v4.1
 * Minor bug-fixes and internal re-design.
 * Download pre-built binary [here](https://mega.nz/#!Ja4wGaTA!07cDnJupQQUYU2WtpjhNOhzZJ8ULNwX78l8nB_WD59E). <br>SHA256: `a57468028fffb673064cef7f9b41e268794d4b631ea4747817f79e5cafd3c1ea`
+
+v4.2
+* Optional custom PCIe configuration space.
+* Optional on-board static PCIe TLP transmit.
+* Download pre-built binary [here](https://mega.nz/#!lHw0GY5L!jJaSToLPmGLo3r6uTQ7UPn-OXC69soWf4sZUZ4JdkJo). <br>SHA256: `fedf159d9c21b79ad5ca2a57b03b3319c97e7632ac7294d84bbfabadf1a781db`

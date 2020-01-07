@@ -70,7 +70,6 @@ Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
 
-
 Releases / Version History:
 =================
 v4.0
@@ -84,3 +83,11 @@ v4.1
 * Download pre-built binaries for R01 and R02 versions of the PCIeScreamer below:
   * [R01](https://mega.nz/#!tbhwUaKQ!gixprx3CwhMnP9cxbJiT3U9K4MSupGyWbLwEEIEcxMQ) SHA256: `7b45c8ac6b6f4fa0a3824ecc2a69b01ab5096fb0cdc6a6c00c4cf224288dee78`
   * [R02](https://mega.nz/#!Na4CDIRC!lkWRQgj6M_zi81OPJQYA2KZpfRlQlWVAN29WU4jIElE) SHA256: `8cb8c30cfaa514462fde6db0dc416bf06ddc94576798f0875ccd359c30e55b4c`
+
+v4.2
+* Optional custom PCIe configuration space.
+* Optional on-board static PCIe TLP transmit.
+* Download pre-built binaries for R01 and R02 versions of the PCIeScreamer below:
+  * [R01](https://mega.nz/#!pCgG2ajB!P64I04yKWgd_uX2br4Jd5nQ2FTaE0EbKKMgM7kbamxU) SHA256: `858d8faf11fb9d5e861f5cd7bbc94234b62dd6d8ec8464b7f5cd9585e226a025`
+  * [R02](https://mega.nz/#!oOhg1SYR!445FVx40YlpeO14fO8DNn_43VqpX5ZUCE69lRA9rLTc) SHA256: `6200360b2b8caa16f9683bc660a4b9000ba3ff9dad300a2c6bf2e02c331b2c27`
+  
