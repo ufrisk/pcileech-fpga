@@ -59,4 +59,4 @@ rw[203]     <= 1'b0;                        //       CUSTOM CONFIGURATION SPACE 
 
 It's not currently possible to read the custom configuration space from within PCILeech, but on a Linux system it's possible to view it using the `lspci` command. The command line, if the vendor/device id is the default 10ee:0666, is:
 
-Linux lspci command line: `lspci -n 10ee:0666 -xxxx`.
+Linux lspci command line: `lspci -d 10ee:0666 -xxxx`.
