@@ -15,7 +15,7 @@ module pcileech_screamer_m2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 2
+    parameter       PARAM_VERSION_NUMBER_MINOR = 3
 ) (
     // SYS
     input           clk,
@@ -72,9 +72,13 @@ module pcileech_screamer_m2_top #(
     time tickcount64 = 0;
     always @ ( posedge clk )
         tickcount64 <= tickcount64 + 1;
-        
+
     assign rst = (tickcount64 < 64) ? 1'b1 : 1'b0;
     assign ft601_rst_n = ~rst;
+
+    assign rst = (tickcount64 < 64) ? 1'b1 : 1'b0;
+    assign ft601_rst_n = ~rst;
+    wire led_pwronblink = tickcount64[24] & (tickcount64[63:27] == 0);
     
     // ----------------------------------------------------
     // BUFFERED COMMUNICATION DEVICE (FT601)
@@ -86,7 +90,7 @@ module pcileech_screamer_m2_top #(
         .clk_com            ( ft601_clk             ),
         .rst                ( rst                   ),
         .led_state_txdata   ( user_led_ld2          ),  // ->
-        .led_state_invert   (                       ),  // <-
+        .led_state_invert   ( led_pwronblink        ),  // <-
         // FIFO CTL <--> COM CTL
         .dfifo              ( dcom_fifo.mp_com      ),
         // TO/FROM FT601 PADS

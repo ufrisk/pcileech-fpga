@@ -70,3 +70,8 @@ v4.2
 * Optional on-board static PCIe TLP transmit.
 * Download pre-built binaries below:
   * [ScreamerM2](https://mega.nz/#!sGwyQKTZ!zA9OjhL1_En-H_OzJA4rlqZLptcCP5in5XhK1E1kRno) SHA256: `ec9a1df74c969f970dbd5bddcc47ecdb0c38ca80a9b2d2a503dbc247553163bc`
+
+v4.3
+* Blink LD2 on startup.
+* Download pre-built binaries below:
+  * [ScreamerM2](https://mega.nz/#!ofogyYBS!lR3K6nMqS5PTqREXVC6uea_MQrjskwMs_alIxlGfXv8) SHA256: `961d3526a0c89b0965cafabffcd1f3ceacb2e5788d0e3716767ddf04b2fb9385`

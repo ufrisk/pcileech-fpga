@@ -127,8 +127,8 @@ module pcileech_pcie_a7(
         .cfg_mgmt_do                ( ctx.cfg_mgmt_do           ),  // -> [31:0]
         .cfg_mgmt_rd_en             ( ctx.cfg_mgmt_rd_en        ),  // <-
         .cfg_mgmt_rd_wr_done        ( ctx.cfg_mgmt_rd_wr_done   ),  // ->
-        .cfg_mgmt_wr_readonly       ( 1'b0                      ),  // <-
-        .cfg_mgmt_wr_rw1c_as_rw     ( 1'b1                      ),  // <-
+        .cfg_mgmt_wr_readonly       ( ctx.cfg_mgmt_wr_readonly  ),  // <-
+        .cfg_mgmt_wr_rw1c_as_rw     ( ctx.cfg_mgmt_wr_rw1c_as_rw ), // <-
         .cfg_mgmt_di                ( ctx.cfg_mgmt_di           ),  // <- [31:0]
         .cfg_mgmt_wr_en             ( ctx.cfg_mgmt_wr_en        ),  // <-
     
