@@ -19,6 +19,9 @@ module pcileech_fifo #(
     input                   clk,
     input                   rst,
     
+    input                   pcie_present,
+    input                   pcie_perst_n,
+    
     IfComToFifo.mp_fifo     dcom,
     
     IfPCIeFifoCfg.mp_fifo   dcfg,
@@ -254,10 +257,12 @@ module pcileech_fifo #(
             rw[204]     <= 1'b1;                        //       CFGTLP FILTER TLP FROM USER
             rw[205]     <= 1'b1;                        //       CLK_IS_ENABLED [if clk not started _pcie_core_config[77] will remain zero].
             rw[207:206] <= 0;                           //       SLACK
-            // PCIe DRP
+            // PCIe DRP, PRSNT#, PERST#
             rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di
             rw[224+:9]  <= 0;                           // +01C: DRP: pcie_drp_addr
-            rw[233+:7]  <= 0;                           //       SLACK
+            rw[233+:5]  <= 0;                           //       SLACK
+            rw[238]     <= pcie_present;                //       PRSNT#
+            rw[239]     <= pcie_perst_n;                //       PERST#
             // 01E -  
              
         end

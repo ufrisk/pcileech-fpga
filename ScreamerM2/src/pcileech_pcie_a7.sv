@@ -21,6 +21,7 @@ module pcileech_pcie_a7(
     input   [0:0]           pcie_rx_n,
     input                   pcie_clk_p,
     input                   pcie_clk_n,
+    input                   pcie_perst_n,
     
     // State and Activity LEDs
     output                  led_state,
@@ -44,11 +45,11 @@ module pcileech_pcie_a7(
     wire            user_lnk_up;
     
     // system interface
-    (* dont_touch = "true" *) wire pcie_clk_c;
+    wire pcie_clk_c;
     wire clk_user;
     wire rst_user;
     wire rst_subsys = rst | rst_user | dfifo_pcie.pcie_rst_subsys;
-    wire rst_pcie = rst | dfifo_pcie.pcie_rst_core;
+    wire rst_pcie = rst | ~pcie_perst_n | dfifo_pcie.pcie_rst_core;
        
     // Buffer for differential system clock
     IBUFDS_GTE2 refclk_ibuf (.O(pcie_clk_c), .ODIV2(), .I(pcie_clk_p), .CEB(1'b0), .IB(pcie_clk_n));

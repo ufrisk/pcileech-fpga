@@ -94,7 +94,9 @@ module pcileech_pcie_tlp_a7(
         .clk_fifo       ( clk_100                   ),
         .clk            ( clk_pcie                  ),
         .rst            ( rst                       ),
-        .dfifo          ( dfifo                     ),
+        .dfifo_tx_data  ( dfifo.tx_data             ),
+        .dfifo_tx_last  ( dfifo.tx_last             ),
+        .dfifo_tx_valid ( dfifo.tx_valid            ),
         .tlp_out        ( fifo_tlp                  )
     );
     
@@ -168,7 +170,6 @@ module pcileech_pcie_cfgspace(
     bit             bram_valid;             // bram valid
     bit             bram_supress_onwr;      // bram supress (= Cpl packet on Wr)
     bit [7:0]       bram_tag;
-    bit [4:0]       bram_addr_dw;
     bit [15:0]      bram_requester_id;
     wire [31:0]     bram_data1;
     wire [31:0]     bram_data2 = dcfgspacewr.cfgtlp_zero ? 32'h00000000 : bram_data1;
@@ -189,18 +190,17 @@ module pcileech_pcie_cfgspace(
             bram_valid          <= snoop_valid_rd;
             bram_supress_onwr   <= snoop_valid_wr;
             bram_tag            <= snoop_tag;
-            bram_addr_dw        <= snoop_addr_dw[4:0];
             bram_requester_id   <= snoop_requester_id;
         end
  
     // ------------------------------------------------------------------------
     // COMPLETION TLP generation and buffering below: 
-    // ------------------------------------------------------------------------       
-    wire [63:0]     cplrd_tlp_data_qw1  = { tlp_pcie_id, 16'h04, 32'b01001010000000000000000000000001 };
-    wire [63:0]     cplrd_tlp_data_qw2  = { bram_data2, bram_requester_id, bram_tag, 1'b0, bram_addr_dw, 2'b00 };
+    // ------------------------------------------------------------------------
+    wire [63:0]     cplrd_tlp_data_qw1  = { tlp_pcie_id, 16'h0004, 32'b01001010000000000000000000000001 };
+    wire [63:0]     cplrd_tlp_data_qw2  = { bram_data2, bram_requester_id, bram_tag, 8'h00 };
     wire [127:0]    cplrd_tlp_data      = { cplrd_tlp_data_qw2, cplrd_tlp_data_qw1 };
     wire [63:0]     cplwr_tlp_data_qw1  = { tlp_pcie_id, 16'h00, 32'b00001010000000000000000000000000 };
-    wire [63:0]     cplwr_tlp_data_qw2  = { 32'h00000000, bram_requester_id, bram_tag, 1'b0, bram_addr_dw, 2'b00 };
+    wire [63:0]     cplwr_tlp_data_qw2  = { 32'h00000000, bram_requester_id, bram_tag, 8'h00 };
     wire [127:0]    cplwr_tlp_data      = { cplwr_tlp_data_qw2, cplwr_tlp_data_qw1 };
     wire [128:0]    cpl_tlp_data        = { bram_valid, (bram_valid ? cplrd_tlp_data : cplwr_tlp_data)};
     
@@ -229,12 +229,11 @@ endmodule
 module tlp128_sink_mux1 (
     input                   clk,
     input                   rst,
-
     IfPCIeTlpRxTx.source    tlp_tx,
     IfTlp128.sink           p0,
     IfTlp16.sink            p1,
     IfTlp64.sink            p2,
-    input   [3:0]           pX_en
+    input   [2:0]           pX_en
 );
     reg [66 * 18 - 1 : 0]   tlp     = 0;
     
@@ -268,8 +267,9 @@ module tlp128_source_fifo (
     input                   clk_fifo,
     input                   clk,
     input                   rst,
-
-    IfPCIeFifoTlp.mp_pcie   dfifo,
+    input [31:0]            dfifo_tx_data,
+    input                   dfifo_tx_last,
+    input                   dfifo_tx_valid,
     IfTlp128.source         tlp_out
 );
     // data ( pcie_tlp_tx_din / tlp_din ) as follows:
@@ -282,18 +282,18 @@ module tlp128_source_fifo (
     reg [31:0]      d_pcie_tlp_tx_data;
     reg             d_pcie_tlp_tx_valid = 1'b0;
     
-    assign pcie_tlp_tx_din[31:0] = d_pcie_tlp_tx_valid ? d_pcie_tlp_tx_data : dfifo.tx_data;
-    assign pcie_tlp_tx_din[63:32] = dfifo.tx_data;
-    assign pcie_tlp_tx_din[64] = dfifo.tx_last;
+    assign pcie_tlp_tx_din[31:0] = d_pcie_tlp_tx_valid ? d_pcie_tlp_tx_data : dfifo_tx_data;
+    assign pcie_tlp_tx_din[63:32] = dfifo_tx_data;
+    assign pcie_tlp_tx_din[64] = dfifo_tx_last;
     assign pcie_tlp_tx_din[65] = d_pcie_tlp_tx_valid;
-    assign pcie_tlp_tx_wren = dfifo.tx_valid & ( dfifo.tx_last | d_pcie_tlp_tx_valid );
+    assign pcie_tlp_tx_wren = dfifo_tx_valid & ( dfifo_tx_last | d_pcie_tlp_tx_valid );
     
     always @ ( posedge clk_fifo )
         if( rst )
             d_pcie_tlp_tx_valid <= 1'b0;
-        else if ( dfifo.tx_valid )
+        else if ( dfifo_tx_valid )
             begin
-                d_pcie_tlp_tx_data <= dfifo.tx_data;
+                d_pcie_tlp_tx_data <= dfifo_tx_data;
                 d_pcie_tlp_tx_valid <= ~pcie_tlp_tx_wren;
             end
             

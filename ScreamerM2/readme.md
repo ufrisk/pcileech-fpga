@@ -1,4 +1,4 @@
-ScreamerM2 M.2 Key E (PCIe) to USB3:
+ScreamerM2 M.2 Key M (PCIe) to USB3 / USB-C:
 =================
 This project contains software and HDL code for the [ScreamerM2 FPGA PCIe board](https://shop.lambdaconcept.com).
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
@@ -16,9 +16,11 @@ For information about other supported FPGA based devices please check out [PCILe
 
 The Hardware:
 =================
-* LambdaConcept ScreamerM2 M.2 Key E board. ([LambdaConcept](http://shop.lambdaconcept.com))
+* LambdaConcept ScreamerM2 M.2 Key M board. ([LambdaConcept](http://shop.lambdaconcept.com))
 
-For more information about the hardware, and alternative software, please check out the [PCIeScreamer wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
+For more information about the hardware, and alternative software, please check out the [LambdaConcept ScreamerM2 Wiki](http://docs.lambdaconcept.com/screamer/index.html).
+
+NB! The picture below depicts a ScreamerM2 R03 with a micro-usb3 connector. ScreamerM2 R04 have an USB-C connector instead. Both versions use identical software.
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/f806a68890c94561e53caa7758a5903bb01f5670/gh_m2_2.png"/>
 
@@ -37,11 +39,11 @@ Flashing (LambdaConcept programming cable):
 =================
 Please note that this instruction applies to the LambdaConcept programming cable. OpenOCD is recommended when using the LambdaConcept programming cable. The LambdaConcept programming cable is not supported by Xilinx Vivado.
 1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary (link in version history at the bottom of this readme).
-2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept PCIeScreamer Wiki](http://blog.lambdaconcept.com/doku.php?id=products:pcie_screamer).
+2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept ScreamerM2 Wiki](http://docs.lambdaconcept.com/screamer/index.html).
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2019.2 or later.
+1) Install Xilinx Vivado WebPACK 2020.1 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of ScreamerM2 (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -56,6 +58,16 @@ The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on th
 Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
+
+
+Support PCILeech/MemProcFS development:
+=======================================
+PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time - since I'm not able to work with this. Unfortunately since some aspects also relate to hardware I also put quite some of money into my projects. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
+
+Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting donations; even though a donation would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A donation will have to stay donation and no more.  I'll set up the Github sponsors as soon as I'm able to; but for now it's possible to contribute with:
+
+ - Paypal: `paypal@ulffrisk.com` 
+ - Bitcoin: `bc1q9kur5pym8wmh5yxkf65792rdqm0guncd2gl4tu`
 
 
 Releases / Version History:
@@ -75,3 +87,11 @@ v4.3
 * Blink LD2 on startup.
 * Download pre-built binaries below:
   * [ScreamerM2](https://mega.nz/#!ofogyYBS!lR3K6nMqS5PTqREXVC6uea_MQrjskwMs_alIxlGfXv8) SHA256: `961d3526a0c89b0965cafabffcd1f3ceacb2e5788d0e3716767ddf04b2fb9385`
+
+v4.4
+* **PCILeech is free and open source. PCILeech is not directly affiliated with the ScreamerM2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
+* Disable PCIe WAKE#.
+* Increased stability and reboot support.
+* Support for Ryzen CPUs (NB! this is FPGA support only - PCILeech itself may still have issues).
+* Download pre-built binaries below:
+  * [ScreamerM2](https://mega.nz/file/VKhEjYwD#RZ_r90yVYB9UeCTdIaJZ1avTKVq4s25BBfWefgVOT0k) SHA256: `54ed5706357459d9595906b833155783801da9c1ef852c79e0533d4b613796df`

@@ -15,7 +15,7 @@ module pcileech_screamer_m2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 3
+    parameter       PARAM_VERSION_NUMBER_MINOR = 4
 ) (
     // SYS
     input           clk,
@@ -32,7 +32,10 @@ module pcileech_screamer_m2_top #(
     input   [0:0]   pcie_rx_n,
     input           pcie_clk_p,
     input           pcie_clk_n,
-      
+    input           pcie_present,
+    input           pcie_perst_n,
+    output reg      pcie_wake_n = 1'b1,
+    
     // TO/FROM FT601 PADS
     output          ft601_rst_n,
     
@@ -115,6 +118,8 @@ module pcileech_screamer_m2_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
+        .pcie_present       ( pcie_present          ),
+        .pcie_perst_n       ( pcie_perst_n          ),
         // FIFO CTL <--> COM CTL
         .dcom               ( dcom_fifo.mp_fifo     ),
         // FIFO CTL <--> PCIe
@@ -138,6 +143,7 @@ module pcileech_screamer_m2_top #(
         .pcie_rx_n          ( pcie_rx_n             ),
         .pcie_clk_p         ( pcie_clk_p            ),
         .pcie_clk_n         ( pcie_clk_n            ),
+        .pcie_perst_n       ( pcie_perst_n          ),
         // State and Activity LEDs
         .led_state          ( user_led_ld1          ),
         // FIFO CTL <--> PCIe

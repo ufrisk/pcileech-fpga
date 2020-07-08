@@ -49,28 +49,6 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 
 Releases / Version History:
 =================
-v3.0
-* Initial Release.
-* Compatible with PCILeech v2.6
-* Download pre-built binary [here](https://mega.nz/#!VCgGSJQR!z3UuWJtKcUCLcUuRMSZ1ViRf3fWU3LBL-bB-a08G7Bc). <br>SHA256: `5befd391707e7cd2ac8e191e122596eed0dee23753e2b03ddc8dbafa83294d4d`
-
-v3.1
-* Bug fixes.
-* More optimization in build step to resolve timing issues.
-* Download pre-built binary [here](https://mega.nz/#!kbA3BTRJ!8nXUVN7sJDTOHgtuCGlkmdKR5q_Wgzpsd-y-F6eQ5Jk). <br>SHA256: `3284558114db8bb5455739ae474aac70f1d23fb72e105c45783f409539d23b51`
-
-v3.2
-* Bug fixes - USB and Timing.
-* Download pre-built binary [here](https://mega.nz/#!NGZwkALQ!OmlTZ9TFiR0DDvl3Ybmy3U8TTEActURTxAev87hCcdA). <br>SHA256: `811a4dde1820731ff07d68cc58fcf0beb8388dcb3c479c11ea27255bf24efd5f`
-
-~~v3.3-beta~~
-* ~~Internal changes - data buffering in RAM.~~
-* ~~Download pre-built binary [here](https://mega.nz/#!xPgkhAhL!RyDr6Xl4pexrTuRAa-yVdsYnEUWM3YaX20IL45RvUlk). <br>SHA256: `731edd2a4180394c9719ce869be90663808f5eea0797b3c0fd04ffd9422bb067`~~
-
-v3.4
-* Minor design changes and bug fixes.
-* Download pre-built binary [here](https://mega.nz/#!QWx2kQob!QiaXxbV4fiaIITCuzCbT66fWDl5cdZUxWRa849lVxy8). <br>SHA256: `811a4dde1820731ff07d68cc58fcf0beb8388dcb3c479c11ea27255bf24efd5f`
-
 v4.0
 * Major internal re-design for increased future flexibility and ease of use.
 * Download pre-built binary [here](https://mega.nz/#!4DxE1AoR!0o8BiuwaU1YOACDXE1mXhzoopNKcc86Eexd5GMCBG44). <br>SHA256: `f9873de8f63a2844585c2450fa1aff5a8edd7e8d297655a65fe9883277957d55`
@@ -83,3 +61,9 @@ v4.2
 * Optional custom PCIe configuration space.
 * Optional on-board static PCIe TLP transmit.
 * Download pre-built binary [here](https://mega.nz/#!lHw0GY5L!jJaSToLPmGLo3r6uTQ7UPn-OXC69soWf4sZUZ4JdkJo). <br>SHA256: `fedf159d9c21b79ad5ca2a57b03b3319c97e7632ac7294d84bbfabadf1a781db`
+
+v4.4
+* Disable PCIe WAKE#.
+* Increased stability and reboot support.
+* Support for Ryzen CPUs (NB! this is FPGA support only - PCILeech itself may still have issues).
+* Download pre-built binary [here](https://mega.nz/file/UPgWyShJ#4G8TCtdGEU17NFZs0kU8_mX_04m27GTUxOsb7eNfpFY). <br>SHA256: `fa6f90e101273766608fab8cbb13361489d5a2bc0ed8e91e64fbe45ff67d7ddf`

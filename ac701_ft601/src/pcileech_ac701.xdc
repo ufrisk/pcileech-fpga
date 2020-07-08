@@ -213,6 +213,12 @@ set_false_path -from [get_pins {i_pcileech_fifo/_pcie_core_config_reg[*]/C}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_lnk_up_int_reg/C] -to [get_pins {i_pcileech_fifo/_cmd_tx_din_reg[16]/D}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_reset_out_reg/C]
 
+#PCIe signals
+set_property PACKAGE_PIN M20 [get_ports pcie_perst_n]
+set_property PACKAGE_PIN K26 [get_ports pcie_wake_n]
+set_property IOSTANDARD LVCMOS33 [get_ports pcie_perst_n]
+set_property IOSTANDARD LVCMOS33 [get_ports pcie_wake_n]
+
 set_property LOC GTPE2_CHANNEL_X0Y7 [get_cells {i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/gt_top_i/pipe_wrapper_i/pipe_lane[0].gt_wrapper_i/gtp_channel.gtpe2_channel_i}]
 set_property PACKAGE_PIN C12 [get_ports {pcie_rx_n[0]}]
 #set_property LOC GTPE2_CHANNEL_X0Y6 [get_cells {i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/gt_top_i/pipe_wrapper_i/pipe_lane[1].gt_wrapper_i/gtp_channel.gtpe2_channel_i}]
@@ -227,7 +233,6 @@ set_property PACKAGE_PIN E11 [get_ports pcie_clk_n]
 set_property PACKAGE_PIN F11 [get_ports pcie_clk_p]
 
 create_clock -name pcie_refclk_p -period 10.0 [get_nets pcie_clk_p]
-create_clock -name pcie_refclk -period 10.0 [get_nets i_pcileech_pcie_a7/pcie_clk_c]
 
 set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design]
 set_property BITSTREAM.CONFIG.EXTMASTERCCLK_EN div-1 [current_design]

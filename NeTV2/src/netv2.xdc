@@ -51,6 +51,11 @@ set_false_path -from [get_pins {i_pcileech_fifo/_pcie_core_config_reg[*]/C}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_lnk_up_int_reg/C] -to [get_pins {i_pcileech_fifo/_cmd_tx_din_reg[16]/D}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_reset_out_reg/C]
 
+#PCIe signals
+set_property PACKAGE_PIN E18 [get_ports pcie_perst_n]
+set_property PACKAGE_PIN D20 [get_ports pcie_wake_n]
+set_property IOSTANDARD LVCMOS33 [get_ports pcie_perst_n]
+set_property IOSTANDARD LVCMOS33 [get_ports pcie_wake_n]
 
 # NB! one of the LOC GTPE2 lines will generate a crical warning and be ignored.
 # 35T = LOC GTPE2_CHANNEL_X0Y2
@@ -65,7 +70,6 @@ set_property PACKAGE_PIN E10 [get_ports pcie_clk_n]
 set_property PACKAGE_PIN F10 [get_ports pcie_clk_p]
 
 create_clock -name pcie_refclk_p -period 10.0 [get_nets pcie_clk_p]
-create_clock -name pcie_refclk -period 10.0 [get_nets i_pcileech_pcie_a7/pcie_clk_c]
 
 #
 # BITSTREAM CONFIG BELOW

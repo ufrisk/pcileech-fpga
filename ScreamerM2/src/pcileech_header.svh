@@ -160,7 +160,7 @@ endinterface
 // ------------------------------------------------------------------------
 
 interface IfCfg_TlpCfg;
-    wire    [3:0]   tlp_tx_en;
+    wire    [2:0]   tlp_tx_en;
     wire    [15:0]  tlp_pcie_id;
     
     modport cfg(

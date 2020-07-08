@@ -3,6 +3,7 @@ NeTV2 PCIe to UDP/IP:
 This project contains software and HDL code for the [NeTV2 FPGA PCIe board](https://www.crowdsupply.com/alphamax/netv2).
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+
 Capabilities:
 =================
 * Retrieve memory from the target system over 100Mbit UDP/IP up to 7MB/s.<br><sub><sup>(7MB/s is the effective memory dump speed after protocol overhead)</sup></sub>
@@ -13,6 +14,7 @@ Capabilities:
 For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) or [MemProcFS](https://github.com/ufrisk/MemProcFS/) abilities and capabilities.
 
 For information about other supported FPGA based devices please check out [PCILeech FPGA](https://github.com/ufrisk/pcileech-fpga/).
+
 
 The Hardware:
 =================
@@ -26,6 +28,7 @@ The Hardware:
 3) The Ethernet connector is on the internal facing card edge. The external facing card edge is populated with HDMI connectors not used by PCILeech.
 
 Please also note that the NeTV2 currently have a too high latency for some PCILeech kernel injection techniques - such as injecting into recent Win10 kernels.
+
 
 Flashing (by using RPi via NeTV2 Quickstart Package):
 =====================================================
@@ -41,15 +44,18 @@ Easiest way to flash the NeTV2 is by flashing it with the co-bundled Rasberry Pi
 
 It should probably be possible to flash by other methods as well, such as with OpenOCD and LambdaConcept programming cable (this is untested though). Or if having own RPi it's possible to download the sd-card image for booting the prepared NeTV2 RPi and flash it by the above method.
 
+
 Building:
 =================
 For building instructions please check out the [build readme](build.md) for information. The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties please also check out the [build readme](build.md) for information.
+
 
 Connecting to the NeTV2:
 =======================
 Once powered on the NeTV2 will try to fetch an IPv4 address by using DHCP regardless whether the ethernet cable is connected or not. This is indicated by a green blinking at the single HDMI port on the side. If no DHCP address is received in the first 10s the device will by default fall back to the default static IPv4 address of **192.168.0.222**. This is indicated by a red blinking at the single HDMI port on the side.
 
 Connect to the device by using the `-device rawudp://192.168.0.222` parameter in PCILeech or MemProcFS. The transport will take place over UDP - which may be lossy. Note that any lost UDP packages are not handled and may cause issues (this is normally not a problem).
+
 
 Other Notes:
 =================
@@ -58,6 +64,17 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 This project as-is published on Github contains no Xilinx or fpga-cores.com proprietary IP.
 
 Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
+
+
+Support PCILeech/MemProcFS development:
+=======================================
+PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time - since I'm not able to work with this. Unfortunately since some aspects also relate to hardware I also put quite some of money into my projects. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
+
+Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting donations; even though a donation would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A donation will have to stay donation and no more.  I'll set up the Github sponsors as soon as I'm able to; but for now it's possible to contribute with:
+
+ - Paypal: `paypal@ulffrisk.com` 
+ - Bitcoin: `bc1q9kur5pym8wmh5yxkf65792rdqm0guncd2gl4tu`
+
 
 Releases / Version History:
 =================
@@ -79,3 +96,12 @@ v4.2
 * Download pre-built binaries for XC7A35T and XC7A100T versions below:
   * [XC7A35T](https://mega.nz/#!ED5i3A4L!uaVsx9oR3S9-NlEQ4hlNnPZpUFwYjrm_0Otp7jmCcCk) SHA256: `86e1f6d4a109ca9e3dd063e6eab85efeea172701dac197fb691f538c7c7232fc`
   * [XC7A100T](https://mega.nz/#!1e4CUA4A!remhPrf7qRdqfNCgVgqRtbTAX-_9HDgqTMBwqdkKU-g) SHA256: `ed07835728641de5f5f7bb5df2c56a3b104a4c3e1fd0f23a014a10102636c5aa`
+
+v4.4
+* **PCILeech is free and open source. PCILeech is not directly affiliated with the NeTV2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
+* Disable PCIe WAKE#.
+* Increased stability and reboot support.
+* Support for Ryzen CPUs (NB! this is FPGA support only - PCILeech itself may still have issues).
+* Download pre-built binaries for XC7A35T and XC7A100T versions below:
+  * [XC7A35T](https://mega.nz/file/dD5AzaTR#o2oZSnlkxcT0543aHINSFOXvXFuQU6TaGbyNz3fUTt8) SHA256: `27a534192d597f42e8bc98bf561086c0ec5eeef1827d4590ec0ac7ac534de69f`
+  * [XC7A100T](https://mega.nz/file/BK400CLS#oopXORZGvA1VW1v8S8t-JGF9FKcY3k63E732rLIU-i8) SHA256: `97b90c2efe0211aeb499ec82e2882cf9151546f4229c0577d5da6220f1dfec5f`

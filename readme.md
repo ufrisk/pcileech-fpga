@@ -12,7 +12,7 @@ PCILeech currently supports multiple FPGA based devices - please see the table b
 | Device                       | Connection | Transfer Speed | PCIe Version  | OS support<br>(on attacker) | Creator         |
 | ---------------------------- | ---------- | -------------- | ------------- | ------------------------ | --------------- |
 | [AC701/FT601](ac701_ft601)   | USB3       | 150 MB/s       | PCIe gen2 x4* | Windows                  | Ulf Frisk       |
-| [ScreamerM2](ScreamerM2)     | USB3       | 150 MB/s       | PCIe gen2 x4* | Windows                  | Ramtin Amin<br>Ulf Frisk |
+| [ScreamerM2](ScreamerM2)     | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* | Windows                  | Ramtin Amin<br>Ulf Frisk |
 | [PCIeScreamer](pciescreamer) | USB3       | 100 MB/s       | PCIe gen2 x1  | Windows                  | Ramtin Amin<br>Ulf Frisk |
 | [SP605/FT601](sp605_ft601)   | USB3       | 75 MB/s        | PCIe gen1 x1  | Windows                  | Ulf Frisk       |
 | [NeTV2](NeTV2)               | UDP/IP     | 7 MB/s         | PCIe gen2 x4* | Windows                  | Ulf Frisk       |

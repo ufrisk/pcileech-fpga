@@ -164,6 +164,14 @@ set_false_path -from [get_pins {i_pcileech_fifo/_pcie_core_config_reg[*]/C}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_lnk_up_int_reg/C] -to [get_pins {i_pcileech_fifo/_cmd_tx_din_reg[16]/D}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_reset_out_reg/C]
 
+#PCIe signals
+set_property PACKAGE_PIN K1 [get_ports pcie_present]
+set_property PACKAGE_PIN M1 [get_ports pcie_perst_n]
+set_property PACKAGE_PIN L2 [get_ports pcie_wake_n]
+set_property IOSTANDARD LVCMOS33 [get_ports pcie_present]
+set_property IOSTANDARD LVCMOS33 [get_ports pcie_perst_n]
+set_property IOSTANDARD LVCMOS33 [get_ports pcie_wake_n]
+
 set_property LOC GTPE2_CHANNEL_X0Y2 [get_cells {i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/gt_top_i/pipe_wrapper_i/pipe_lane[0].gt_wrapper_i/gtp_channel.gtpe2_channel_i}]
 set_property PACKAGE_PIN E3 [get_ports {pcie_rx_n[0]}]
 set_property PACKAGE_PIN E4 [get_ports {pcie_rx_p[0]}]
@@ -189,8 +197,9 @@ set_property PACKAGE_PIN D5 [get_ports pcie_clk_n]
 set_property PACKAGE_PIN D6 [get_ports pcie_clk_p]
 
 create_clock -name pcie_sys_clk_p -period 10.0 [get_nets pcie_clk_p]
-create_clock -name pcie_refclk -period 10.0 [get_nets {i_pcileech_pcie_a7/pcie_clk_c}]
 
+set_property CFGBVS Vcco [current_design]
+set_property CONFIG_VOLTAGE 3.3 [current_design]
 set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design]
 set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 set_property BITSTREAM.CONFIG.SPI_FALL_EDGE YES [current_design]

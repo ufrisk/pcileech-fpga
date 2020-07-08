@@ -15,7 +15,7 @@ module pcileech_netv2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 5,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 2,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 4,
     parameter       PARAM_UDP_STATIC_ADDR = 32'hc0a800de,   // 192.168.0.222
     parameter       PARAM_UDP_STATIC_FORCE = 1'b0,
     parameter       PARAM_UDP_PORT = 16'h6f3a               // 28474
@@ -38,6 +38,8 @@ module pcileech_netv2_top #(
     input   [0:0]   pcie_rx_n,
     input           pcie_clk_p,
     input           pcie_clk_n,
+    input           pcie_perst_n,
+    output reg      pcie_wake_n = 1'b1,
       
     // ETH
     output          eth_clk50,
@@ -115,6 +117,8 @@ module pcileech_netv2_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
+        .pcie_present       ( 1'b1                  ),
+        .pcie_perst_n       ( pcie_perst_n          ),
         // FIFO CTL <--> COM CTL
         .dcom               ( dcom_fifo.mp_fifo     ),
         // FIFO CTL <--> PCIe
@@ -138,6 +142,7 @@ module pcileech_netv2_top #(
         .pcie_rx_n          ( pcie_rx_n             ),
         .pcie_clk_p         ( pcie_clk_p            ),
         .pcie_clk_n         ( pcie_clk_n            ),
+        .pcie_perst_n       ( pcie_perst_n          ),
         // State and Activity LEDs
         .led_state          ( led00                 ),
         // FIFO CTL <--> PCIe
