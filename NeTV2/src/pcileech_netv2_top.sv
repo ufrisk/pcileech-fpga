@@ -15,7 +15,7 @@ module pcileech_netv2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 5,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 4,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 5,
     parameter       PARAM_UDP_STATIC_ADDR = 32'hc0a800de,   // 192.168.0.222
     parameter       PARAM_UDP_STATIC_FORCE = 1'b0,
     parameter       PARAM_UDP_PORT = 16'h6f3a               // 28474

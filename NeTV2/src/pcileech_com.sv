@@ -102,6 +102,11 @@ module pcileech_com (
     always @ ( posedge clk_com )
         if ( rst | (~com_rx_valid32 & com_rx_valid64_dw[0] & com_rx_valid64_dw[1]) )
             com_rx_valid64_dw <= 2'b00;
+        else if ( (com_rx_data32 == 32'h66665555) && (com_rx_data64[31:0] == 32'h66665555) )
+            // resync logic to allow the host to send resync data that will
+            // allow bitstream to sync to proper 32->64-bit sequence in case
+            // it should have happen to get out of sync at startup/shutdown.
+            com_rx_valid64_dw <= 2'b00;
         else if ( com_rx_valid32 )
             begin
                 com_rx_data64 <= (com_rx_data64 << 32) | com_rx_data32;

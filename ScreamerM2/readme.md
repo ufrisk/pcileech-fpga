@@ -89,9 +89,15 @@ v4.3
   * [ScreamerM2](https://mega.nz/#!ofogyYBS!lR3K6nMqS5PTqREXVC6uea_MQrjskwMs_alIxlGfXv8) SHA256: `961d3526a0c89b0965cafabffcd1f3ceacb2e5788d0e3716767ddf04b2fb9385`
 
 v4.4
-* **PCILeech is free and open source. PCILeech is not directly affiliated with the ScreamerM2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
 * Disable PCIe WAKE#.
 * Increased stability and reboot support.
 * Support for Ryzen CPUs (NB! this is FPGA support only - PCILeech itself may still have issues).
 * Download pre-built binaries below:
   * [ScreamerM2](https://mega.nz/file/VKhEjYwD#RZ_r90yVYB9UeCTdIaJZ1avTKVq4s25BBfWefgVOT0k) SHA256: `54ed5706357459d9595906b833155783801da9c1ef852c79e0533d4b613796df`
+
+v4.5
+* **PCILeech is free and open source. PCILeech is not directly affiliated with the NeTV2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
+* Fix for receiving initial data from PCILeech host.
+* Download pre-built binaries below:
+  * [ScreamerM2](https://mega.nz/file/BSBVXKQI#2kD04ffpducrxojd4p2Iv9mr7ShHuScL5G8EU6xqn9w) SHA256: `04ca8e631981020dc12a4116c585e686def1b63d58660edb5970b00b3ce4592c`
+  

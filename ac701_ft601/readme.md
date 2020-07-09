@@ -67,3 +67,7 @@ v4.4
 * Increased stability and reboot support.
 * Support for Ryzen CPUs (NB! this is FPGA support only - PCILeech itself may still have issues).
 * Download pre-built binary [here](https://mega.nz/file/UPgWyShJ#4G8TCtdGEU17NFZs0kU8_mX_04m27GTUxOsb7eNfpFY). <br>SHA256: `fa6f90e101273766608fab8cbb13361489d5a2bc0ed8e91e64fbe45ff67d7ddf`
+
+v4.5
+* Fix for receiving initial data from PCILeech host.
+* Download pre-built binary [here](https://mega.nz/file/8DIhlAgI#T-GBLdhtYj5pNSG0vIc2zhWr_3KmUZbFijS-cap23Hs). <br>SHA256: `fd1982b1e8e2da48b0fa75ffb196eb41ac45c13dbb25f7547bb084c4c152f4f7`
