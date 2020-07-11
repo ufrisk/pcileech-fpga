@@ -11,6 +11,8 @@
 `timescale 1ns / 1ps
 `include "pcileech_header.svh"
 
+`define ENABLE_STARTUPE2
+
 module pcileech_fifo #(
     parameter               PARAM_DEVICE_ID = 0,
     parameter               PARAM_VERSION_NUMBER_MAJOR = 0,
@@ -181,8 +183,9 @@ module pcileech_fifo #(
     localparam          RWPOS_WAIT_COMPLETE         = 18;   // WAIT FOR DRP COMPLETION
     localparam          RWPOS_DRP_RD_EN             = 20;
     localparam          RWPOS_DRP_WR_EN             = 21;
+    localparam          RWPOS_GLOBAL_SYSTEM_RESET   = 31;
     
-    wire    [271:0]     ro;
+    wire    [279:0]     ro;
     reg     [239:0]     rw;
     
     // special non-user accessible registers 
@@ -216,7 +219,11 @@ module pcileech_fifo #(
     assign ro[255:192]  = _cmd_timer_inactivity_base;   // +018: INACTIVITY TIMER
     // PCIe DRP 
     assign ro[271:256]  = rwi_drp_data;                 // +020: DRP: pcie_drp_do
-    // 0034
+    // PCIe
+    assign ro[272]      = pcie_present;                 // +034: PCIe PRSNT#
+    assign ro[273]      = pcie_perst_n;                 //       PCIe PERST#
+    assign ro[279:274]  = 0;                            //       SLACK
+    // +035
     
     // ------------------------------------------------------------------------
     // INITIALIZATION/RESET BLOCK _AND_
@@ -236,7 +243,8 @@ module pcileech_fifo #(
             rw[19]      <= 0;                           //       SLACK
             rw[20]      <= 0;                           //       DRP RD EN
             rw[21]      <= 0;                           //       DRP WR EN
-            rw[31:22]   <= 0;                           //       RESERVED FUTURE
+            rw[30:22]   <= 0;                           //       RESERVED FUTURE
+            rw[31]      <= 0;                           //       global system reset (GSR) via STARTUPE2 primitive
             // SIZEOF / BYTECOUNT [little-endian]
             rw[63:32]   <= $bits(rw) >> 3;              // +004: bytecount [little endian]
             // CMD INACTIVITY TIMER TRIGGER VALUE
@@ -260,9 +268,7 @@ module pcileech_fifo #(
             // PCIe DRP, PRSNT#, PERST#
             rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di
             rw[224+:9]  <= 0;                           // +01C: DRP: pcie_drp_addr
-            rw[233+:5]  <= 0;                           //       SLACK
-            rw[238]     <= pcie_present;                //       PRSNT#
-            rw[239]     <= pcie_perst_n;                //       PERST#
+            rw[233+:7]  <= 0;                           //       SLACK
             // 01E -  
              
         end
@@ -389,5 +395,30 @@ module pcileech_fifo #(
                     end      
             
             end
+
+    // ----------------------------------------------------
+    // GLOBAL SYSTEM RESET:  ( provided via STARTUPE2 primitive )
+    // ----------------------------------------------------
+`ifdef ENABLE_STARTUPE2
+
+    STARTUPE2 #(
+      .PROG_USR         ( "FALSE"           ),
+      .SIM_CCLK_FREQ    ( 0.0               )
+    ) i_STARTUPE2 (
+      .CFGCLK           (                   ), // ->
+      .CFGMCLK          (                   ), // ->
+      .EOS              (                   ), // ->
+      .PREQ             (                   ), // ->
+      .CLK              ( clk               ), // <-
+      .GSR              ( rw[RWPOS_GLOBAL_SYSTEM_RESET] ), // <- GLOBAL SYSTEM RESET
+      .GTS              ( 1'b0              ), // <-
+      .KEYCLEARB        ( 1'b0              ), // <-
+      .PACK             ( 1'b0              ), // <-
+      .USRCCLKO         ( 1'b0              ), // <-
+      .USRCCLKTS        ( 1'b0              ), // <-
+      .USRDONEO         ( 1'b1              ), // <-
+      .USRDONETS        ( 1'b1              )  // <-
+    );
+`endif /* ENABLE_STARTUPE2 */
 
 endmodule

@@ -71,3 +71,7 @@ v4.4
 v4.5
 * Fix for receiving initial data from PCILeech host.
 * Download pre-built binary [here](https://mega.nz/file/8DIhlAgI#T-GBLdhtYj5pNSG0vIc2zhWr_3KmUZbFijS-cap23Hs). <br>SHA256: `fd1982b1e8e2da48b0fa75ffb196eb41ac45c13dbb25f7547bb084c4c152f4f7`
+
+v4.6
+* Support connecting USB cable after device power-on.
+* Download pre-built binary [here](https://mega.nz/file/pfgHURoQ#IMx1m_JDmVGdEfesBU5M1qQ-Jmv3tGnFeFEXyXExp9c). <br>SHA256: `fdeb65b1580adeb9720cf10af9b67d72d092d024edb7096ff7f2f340c322c9c3`
