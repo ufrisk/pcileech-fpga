@@ -62,10 +62,13 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 
 Support PCILeech/MemProcFS development:
 =======================================
+**I'm not officially affiliated with any hardware sold! I do _NOT_ receive any revenue from hardware sold! If you purchase hardware to use PCILeech/MemProcFS please consider supporting the project as well!**
+
 PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time - since I'm not able to work with this. Unfortunately since some aspects also relate to hardware I also put quite some of money into my projects. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
 
-Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting donations; even though a donation would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A donation will have to stay donation and no more.  I'll set up the Github sponsors as soon as I'm able to; but for now it's possible to contribute with:
+Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting sponsorships; even though a sponsorship would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A sponsorship will have to stay a sponsorship and no more. It's possible to sponsor via Github Sponsors (preferred way), but also via PayPal or Bitcoin.
 
+ - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk) (preferred)
  - Paypal: `paypal@ulffrisk.com` 
  - Bitcoin: `bc1q9kur5pym8wmh5yxkf65792rdqm0guncd2gl4tu`
 
