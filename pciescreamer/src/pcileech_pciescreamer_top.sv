@@ -3,7 +3,7 @@
 //
 // Top module for the PCIeScreamer Artix-7 board.
 //
-// (c) Ulf Frisk, 2018-2019
+// (c) Ulf Frisk, 2018-2020
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -15,7 +15,7 @@ module pcileech_pciescreamer_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 3,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 2
+    parameter       PARAM_VERSION_NUMBER_MINOR = 6
 ) (
     // SYSTEM CLK (100MHz)
     input           clk,
@@ -92,6 +92,8 @@ module pcileech_pciescreamer_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
+        .pcie_present       ( 1'b0                  ),  // no hw support
+        .pcie_perst_n       ( 1'b1                  ),  // no hw support
         // FIFO CTL <--> COM CTL
         .dcom               ( dcom_fifo.mp_fifo     ),
         // FIFO CTL <--> PCIe
@@ -115,6 +117,7 @@ module pcileech_pciescreamer_top #(
         .pcie_rx_n          ( pcie_rx_n             ),
         .pcie_clk_p         ( pcie_clk_p            ),
         .pcie_clk_n         ( pcie_clk_n            ),
+        .pcie_perst_n       ( 1'b1                  ),  // no hw support
         // State and Activity LEDs
         .led_state          ( user_led_ld2          ),
         // FIFO CTL <--> PCIe

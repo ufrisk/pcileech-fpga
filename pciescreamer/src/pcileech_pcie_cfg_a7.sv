@@ -211,7 +211,8 @@ module pcileech_pcie_cfg_a7(
             // PCIe CFG MGMT
             rw[159:128] <= 0;                       // +010: cfg_mgmt_di
             rw[169:160] <= 0;                       // +014: cfg_mgmt_dwaddr
-            rw[171:170] <= 0;                       //       SLACK
+            rw[170]     <= 1;                       //       cfg_mgmt_wr_readonly
+            rw[171]     <= 1;                       //       cfg_mgmt_wr_rw1c_as_rw
             rw[175:172] <= 4'hf;                    //       cfg_mgmt_byte_en
             // PCIe PL PHY
             rw[176]     <= 0;                       // +016: pl_directed_link_auton
@@ -257,6 +258,8 @@ module pcileech_pcie_cfg_a7(
     assign ctx.cfg_dsn                      = rw[127:64];
     assign ctx.cfg_mgmt_di                  = rw[159:128];
     assign ctx.cfg_mgmt_dwaddr              = rw[169:160];
+    assign ctx.cfg_mgmt_wr_readonly         = rw[170];
+    assign ctx.cfg_mgmt_wr_rw1c_as_rw       = rw[171];
     assign ctx.cfg_mgmt_byte_en             = rw[175:172];
     
     assign ctx.pl_directed_link_auton       = rw[176];

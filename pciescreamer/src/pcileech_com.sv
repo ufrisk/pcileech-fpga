@@ -52,7 +52,7 @@ module pcileech_com (
     output              eth_led_state_green
 `endif /* ENABLE_ETH */
     );
-    
+
     // ----------------------------------------------------------------------------
     // COMMUNICATION CORE INITIAL ON-BOARD DEFAULT RX-DATA
     // Sometimes there is a need to perform actions - such as setting DRP-related
@@ -80,6 +80,10 @@ module pcileech_com (
     time tickcount64 = 0;
     always @ ( posedge clk )
         tickcount64 <= rst ? 0 : tickcount64 + 1;
+        
+    time tickcount64_com = 0;
+    always @ ( posedge clk_com )
+        tickcount64_com <= rst ? 0 : tickcount64_com + 1;
             
     wire        initial_rx_valid    = ~rst & (tickcount64 >= 16) & (tickcount64 < $size(initial_rx) + 16);
     wire [63:0] initial_rx_data     = initial_rx_valid ? initial_rx[tickcount64 - 16] : 64'h0;
@@ -102,6 +106,11 @@ module pcileech_com (
     always @ ( posedge clk_com )
         if ( rst | (~com_rx_valid32 & com_rx_valid64_dw[0] & com_rx_valid64_dw[1]) )
             com_rx_valid64_dw <= 2'b00;
+        else if ( (com_rx_data32 == 32'h66665555) && (com_rx_data64[31:0] == 32'h66665555) )
+            // resync logic to allow the host to send resync data that will
+            // allow bitstream to sync to proper 32->64-bit sequence in case
+            // it should have happen to get out of sync at startup/shutdown.
+            com_rx_valid64_dw <= 2'b00;
         else if ( com_rx_valid32 )
             begin
                 com_rx_data64 <= (com_rx_data64 << 32) | com_rx_data32;
@@ -109,7 +118,7 @@ module pcileech_com (
             end
     
     fifo_64_64_clk2_comrx i_fifo_64_64_clk2_comrx(
-        .rst            ( rst                       ),
+        .rst            ( rst | (tickcount64_com<2) ),
         .wr_clk         ( clk_com                   ),
         .rd_clk         ( clk                       ),
         .din            ( com_rx_data64             ),
