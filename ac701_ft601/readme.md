@@ -74,4 +74,4 @@ v4.5
 
 v4.6
 * Support connecting USB cable after device power-on.
-* Download pre-built binary [here](https://mega.nz/file/pfgHURoQ#IMx1m_JDmVGdEfesBU5M1qQ-Jmv3tGnFeFEXyXExp9c). <br>SHA256: `fdeb65b1580adeb9720cf10af9b67d72d092d024edb7096ff7f2f340c322c9c3`
+* Download pre-built binary [here](https://mega.nz/file/oP4T1SqJ#ng6h0DYTiE8kxEtdCWEh5To8xD8Ehgn19ZvBzgiPsvg). <br>SHA256: `8ea10e48711f67bd38bf9fb0003ca1bf67ea8bd91243ae7fefa250a8257d6774`

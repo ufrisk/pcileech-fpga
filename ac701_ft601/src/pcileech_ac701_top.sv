@@ -34,7 +34,6 @@ module pcileech_ac701_top #(
     input   [0:0]   pcie_rx_n,
     input           pcie_clk_p,
     input           pcie_clk_n,
-    input           pcie_rst_n,
     input           pcie_perst_n,
     output reg      pcie_wake_n = 1'b1,
 
@@ -81,7 +80,7 @@ module pcileech_ac701_top #(
     always @ ( posedge clk )
         tickcount64 <= tickcount64 + 1;
 
-    OBUF led0_obuf(.O( gpio_led[0] ), .I( gpio_sw_south | gpio_sw_north | tickcount64[26] ));
+    OBUF led0_obuf(.O( gpio_led[0] ), .I( gpio_sw_south ^ gpio_sw_north ^ tickcount64[26] ));
     assign rst = gpio_sw_north | ((tickcount64 < 64) ? 1'b1 : 1'b0);
     assign ft601_rst_n = ~rst;
     

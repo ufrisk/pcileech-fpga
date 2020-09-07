@@ -11,7 +11,7 @@
 `timescale 1ns / 1ps
 `include "pcileech_header.svh"
 
-`define ENABLE_STARTUPE2
+//`define ENABLE_STARTUPE2
 
 module pcileech_fifo #(
     parameter               PARAM_DEVICE_ID = 0,
