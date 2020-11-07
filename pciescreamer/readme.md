@@ -98,4 +98,12 @@ v4.6
   * [R01](https://mega.nz/file/geQBgKYL#n7Orl6SDmXxbBW8WfXjPqpTSmuot4B2-dA4smVC0Qzo) SHA256: `d0579e5b691de8f37a7f835898a1c6562498cd42a7808b73b8eb569db2bd4548`
   * [R02](https://mega.nz/file/RSJx2aRT#MCqIKd8Pteq6LOodVmsg_LDRyoYgehzolUEQKGj3s4s) SHA256: `f4402e56ab1dd98f846e7dcb232e8068ac1bb9594959f1b7440afec55d80bc73`
 
+v4.7
+* **PCILeech is free and open source. PCILeech is not directly affiliated with the PCIeScreamer/ScreamerM2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
+* New USB core.
+* Support for auto-clear of PCIe status register / master abort flag.
+* NB! stability issues remain!
+  * [R01](https://mega.nz/file/geQBgKYL#xxxxx-dA4smVC0Qzo) SHA256: `xxxx`
+  * [R02](https://mega.nz/file/RSJx2aRT#xxxx) SHA256: `xxxx`
+
 **PCILeech-FPGA versions above v4.2 are only partially supported due to lack of hardware support.**
