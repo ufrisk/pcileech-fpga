@@ -120,6 +120,6 @@ v4.7
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binaries for XC7A35T and XC7A100T versions below:
-  * [XC7A35T](https://mega.nz/file/xxxx) SHA256: `xxxxx`
-  * [XC7A100T](https://mega.nz/file/xxxxx) SHA256: `xxxx`
+  * [XC7A35T](https://mega.nz/file/oKpAyQBC#OxNyFagjpLb56MIA_iqUCAZ1Vm6hAaEBzEhXrgQmrxg) SHA256: `222d023060373840140932113eb98aff41225a6658026fe585725081a48b5388`
+  * [XC7A100T](https://mega.nz/file/sDo0BYDI#kUbXIaWqUX0LCHnK56hLBpzzS_YLy_9T9ArFomgUgkc) SHA256: `01b18df54e63d086d4b0a593e5e24a56f05925b01692711d2e16f9952856a8ab`
   
