@@ -75,3 +75,9 @@ v4.5
 v4.6
 * Support connecting USB cable after device power-on.
 * Download pre-built binary [here](https://mega.nz/file/oP4T1SqJ#ng6h0DYTiE8kxEtdCWEh5To8xD8Ehgn19ZvBzgiPsvg). <br>SHA256: `8ea10e48711f67bd38bf9fb0003ca1bf67ea8bd91243ae7fefa250a8257d6774`
+
+v4.7
+* **PCILeech is free and open source. PCILeech is not affiliated with the AC701 and do not gain financially from sales. If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
+* New USB core.
+* Support for auto-clear of PCIe status register / master abort flag.
+* Download pre-built binary [here](https://mega.nz/file/xxxx). <br>SHA256: `xxxxx`
