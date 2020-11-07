@@ -62,6 +62,7 @@ v2.0
 * Download pre-built binary [here](https://mega.nz/#!BCRUED6R!4qhJ57cF0iMK0Ux26XOtyqdN_GLTOc2bwu6cKxj4468). <br>SHA256: `caaf43d53bc6cb137fb8c4b106e9fd6432524738682aec7dcd75a837c4bcd729`
 
 v2.2
+* **PCILeech is free and open source. PCILeech is not affiliated with the SP605 and do not gain financially from sales. If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
 * Improved load speed.
 * Bug fixes - USB and Timing.
 * Compatible with PCILeech v2.6+
