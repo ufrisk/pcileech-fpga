@@ -110,8 +110,16 @@ v4.4
   * [XC7A100T](https://mega.nz/file/BK400CLS#oopXORZGvA1VW1v8S8t-JGF9FKcY3k63E732rLIU-i8) SHA256: `97b90c2efe0211aeb499ec82e2882cf9151546f4229c0577d5da6220f1dfec5f`
 
 v4.5
-* **PCILeech is free and open source. PCILeech is not directly affiliated with the NeTV2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
 * Fix for receiving initial data from PCILeech host.
 * Download pre-built binaries for XC7A35T and XC7A100T versions below:
   * [XC7A35T](https://mega.nz/file/oLIzyA4b#FA9d8bokRxIN_SlIY8qbD0rJeMZKDM56Flq4Fbwu4o4) SHA256: `b280e184d71b76f6c1f21ae5a373ebd913e28ed3477326f3997f59c55f1cbf9a`
   * [XC7A100T](https://mega.nz/file/UCRziabR#RaO0d3aivOy4pv4QXQ_vG6-f9eIASBqB05yCEkGSr5k) SHA256: `e4e4eee85012c2312878413c8ba6c49d07a51eb07967b46dea3c919e8ba8900e`
+
+v4.7
+* **PCILeech is free and open source. PCILeech is not directly affiliated with the NeTV2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
+* New USB core.
+* Support for auto-clear of PCIe status register / master abort flag.
+* Download pre-built binaries for XC7A35T and XC7A100T versions below:
+  * [XC7A35T](https://mega.nz/file/xxxx) SHA256: `xxxxx`
+  * [XC7A100T](https://mega.nz/file/xxxxx) SHA256: `xxxx`
+  
