@@ -82,7 +82,7 @@ module pcileech_pcie_cfg_a7(
     // ------------------------------------------------------------------------
     
     wire    [383:0]     ro;
-    reg     [671:0]     rw;
+    reg     [703:0]     rw;
     
     // special non-user accessible registers 
     reg                 rwi_cfg_mgmt_rd_en;
@@ -93,6 +93,7 @@ module pcileech_pcie_cfg_a7(
     reg     [31:0]      rwi_cfgrd_data;
     reg                 rwi_tlp_static_valid;
     reg                 rwi_tlp_static_has_data;
+    reg     [31:0]      rwi_count_cfgspace_status_cl;
    
     // ------------------------------------------------------------------------
     // REGISTER FILE: READ-ONLY LAYOUT/SPECIFICATION
@@ -183,10 +184,11 @@ module pcileech_pcie_cfg_a7(
     // REGISTER FILE: READ-WRITE LAYOUT/SPECIFICATION
     // ------------------------------------------------------------------------
     
-    localparam integer  RWPOS_CFG_RD_EN             = 16;
-    localparam integer  RWPOS_CFG_WR_EN             = 17;
-    localparam integer  RWPOS_CFG_WAIT_COMPLETE     = 18;
-    localparam integer  RWPOS_CFG_STATIC_TLP_TX_EN  = 19;
+    localparam integer  RWPOS_CFG_RD_EN                 = 16;
+    localparam integer  RWPOS_CFG_WR_EN                 = 17;
+    localparam integer  RWPOS_CFG_WAIT_COMPLETE         = 18;
+    localparam integer  RWPOS_CFG_STATIC_TLP_TX_EN      = 19;
+    localparam integer  RWPOS_CFG_CFGSPACE_STATUS_CL_EN = 20;
     
     task pcileech_pcie_cfg_a7_initialvalues;        // task is non automatic
         begin
@@ -202,7 +204,8 @@ module pcileech_pcie_cfg_a7(
             rw[17]      <= 0;                       //       CFG WR EN
             rw[18]      <= 0;                       //       WAIT FOR PCIe CFG SPACE RD/WR COMPLETION BEFORE ACCEPT NEW FIFO READ/WRITES
             rw[19]      <= 0;                       //       TLP_STATIC TX ENABLE
-            rw[27:20]   <= 0;                       //       RESERVED FUTURE
+            rw[20]      <= 0;                       //       CFGSPACE_STATUS_REGISTER_AUTO_CLEAR [master abort flag]
+            rw[27:21]   <= 0;                       //       RESERVED FUTURE
             rw[31:28]   <= 4'hf;                    //       PCIe TLP TX ENABLE FOR MUX CHANNEL 0-3 [MUX[0] == RW[28] ..].
             // SIZEOF / BYTECOUNT [little-endian]
             rw[63:32]   <= $bits(rw) >> 3;          // +004: bytecount [little endian]
@@ -211,8 +214,8 @@ module pcileech_pcie_cfg_a7(
             // PCIe CFG MGMT
             rw[159:128] <= 0;                       // +010: cfg_mgmt_di
             rw[169:160] <= 0;                       // +014: cfg_mgmt_dwaddr
-            rw[170]     <= 1;                       //       cfg_mgmt_wr_readonly
-            rw[171]     <= 1;                       //       cfg_mgmt_wr_rw1c_as_rw
+            rw[170]     <= 0;                       //       cfg_mgmt_wr_readonly
+            rw[171]     <= 0;                       //       cfg_mgmt_wr_rw1c_as_rw
             rw[175:172] <= 4'hf;                    //       cfg_mgmt_byte_en
             // PCIe PL PHY
             rw[176]     <= 0;                       // +016: pl_directed_link_auton
@@ -248,7 +251,10 @@ module pcileech_pcie_cfg_a7(
             rw[240+:16] <= 0;                       // +01E: TLP_STATIC TLP TX SLEEP (ticks) [little-endian]
             rw[256+:384] <= 0;                      // +020: TLP_STATIC TLP [6*64-bit, 12*32-bit hdr+data]
             rw[640+:32] <= 0;                       // +050: TLP_STATIC TLP RETRANSMIT COUNT
-            // +054:
+            // PCIe STATUS register clear timer
+            rw[672+:32] <= 62500;                   // +054: CFGSPACE_STATUS_CLEAR TIMER (ticks) [little-endian] [default = 1ms - 62.5k @ 62.5MHz]
+            // +058:
+            
         end
     endtask
     
@@ -344,27 +350,41 @@ module pcileech_pcie_cfg_a7(
                                 rw[in_cmd_address_bit+i_write] <= in_cmd_value[i_write];
                         end
 
+                // STATUS REGISTER CLEAR
+                if ( rw[RWPOS_CFG_CFGSPACE_STATUS_CL_EN] & ~in_cmd_read & ~in_cmd_write & ~rw[RWPOS_CFG_RD_EN] & ~rw[RWPOS_CFG_WR_EN] & ~rwi_cfg_mgmt_rd_en & ~rwi_cfg_mgmt_wr_en )
+                    if ( rwi_count_cfgspace_status_cl < rw[672+:32] )
+                        rwi_count_cfgspace_status_cl <= rwi_count_cfgspace_status_cl + 1;
+                    else begin
+                        rwi_count_cfgspace_status_cl <= 0;
+                        rw[RWPOS_CFG_WR_EN] <= 1'b1;
+                        rw[159:128] <= 32'hff000000;    // cfg_mgmt_di
+                        rw[169:160] <= 1;               // cfg_mgmt_dwaddr
+                        rw[170]     <= 0;               // cfg_mgmt_wr_readonly
+                        rw[171]     <= 0;               // cfg_mgmt_wr_rw1c_as_rw
+                        rw[175:172] <= 4'b1000;         // cfg_mgmt_byte_en
+                    end
+
                 // CONFIG SPACE READ/WRITE                        
                 if ( ctx.cfg_mgmt_rd_wr_done )
                     begin
-                        rwi_cfg_mgmt_rd_en <= 1'b0;
-                        rwi_cfg_mgmt_wr_en <= 1'b0;
-                        rwi_cfgrd_valid <= 1'b1;
-                        rwi_cfgrd_addr <= ctx.cfg_mgmt_dwaddr;
-                        rwi_cfgrd_data <= ctx.cfg_mgmt_do;
-                        rwi_cfgrd_byte_en <= ctx.cfg_mgmt_byte_en;
+                        rwi_cfg_mgmt_rd_en  <= 1'b0;
+                        rwi_cfg_mgmt_wr_en  <= 1'b0;
+                        rwi_cfgrd_valid     <= 1'b1;
+                        rwi_cfgrd_addr      <= ctx.cfg_mgmt_dwaddr;
+                        rwi_cfgrd_data      <= ctx.cfg_mgmt_do;
+                        rwi_cfgrd_byte_en   <= ctx.cfg_mgmt_byte_en;
                     end
                 else if ( rw[RWPOS_CFG_RD_EN] )
                     begin
                         rw[RWPOS_CFG_RD_EN] <= 1'b0;
-                        rwi_cfg_mgmt_rd_en <= 1'b1;
-                        rwi_cfgrd_valid <= 1'b0;
+                        rwi_cfg_mgmt_rd_en  <= 1'b1;
+                        rwi_cfgrd_valid     <= 1'b0;
                     end
                 else if ( rw[RWPOS_CFG_WR_EN] )
                     begin
                         rw[RWPOS_CFG_WR_EN] <= 1'b0;
-                        rwi_cfg_mgmt_wr_en <= 1'b1;
-                        rwi_cfgrd_valid <= 1'b0;
+                        rwi_cfg_mgmt_wr_en  <= 1'b1;
+                        rwi_cfgrd_valid     <= 1'b0;
                     end
                     
                 // STATIC_TLP TRANSMIT
