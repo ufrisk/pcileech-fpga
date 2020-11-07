@@ -103,7 +103,7 @@ v4.7
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * NB! stability issues remain!
-  * [R01](https://mega.nz/file/geQBgKYL#xxxxx-dA4smVC0Qzo) SHA256: `xxxx`
-  * [R02](https://mega.nz/file/RSJx2aRT#xxxx) SHA256: `xxxx`
+  * [R01](https://mega.nz/file/tKoinKgC#RB9i0y0vSwo2J2nf21_XfHZhM_I-JCPuhxXlNpWMFMI) SHA256: `2f564b979f77202ec6153797657e169648ca52180553a77ae73a55005b759094`
+  * [R02](https://mega.nz/file/VPxAjQqC#TpYO1Odakv6QD3dOwDWmWeXqUXcmzu0-8UnGsDdjlIc) SHA256: `29a6b06fc13034dfde65db87b6953b8d8531c00584ec8a3067cef89ba8d2b747`
 
 **PCILeech-FPGA versions above v4.2 are only partially supported due to lack of hardware support.**
