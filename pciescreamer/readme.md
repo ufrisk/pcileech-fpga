@@ -99,7 +99,7 @@ v4.6
   * [R02](https://mega.nz/file/RSJx2aRT#MCqIKd8Pteq6LOodVmsg_LDRyoYgehzolUEQKGj3s4s) SHA256: `f4402e56ab1dd98f846e7dcb232e8068ac1bb9594959f1b7440afec55d80bc73`
 
 v4.7
-* **PCILeech is free and open source. PCILeech is not directly affiliated with the PCIeScreamer/ScreamerM2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
+* **PCILeech is free and open source. PCILeech is not directly affiliated with the PCIeScreamer/ScreamerM2 and do not gain financially from sales. If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * NB! stability issues remain!
