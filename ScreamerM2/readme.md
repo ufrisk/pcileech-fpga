@@ -104,8 +104,14 @@ v4.5
   * [ScreamerM2](https://mega.nz/file/BSBVXKQI#2kD04ffpducrxojd4p2Iv9mr7ShHuScL5G8EU6xqn9w) SHA256: `04ca8e631981020dc12a4116c585e686def1b63d58660edb5970b00b3ce4592c`
   
 v4.6
-* **PCILeech is free and open source. PCILeech is not directly affiliated with the NeTV2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
 * Support connecting USB cable after device power-on.
 * Download pre-built binaries below:
   * [ScreamerM2](https://mega.nz/file/wbhn3BDA#vEpzHxNOSRsaEJXI4ce6OnPtjZECZVhIV4HEnRxV1T0) SHA256: `875c32a36934875f194af7d68648a5454c63aaa6ec4a730532632d9424148cd3`
+  
+v4.6
+* **PCILeech is free and open source. PCILeech is not directly affiliated with the PCIeScreamer/ScreamerM2 and do not gain financially from sales. If you find PCILeech useful please consider supporting the project.**
+* New USB core.
+* Support for auto-clear of PCIe status register / master abort flag.
+* Download pre-built binaries below:
+  * [ScreamerM2](https://mega.nz/file/xxxxx) SHA256: `xxxxx`
   
