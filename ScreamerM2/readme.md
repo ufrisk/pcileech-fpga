@@ -113,5 +113,5 @@ v4.7
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binaries below:
-  * [ScreamerM2](https://mega.nz/file/xxxxx) SHA256: `xxxxx`
+  * [ScreamerM2](https://mega.nz/file/ZGoCBaRB#bqdbZFT3eGH9k1BHGuhtB16QHte_uJjsnfUt-VpYQB8) SHA256: `431959337c3321ddaa18d2eed85b7af5abf03f59db99880a1c9b1f5f9b204746`
   
