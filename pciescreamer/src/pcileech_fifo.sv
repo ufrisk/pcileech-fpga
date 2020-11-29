@@ -16,7 +16,8 @@
 module pcileech_fifo #(
     parameter               PARAM_DEVICE_ID = 0,
     parameter               PARAM_VERSION_NUMBER_MAJOR = 0,
-    parameter               PARAM_VERSION_NUMBER_MINOR = 0
+    parameter               PARAM_VERSION_NUMBER_MINOR = 0,
+    parameter               PARAM_CUSTOM_VALUE = 0
 ) (
     input                   clk,
     input                   rst,
@@ -185,7 +186,7 @@ module pcileech_fifo #(
     localparam          RWPOS_DRP_WR_EN             = 21;
     localparam          RWPOS_GLOBAL_SYSTEM_RESET   = 31;
     
-    wire    [279:0]     ro;
+    wire    [319:0]     ro;
     reg     [239:0]     rw;
     
     // special non-user accessible registers 
@@ -220,10 +221,12 @@ module pcileech_fifo #(
     // PCIe DRP 
     assign ro[271:256]  = rwi_drp_data;                 // +020: DRP: pcie_drp_do
     // PCIe
-    assign ro[272]      = pcie_present;                 // +034: PCIe PRSNT#
+    assign ro[272]      = pcie_present;                 // +022: PCIe PRSNT#
     assign ro[273]      = pcie_perst_n;                 //       PCIe PERST#
-    assign ro[279:274]  = 0;                            //       SLACK
-    // +035
+    assign ro[287:274]  = 0;                            //       SLACK
+    // CUSTOM_VALUE
+    assign ro[319:288]  = PARAM_CUSTOM_VALUE;           // +024: CUSTOM VALUE
+    // +028
     
     // ------------------------------------------------------------------------
     // INITIALIZATION/RESET BLOCK _AND_
