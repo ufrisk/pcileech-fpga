@@ -15,11 +15,12 @@ module pcileech_pciescreamer_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2, 6-7 = RaptorDMA
     parameter       PARAM_DEVICE_ID = 3,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 7,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 8,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
-    // SYSTEM CLK (100MHz)
+    // SYS
     input           clk,
+    input           ft601_clk,
 
     // SYSTEM LEDs and BUTTONs
     input           user_btn_sw3_n,
@@ -56,7 +57,7 @@ module pcileech_pciescreamer_top #(
     IfPCIeFifoCfg   dcfg();
     IfPCIeFifoTlp   dtlp();
     IfPCIeFifoCore  dpcie();
-    IfFifo2CfgSpace dcfgspacewr();
+    IfShadow2Fifo   dshadow2fifo();
     
     // ----------------------------------------------------
     // FT601 (Buffered)
@@ -65,7 +66,7 @@ module pcileech_pciescreamer_top #(
     pcileech_com i_pcileech_com (
         // SYS
         .clk                ( clk                   ),
-        .clk_com            ( clk                   ),
+        .clk_com            ( ft601_clk             ),
         .rst                ( rst                   ),
         .led_state_txdata   ( user_led_ld1          ),  // ->
         .led_state_invert   ( ~user_btn_sw3_n       ),  // <-
@@ -102,7 +103,7 @@ module pcileech_pciescreamer_top #(
         .dcfg               ( dcfg.mp_fifo          ),
         .dtlp               ( dtlp.mp_fifo          ),
         .dpcie              ( dpcie.mp_fifo         ),
-        .dcfgspacewr        ( dcfgspacewr.source    )
+        .dshadow2fifo       ( dshadow2fifo.fifo     )
     );
     
     // ----------------------------------------------------
@@ -126,7 +127,8 @@ module pcileech_pciescreamer_top #(
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),
         .dfifo_pcie         ( dpcie.mp_pcie         ),
-        .dcfgspacewr        ( dcfgspacewr.sink      )
+        .dshadow2fifo_src   ( dshadow2fifo.src      ),
+        .dshadow2fifo_tlp   ( dshadow2fifo.tlp      )
     );
 
 endmodule

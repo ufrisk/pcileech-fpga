@@ -15,7 +15,7 @@ module pcileech_screamer_m2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2, 6-7 = RaptorDMA
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 7,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 8,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS
@@ -67,7 +67,7 @@ module pcileech_screamer_m2_top #(
     IfPCIeFifoCfg   dcfg();
     IfPCIeFifoTlp   dtlp();
     IfPCIeFifoCore  dpcie();
-    IfFifo2CfgSpace dcfgspacewr();
+    IfShadow2Fifo   dshadow2fifo();
 	
     // ----------------------------------------------------
     // TickCount64 CLK
@@ -128,7 +128,7 @@ module pcileech_screamer_m2_top #(
         .dcfg               ( dcfg.mp_fifo          ),
         .dtlp               ( dtlp.mp_fifo          ),
         .dpcie              ( dpcie.mp_fifo         ),
-        .dcfgspacewr        ( dcfgspacewr.source    )
+        .dshadow2fifo       ( dshadow2fifo.fifo     )
     );
     
     // ----------------------------------------------------
@@ -152,7 +152,8 @@ module pcileech_screamer_m2_top #(
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),
         .dfifo_pcie         ( dpcie.mp_pcie         ),
-        .dcfgspacewr        ( dcfgspacewr.sink      )
+        .dshadow2fifo_src   ( dshadow2fifo.src      ),
+        .dshadow2fifo_tlp   ( dshadow2fifo.tlp      )
     );
 
 endmodule

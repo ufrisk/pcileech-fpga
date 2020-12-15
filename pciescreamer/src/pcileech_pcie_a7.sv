@@ -30,7 +30,8 @@ module pcileech_pcie_a7(
     IfPCIeFifoCfg.mp_pcie   dfifo_cfg,
     IfPCIeFifoTlp.mp_pcie   dfifo_tlp,
     IfPCIeFifoCore.mp_pcie  dfifo_pcie,
-    IfFifo2CfgSpace.sink    dcfgspacewr
+    IfShadow2Fifo.src       dshadow2fifo_src,
+    IfShadow2Fifo.tlp       dshadow2fifo_tlp
     );
        
     // ----------------------------------------------------------------------------
@@ -42,6 +43,7 @@ module pcileech_pcie_a7(
     IfPCIeTlpRxTx   tlp_rx();
     IfCfg_TlpCfg    cfg_tlpcfg();
     IfTlp64         tlp_static();       // static tlp transmit from cfg->tlp
+    IfShadow2Tlp    dshadow2tlp();
     wire            user_lnk_up;
     
     // system interface
@@ -90,7 +92,19 @@ module pcileech_pcie_a7(
         .tlp_rx                     ( tlp_rx                    ),
         .cfg_tlpcfg                 ( cfg_tlpcfg                ),
         .tlp_static                 ( tlp_static                ),
-        .dcfgspacewr                ( dcfgspacewr               )
+        .dshadow2fifo               ( dshadow2fifo_tlp          ),
+        .dshadow2tlp                ( dshadow2tlp.tlp           )
+    );
+    
+    // ----------------------------------------------------------------------------
+    // PCIe SHADOW CONFIGURTION SPACE BELOW
+    // ----------------------------------------------------------------------------
+    
+    pcileech_pcie_cfgspace_shadow i_pcileech_pcie_cfgspace_shadow(
+        .rst                        ( rst_subsys                ),
+        .clk                        ( clk_100                   ),
+        .dshadow2fifo               ( dshadow2fifo_src          ),
+        .dshadow2tlp                ( dshadow2tlp.shadow        )
     );
     
     // ----------------------------------------------------------------------------

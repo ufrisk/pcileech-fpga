@@ -22,7 +22,8 @@ module pcileech_pcie_tlp_a7(
     
     IfCfg_TlpCfg.tlp        cfg_tlpcfg,
     IfTlp64.sink            tlp_static,
-    IfFifo2CfgSpace.sink    dcfgspacewr
+    IfShadow2Fifo.tlp       dshadow2fifo,
+    IfShadow2Tlp.tlp        dshadow2tlp
     );
     
     // ------------------------------------------------------------------------
@@ -75,14 +76,16 @@ module pcileech_pcie_tlp_a7(
     // ------------------------------------------------------------------------
     IfTlp16 tlp_cpl_cfgspace();
     
-    pcileech_pcie_cfgspace i_pcileech_pcie_cfgspace (
+    pcileech_pcie_tlptapcfgspace i_pcileech_pcie_tlptapcfgspace (
         .rst            ( rst                       ),
-        .clk            ( clk_pcie                  ),
+        .clk_100        ( clk_100                   ),
+        .clk_pcie       ( clk_pcie                  ),
         .tlp_rx         ( tlp_rx                    ),
         .tlp_tx         ( tlp_cpl_cfgspace          ),
         .tlp_pcie_id    ( cfg_tlpcfg.tlp_pcie_id    ),
-        .tlp_pcie_filter ( pcie_tlp_rx_filter       ),
-        .dcfgspacewr    ( dcfgspacewr               )
+        .tlp_pcie_filter  ( pcie_tlp_rx_filter      ),
+        .dshadow2fifo   ( dshadow2fifo              ),
+        .dshadow2tlp    ( dshadow2tlp               )
     );
         
     // ------------------------------------------------------------------------
@@ -114,13 +117,15 @@ endmodule
 
 
 
-module pcileech_pcie_cfgspace(
+module pcileech_pcie_tlptapcfgspace(
     input                   rst,
-    input                   clk,                // 62.5MHz (PCIe CLK)
+    input                   clk_100,            // 100MHz
+    input                   clk_pcie,           // 62.5MHz
     
     IfPCIeTlpRxTx.sink      tlp_rx,
     IfTlp16.source          tlp_tx,
-    IfFifo2CfgSpace.sink    dcfgspacewr,
+    IfShadow2Fifo.tlp       dshadow2fifo,
+    IfShadow2Tlp.tlp        dshadow2tlp,
     
     input   [15:0]          tlp_pcie_id,        // PCIe id of this core
     output                  tlp_pcie_filter     // do not forward TLP QWORD to user application
@@ -137,10 +142,12 @@ module pcileech_pcie_cfgspace(
     bit             snoop_error     = 1'b0;
     wire [127:0]    snoop_data      = { tlp_rx.data, snoop_data_first };
     wire [9:0]      snoop_addr_dw   = snoop_data[75:66];
+    wire [31:0]     snoop_data_wr_dw = snoop_data[127:96];
     wire [7:0]      snoop_tag       = snoop_data[47:40];
+    wire [3:0]      snoop_be        = {snoop_data[32], snoop_data[33], snoop_data[34], snoop_data[35]};
     wire [15:0]     snoop_requester_id = snoop_data[63:48];
-    wire            snoop_valid_rdwr = dcfgspacewr.cfgtlp_en & 
-                                    ~rst & tlp_rx.valid & tlp_rx.last & ~snoop_error & ~tlp_rx.keep[7] &
+    wire            snoop_valid_rdwr = dshadow2fifo.cfgtlp_en & 
+                                    ~rst & tlp_rx.valid & tlp_rx.last & ~snoop_error &
                                     (snoop_data[39:36] == 4'b0000) &            // Last DW BE[3:0] == 0000b
                                     (snoop_data[22:20] == 3'b000) &             // TC[2:0] == 000b
                                     (snoop_data[13:00] == 14'b00000000000001);  // LENGTH = 0000000001b, AT=00b, Attr = 00b
@@ -153,74 +160,70 @@ module pcileech_pcie_cfgspace(
     // since that will clog up the buffers and may cause target OS to freeze.
     bit             cfgtlp_filter         = 1'b0;
     wire            cfgtlp_filter_snoop   = ~snoop_first_n & (tlp_rx.data[29:25] == 5'b00010);  // fast detect cfg packet - Fmt[2:0]=xx0b, CfgRdWr0/CfgRdWr1=0010xb
-    assign          tlp_pcie_filter       = dcfgspacewr.filter_en & (cfgtlp_filter | cfgtlp_filter_snoop);
+    assign          tlp_pcie_filter       = dshadow2fifo.cfgtlp_filter & (cfgtlp_filter | cfgtlp_filter_snoop);
 
-    always @ ( posedge clk )
+    always @ ( posedge clk_pcie )
         begin
             snoop_data_first    <= tlp_rx.data;
             snoop_first_n       <= snoop_next_first_n;
             snoop_error         <= snoop_next_first_n & snoop_first_n;
             cfgtlp_filter       <= snoop_next_first_n & tlp_pcie_filter;
         end
-
+        
     // ------------------------------------------------------------------------
-    // READ/WRITE configuration space to/from BRAM memory. 
-    // READ takes two CLK on port B.
+    // TX DATA TO SHADOW CFGSPACE
     // ------------------------------------------------------------------------
-    bit             bram_valid;             // bram valid
-    bit             bram_supress_onwr;      // bram supress (= Cpl packet on Wr)
-    bit [7:0]       bram_tag;
-    bit [15:0]      bram_requester_id;
-    wire [31:0]     bram_data1;
-    wire [31:0]     bram_data2 = dcfgspacewr.cfgtlp_zero ? 32'h00000000 : bram_data1;
-                                    
-    bram_pcie_cfgspace i_bram_pcie_cfgspace(
-        .clka           ( dcfgspacewr.clk           ),
-        .addra          ( dcfgspacewr.addr          ),
-        .dina           ( dcfgspacewr.data          ),
-        .ena            ( dcfgspacewr.wren          ),
-        .wea            ( 1'b1                      ),
-        .clkb           ( clk                       ),
-        .addrb          ( snoop_addr_dw             ),
-        .doutb          ( bram_data1                )
-    );
- 
-    always @ ( posedge clk )
-        begin
-            bram_valid          <= snoop_valid_rd;
-            bram_supress_onwr   <= snoop_valid_wr;
-            bram_tag            <= snoop_tag;
-            bram_requester_id   <= snoop_requester_id;
-        end
- 
-    // ------------------------------------------------------------------------
-    // COMPLETION TLP generation and buffering below: 
-    // ------------------------------------------------------------------------
-    wire [63:0]     cplrd_tlp_data_qw1  = { tlp_pcie_id, 16'h0004, 32'b01001010000000000000000000000001 };
-    wire [63:0]     cplrd_tlp_data_qw2  = { bram_data2, bram_requester_id, bram_tag, 8'h00 };
-    wire [127:0]    cplrd_tlp_data      = { cplrd_tlp_data_qw2, cplrd_tlp_data_qw1 };
-    wire [63:0]     cplwr_tlp_data_qw1  = { tlp_pcie_id, 16'h00, 32'b00001010000000000000000000000000 };
-    wire [63:0]     cplwr_tlp_data_qw2  = { 32'h00000000, bram_requester_id, bram_tag, 8'h00 };
-    wire [127:0]    cplwr_tlp_data      = { cplwr_tlp_data_qw2, cplwr_tlp_data_qw1 };
-    wire [128:0]    cpl_tlp_data        = { bram_valid, (bram_valid ? cplrd_tlp_data : cplwr_tlp_data)};
     
-    wire [128:0]    txcpl_tlp_data;
-    wire            txcpl_tlp_empty;
-    
-    fifo_128_128_clk1_cfgspace i_fifo_128_128_clk1_cfgspace (
-        .srst           ( rst                       ),
-        .clk            ( clk                       ),
-        .din            ( cpl_tlp_data              ),
-        .wr_en          ( bram_valid | bram_supress_onwr ),
-        .rd_en          ( tlp_tx.req_data           ),
-        .dout           ( txcpl_tlp_data            ),
+    wire        fifotx_valid;
+    wire        fifotx_tlprd;
+    bit  [15:0] fifotx_requester_id;
+    always @ ( posedge clk_pcie )
+        if ( snoop_valid_rd | snoop_valid_wr )
+            fifotx_requester_id <= snoop_requester_id;
+  
+    fifo_55_55_clk2_tlptapcfgspace i_fifo_55_55_clk2_tlptapcfgspace (
+        .rst            ( rst                       ),
+        .wr_clk         ( clk_pcie                  ),
+        .rd_clk         ( clk_100                   ),
+        .din            ( {snoop_valid_rd, snoop_be, snoop_addr_dw, snoop_tag, snoop_data_wr_dw}  ),
+        .wr_en          ( snoop_valid_rd | snoop_valid_wr   ),
+        .rd_en          ( 1'b1                      ),
+        .dout           ( {fifotx_tlprd, dshadow2tlp.rx_be, dshadow2tlp.rx_addr, dshadow2tlp.rx_tag, dshadow2tlp.rx_data} ),    
         .full           (                           ),
-        .empty          ( txcpl_tlp_empty           ),
+        .empty          (                           ),
+        .valid          ( fifotx_valid              )
+    );
+    
+    assign dshadow2tlp.rx_rden = fifotx_valid & fifotx_tlprd;
+    assign dshadow2tlp.rx_wren = fifotx_valid & ~fifotx_tlprd;
+ 
+    // ------------------------------------------------------------------------
+    // RX DATA FROM SHADOW CFGSPACE AND GENERATE TLPs
+    // ------------------------------------------------------------------------
+    
+    wire [7:0]  fiforx_tag;
+    wire [31:0] fiforx_data;
+    wire        fiforx_tlprd;
+    
+    fifo_41_41_clk2_tlptapcfgspace i_fifo_41_41_clk2_tlptapcfgspace (
+        .rst            ( rst                       ),
+        .wr_clk         ( clk_100                   ),
+        .rd_clk         ( clk_pcie                  ),
+        .din            ( {dshadow2tlp.tx_tlprd, dshadow2tlp.tx_tag, dshadow2tlp.tx_data}   ),
+        .wr_en          ( dshadow2tlp.tx_valid      ),
+        .rd_en          ( tlp_tx.req_data           ),
+        .dout           ( {fiforx_tlprd, fiforx_tag, fiforx_data}   ),    
+        .full           (                           ),
+        .empty          ( fiforx_empty              ),
         .valid          ( tlp_tx.valid              )
     );
     
-    assign tlp_tx.has_data = ~txcpl_tlp_empty;
-    assign tlp_tx.data = {txcpl_tlp_data[128], 1'b1, txcpl_tlp_data[127:64], 2'b10, txcpl_tlp_data[63:0]};
+    wire [63:0]     cpl_tlp_data_qw1_rd  = { tlp_pcie_id, 16'h0004, 32'b01001010000000000000000000000001 };
+    wire [63:0]     cpl_tlp_data_qw1_wr  = { tlp_pcie_id, 16'h0000, 32'b00001010000000000000000000000000 };
+    wire [63:0]     cpl_tlp_data_qw2    = { fiforx_data, fifotx_requester_id, fiforx_tag, 8'h00 };
+    
+    assign tlp_tx.has_data = ~fiforx_empty;
+    assign tlp_tx.data = {fiforx_tlprd, 1'b1, cpl_tlp_data_qw2, 2'b10, (fiforx_tlprd ? cpl_tlp_data_qw1_rd : cpl_tlp_data_qw1_wr)};
 
 endmodule
 

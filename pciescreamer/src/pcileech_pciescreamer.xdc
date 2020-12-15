@@ -54,9 +54,15 @@ set_property PACKAGE_PIN AB6 [get_ports user_btn_sw4_n]
 set_property PACKAGE_PIN AB1 [get_ports user_led_ld1]
 set_property PACKAGE_PIN AB8 [get_ports user_led_ld2]
 
-create_clock -period 10.000 -name net_clk -waveform {0.000 5.000} [get_ports clk]
+# SYSCLK
+set_property PACKAGE_PIN R4 [get_ports clk]
 set_property IOSTANDARD LVCMOS33 [get_ports clk]
-set_property PACKAGE_PIN D17 [get_ports clk]
+create_clock -period 10.000 -name net_clk -waveform {0.000 5.000} [get_ports clk]
+
+# FT601 CLK
+create_clock -period 10.000 -name net_ft601_clk -waveform {0.000 5.000} [get_ports ft601_clk]
+set_property IOSTANDARD LVCMOS33 [get_ports ft601_clk]
+set_property PACKAGE_PIN D17 [get_ports ft601_clk]
 
 set_input_delay -clock [get_clocks net_clk] -min 6.5 [get_ports {ft601_data[*]}]
 set_input_delay -clock [get_clocks net_clk] -max 7.0 [get_ports {ft601_data[*]}]

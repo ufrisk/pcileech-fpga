@@ -30,7 +30,7 @@ module pcileech_fifo #(
     IfPCIeFifoCfg.mp_fifo   dcfg,
     IfPCIeFifoTlp.mp_fifo   dtlp,
     IfPCIeFifoCore.mp_fifo  dpcie,
-    IfFifo2CfgSpace.source  dcfgspacewr
+    IfShadow2Fifo.fifo      dshadow2fifo
     );
       
     // ----------------------------------------------------
@@ -256,18 +256,19 @@ module pcileech_fifo #(
             rw[127:96]  <= 0;                           // +00C: cmd_send_count [little-endian]
             // PCIE INITIAL CONFIG (SPECIAL BITSTREAM)
             // NB! "initial" CLK0 values may also be changed in: '_pcie_core_config = {...};' [important on PCIeScreamer].
-            rw[143:128] <= 16'h10EE;                    // +010: CFG_SUBSYS_VEND_ID
-            rw[159:144] <= 16'h0007;                    // +012: CFG_SUBSYS_ID
-            rw[175:160] <= 16'h10EE;                    // +014: CFG_VEND_ID
-            rw[191:176] <= 16'h0666;                    // +016: CFG_DEV_ID
-            rw[199:192] <= 8'h02;                       // +018: CFG_REV_ID
+            rw[143:128] <= 16'h10EE;                    // +010: CFG_SUBSYS_VEND_ID (NOT IMPLEMENTED)
+            rw[159:144] <= 16'h0007;                    // +012: CFG_SUBSYS_ID (NOT IMPLEMENTED)
+            rw[175:160] <= 16'h10EE;                    // +014: CFG_VEND_ID (NOT IMPLEMENTED)
+            rw[191:176] <= 16'h0666;                    // +016: CFG_DEV_ID (NOT IMPLEMENTED)
+            rw[199:192] <= 8'h02;                       // +018: CFG_REV_ID (NOT IMPLEMENTED)
             rw[200]     <= 1'b1;                        // +019: PCIE CORE RESET
             rw[201]     <= 1'b0;                        //       PCIE SUBSYSTEM RESET
             rw[202]     <= 1'b1;                        //       CFGTLP PROCESSING ENABLE
             rw[203]     <= 1'b1;                        //       CFGTLP ZERO DATA
             rw[204]     <= 1'b1;                        //       CFGTLP FILTER TLP FROM USER
             rw[205]     <= 1'b1;                        //       CLK_IS_ENABLED [if clk not started _pcie_core_config[77] will remain zero].
-            rw[207:206] <= 0;                           //       SLACK
+            rw[206]     <= 1'b0;                        //       CFGTLP PCIE WRITE ENABLE
+            rw[207:207] <= 0;                           //       SLACK
             // PCIe DRP, PRSNT#, PERST#
             rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di
             rw[224+:9]  <= 0;                           // +01C: DRP: pcie_drp_addr
@@ -291,10 +292,12 @@ module pcileech_fifo #(
     assign dpcie.pcie_cfg_rev_id                        = _pcie_core_config[64+:8];
     assign dpcie.pcie_rst_core                          = _pcie_core_config[72];
     assign dpcie.pcie_rst_subsys                        = _pcie_core_config[73];
-    assign dcfgspacewr.cfgtlp_en                        = _pcie_core_config[74];
-    assign dcfgspacewr.cfgtlp_zero                      = _pcie_core_config[75];
-    assign dcfgspacewr.filter_en                        = _pcie_core_config[76];
     assign dpcie.clk100_en                              = _pcie_core_config[77];
+    
+    assign dshadow2fifo.cfgtlp_en                       = _pcie_core_config[74];
+    assign dshadow2fifo.cfgtlp_zero                     = rw[203];
+    assign dshadow2fifo.cfgtlp_filter                   = _pcie_core_config[76];
+    assign dshadow2fifo.cfgtlp_wren                     = rw[206];
     assign dpcie.drp_en                                 = rw[RWPOS_DRP_WR_EN] | rw[RWPOS_DRP_RD_EN];
     assign dpcie.drp_we                                 = rw[RWPOS_DRP_WR_EN];
     assign dpcie.drp_addr                               = rw[224+:9];
@@ -326,14 +329,17 @@ module pcileech_fifo #(
     wire [17:0] in_cmd_address_bit  = {in_cmd_address_byte[14:0], 3'b000};
     wire [15:0] in_cmd_value        = {cmd_rx_dout[48+:8], cmd_rx_dout[56+:8]};
     wire [15:0] in_cmd_mask         = {cmd_rx_dout[32+:8], cmd_rx_dout[40+:8]};
-    wire        f_rw                = in_cmd_address_byte[15]; 
+    wire        f_rw                = in_cmd_address_byte[15];
+    wire        f_shadowcfgspace    = in_cmd_address_byte[14];
     wire [15:0] in_cmd_data_in      = (in_cmd_address_bit < (f_rw ? $bits(rw) : $bits(ro))) ? (f_rw ? rw[in_cmd_address_bit+:16] : ro[in_cmd_address_bit+:16]) : 16'h0000;
-    wire        in_cmd_read         = cmd_rx_dout[12] & cmd_rx_valid;
-    wire        in_cmd_write        = cmd_rx_dout[13] & in_cmd_address_byte[15] & ~in_cmd_address_byte[14] & cmd_rx_valid;
-    assign dcfgspacewr.wren         = cmd_rx_dout[13] & in_cmd_address_byte[15] &  in_cmd_address_byte[14] & cmd_rx_valid;
-    assign dcfgspacewr.addr         = in_cmd_address_byte[11:2];
-    assign dcfgspacewr.data         = cmd_rx_dout[63:32];
-    assign dcfgspacewr.clk          = clk;
+    wire        in_cmd_read         = cmd_rx_valid & cmd_rx_dout[12] & ~f_shadowcfgspace;
+    wire        in_cmd_write        = cmd_rx_valid & cmd_rx_dout[13] & ~f_shadowcfgspace & f_rw;
+    assign dshadow2fifo.rx_rden     = cmd_rx_valid & cmd_rx_dout[12] &  f_shadowcfgspace;
+    assign dshadow2fifo.rx_wren     = cmd_rx_valid & cmd_rx_dout[13] &  f_shadowcfgspace & f_rw;
+    assign dshadow2fifo.rx_be       = {(in_cmd_mask[7:0] > 0 ? ~in_cmd_address_byte[1] : 1'b0), (in_cmd_mask[15:8] > 0 ? ~in_cmd_address_byte[1] : 1'b0), (in_cmd_mask[7:0] > 0 ? in_cmd_address_byte[1] : 1'b0), (in_cmd_mask[15:8] > 0 ? in_cmd_address_byte[1] : 1'b0)};
+    assign dshadow2fifo.rx_addr     = in_cmd_address_byte[11:2];
+    assign dshadow2fifo.rx_addr_lo  = in_cmd_address_byte[1];
+    assign dshadow2fifo.rx_data     = {in_cmd_value[7:0], in_cmd_value[15:8], in_cmd_value[7:0], in_cmd_value[15:8]};
     
     initial pcileech_fifo_ctl_initialvalues();
     
@@ -342,8 +348,15 @@ module pcileech_fifo #(
             pcileech_fifo_ctl_initialvalues();
         else
             begin
+                // SHADOW CONFIG SPACE RESPONSE
+                if ( dshadow2fifo.tx_valid )
+                    begin
+                        _cmd_tx_wr_en       <= 1'b1;
+                        _cmd_tx_din[31:16]  <= {4'b1100, dshadow2fifo.tx_addr, dshadow2fifo.tx_addr_lo, 1'b0};
+                        _cmd_tx_din[15:0]   <= dshadow2fifo.tx_addr_lo ? dshadow2fifo.tx_data[15:0] : dshadow2fifo.tx_data[31:16];                        
+                    end
                 // READ config
-                if ( in_cmd_read )
+                else if ( in_cmd_read )
                     begin
                         _cmd_tx_wr_en       <= 1'b1;
                         _cmd_tx_din[31:16]  <= in_cmd_address_byte;

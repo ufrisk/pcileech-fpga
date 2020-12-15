@@ -250,23 +250,63 @@ interface IfPCIeFifoCore;
     );
 endinterface
 
-interface IfFifo2CfgSpace;
-    // SHADOW CONFIGURATION SPACE WRITE
-    wire                clk;
-    wire    [9:0]       addr;
-    wire    [31:0]      data;
-    wire                wren;
-    wire                cfgtlp_en;
+interface IfShadow2Fifo;
+    // SHADOW CONFIGURATION SPACE TO FIFO
+    wire                rx_rden;
+    wire                rx_wren;
+    wire    [3:0]       rx_be;
+    wire    [31:0]      rx_data;
+    wire    [9:0]       rx_addr;
+    wire                rx_addr_lo;
+    wire                tx_valid;
+    wire    [31:0]      tx_data;
+    wire    [9:0]       tx_addr;
+    wire                tx_addr_lo;
+    wire                cfgtlp_wren;
     wire                cfgtlp_zero;
-    wire                filter_en;
+    wire                cfgtlp_en;
+    wire                cfgtlp_filter;
     
-    modport source (
-        output clk, addr, data, wren, cfgtlp_en, cfgtlp_zero, filter_en
+    modport fifo (
+        output cfgtlp_wren, cfgtlp_zero, rx_rden, rx_wren, rx_be, rx_addr, rx_addr_lo, rx_data, cfgtlp_en, cfgtlp_filter,
+        input tx_valid, tx_addr, tx_addr_lo, tx_data
     );
 
-    modport sink (
-        input clk, addr, data, wren, cfgtlp_en, cfgtlp_zero, filter_en
+    modport src (
+        input cfgtlp_wren, cfgtlp_zero, rx_rden, rx_wren, rx_be, rx_addr, rx_addr_lo, rx_data,
+        output tx_valid, tx_addr, tx_addr_lo, tx_data
     );
+    
+    modport tlp (
+        input cfgtlp_en, cfgtlp_filter
+    );
+endinterface
+
+interface IfShadow2Tlp;
+    // TLP -> SHADOW CONFIGURATION SPACE
+    wire                rx_rden;
+    wire                rx_wren;
+    wire    [3:0]       rx_be;
+    wire    [7:0]       rx_tag;
+    wire    [9:0]       rx_addr;
+    wire    [31:0]      rx_data;
+    
+    // SHADOW CONFIGURATION SPACE -> TLP
+    wire    [7:0]       tx_tag;
+    wire    [31:0]      tx_data;
+    wire                tx_valid;
+    wire                tx_tlprd;
+    
+    modport shadow (
+        input rx_be, rx_tag, rx_addr, rx_data, rx_rden, rx_wren,
+        output tx_tag, tx_data, tx_valid, tx_tlprd
+    );
+    
+    modport tlp (
+        output rx_be, rx_tag, rx_addr, rx_data, rx_rden, rx_wren,
+        input tx_tag, tx_data, tx_valid, tx_tlprd
+    );
+    
 endinterface
 
 // ------------------------------------------------------------------------
