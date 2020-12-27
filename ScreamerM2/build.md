@@ -5,7 +5,7 @@ This readme details some customizations that are possible to perform prior to bu
 Building:
 =================
 1) Install Xilinx Vivado WebPACK 2019.2 or later.
-2) Open Vivado Tcl Shell command prompt.
+2) Open Vivado Tcl Shell command prompt<sup>[1](#footnotes)</sup>
 3) cd into the ScreamerM2 directory of the cloned or unpacked code (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
 5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
@@ -55,3 +55,9 @@ rw[203]     <= 1'b0;                        //       CUSTOM CONFIGURATION SPACE 
 It's not currently possible to read the custom configuration space from within PCILeech, but on a Linux system it's possible to view it using the `lspci` command. The command line, if the vendor/device id is the default 10ee:0666, is:
 
 Linux lspci command line: `lspci -d 10ee:0666 -xxxx`.
+
+<h4 id="footnotes">
+Footnotes:
+</h4>
+
+[1] You can do this via the binary as such `vivado -mode tcl`. Default windows install of 2020.2 located at `C:\Xilinx\Vivado\2020.2\bin`
