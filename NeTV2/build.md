@@ -7,7 +7,7 @@ NB! It is only OK to use the required network component for non-commercial purpo
 Building:
 =================
 1) Download the files [`FC1003_RMII.vh`](http://www.fpga-cores.com/FC/FC1003_RMII.vh) and [`FC1003_RMII.edn`](http://www.fpga-cores.com/dl/x7/FC1003_RMII.edn) from [fpga-cores.com](http://www.fpga-cores.com) and place them in the NeTV2/ip sub-directory.
-1) Install Xilinx Vivado WebPACK 2019.2 or later.
+1) Install Xilinx Vivado WebPACK 2020.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the NeTV2 directory of the cloned or unpacked code (forward slash instead of backslash in path).
 4) Run, depending on your NeTV2 FPGA model to generate required project files.
