@@ -1,7 +1,11 @@
-ScreamerM2 M.2 Key M (PCIe) to USB3 / USB-C:
+RaptorDMA PCIe & ScreamerM2 M.2 Key M (PCIe) to USB3 / USB-C:
 =================
-This project contains software and HDL code for the [ScreamerM2 FPGA PCIe board](https://shop.lambdaconcept.com).
+This project contains software and HDL code for the [RaptorDMA PCIe board](https://www.raptor-dma.com/) and the [ScreamerM2 FPGA M.2. board](https://shop.lambdaconcept.com).
+
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
+
+Note! Even though RaptorDMA and the ScreamerM2 have different form factors they use the same bitstreams provided below. RaptorDMA is recommended if used in standard PCIe slot; whilst ScreamerM2 is recommended if having additional flexibility to M.2 slots, laptops etc. in addition to PCIe is important.
+
 
 Capabilities:
 =================
@@ -14,17 +18,30 @@ For information about more capabilities check out the general [PCILeech](https:/
 
 For information about other supported FPGA based devices please check out [PCILeech FPGA](https://github.com/ufrisk/pcileech-fpga/).
 
-The Hardware:
-=================
-* LambdaConcept ScreamerM2 M.2 Key M board. ([LambdaConcept](http://shop.lambdaconcept.com))
 
-For more information about the hardware, and alternative software, please check out the [LambdaConcept ScreamerM2 Wiki](http://docs.lambdaconcept.com/screamer/index.html).
+The Hardware: RaptorDMA
+=======================
+RaptorDMA PCIe x1 board. ([raptor-dma.com](https://www.raptor-dma.com/))
+
+For more information about the hardware please check out the [RaptorDMA site](https://www.raptor-dma.com/).
+
+NB! The picture below depicts a RaptorDMA with two USB-3 type A connectors. One port is used for DMA access towards PCIe. The other is used for flashing new bistreams onto the FPGA. No need for a separate flash cable to flash the RaptorDMA board. Just connect your USB cable to the flash usb connector on the RaptorDMA board and flash. For more detailed instructions please check the [RaptorDMA site](https://www.raptor-dma.com/).
+
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/b98f6e12fe4265898aacdc34c47260f7f6f5fca4/_gh_raptor_front.jpg"/>
+
+
+The Hardware: ScreamerM2
+========================
+LambdaConcept ScreamerM2 M.2 Key M board. ([LambdaConcept](http://shop.lambdaconcept.com))
+
+For more information about the hardware, and alternative software, [LambdaConcept ScreamerM2 Wiki](http://docs.lambdaconcept.com/screamer/index.html).
 
 NB! The picture below depicts a ScreamerM2 R03 with a micro-usb3 connector. ScreamerM2 R04 have an USB-C connector instead. Both versions use identical software.
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/f806a68890c94561e53caa7758a5903bb01f5670/gh_m2_2.png"/>
 
-Flashing (Xilinx/Diligent programming cable):
+
+Flashing ScreamerM2: (Xilinx/Diligent programming cable):
 =================
 Please note that this instruction applies to Xilinx Vivado compatible programming cables, such as Diligent HS2. This instruction will <i>not</i> work with the LambdaConcept programming cable.
 1) Install Vivado WebPACK or Lab Edition (only for flashing).
@@ -35,11 +52,13 @@ Please note that this instruction applies to Xilinx Vivado compatible programmin
 6) Run `source vivado_flash_hs2.tcl -notrace` to flash the PCILeech bitstream onto the ScreamerM2 board.
 7) Finished !!!
 
-Flashing (LambdaConcept programming cable):
+
+Flashing ScreamerM2: (LambdaConcept programming cable):
 =================
 Please note that this instruction applies to the LambdaConcept programming cable. OpenOCD is recommended when using the LambdaConcept programming cable. The LambdaConcept programming cable is not supported by Xilinx Vivado.
 1) Build PCILeech PCIeScreamer (see below) alternatively download and unzip pre-built binary (link in version history at the bottom of this readme).
 2) Follow the instruction about how to flash with OpenOCD (Linux preferred) on the [LambdaConcept ScreamerM2 Wiki](http://docs.lambdaconcept.com/screamer/index.html).
+
 
 Building:
 =================
@@ -62,15 +81,15 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 
 Support PCILeech/MemProcFS development:
 =======================================
-**I'm not officially affiliated with any hardware sold! I do _NOT_ receive any revenue from hardware sold! If you purchase hardware to use PCILeech/MemProcFS please consider supporting the project as well!**
+**I'm not involved with hardware sold by 3rd parties! If you purchase hardware to use PCILeech/MemProcFS please consider supporting the project as well!**
 
 PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time - since I'm not able to work with this. Unfortunately since some aspects also relate to hardware I also put quite some of money into my projects. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
 
-Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting sponsorships; even though a sponsorship would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A sponsorship will have to stay a sponsorship and no more. It's possible to sponsor via Github Sponsors (preferred way), but also via PayPal or Bitcoin.
+Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting sponsorships; even though a sponsorship would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A sponsorship will have to stay a sponsorship and no more. It's possible to sponsor via Github Sponsors.
 
- - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk) (preferred)
- - Paypal: `paypal@ulffrisk.com` 
- - Bitcoin: `bc1q9kur5pym8wmh5yxkf65792rdqm0guncd2gl4tu`
+ - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk)
+ 
+To all my sponsors, Thank You :sparkling_heart:
 
 
 Releases / Version History:
@@ -109,9 +128,9 @@ v4.6
   * [ScreamerM2](https://mega.nz/file/wbhn3BDA#vEpzHxNOSRsaEJXI4ce6OnPtjZECZVhIV4HEnRxV1T0) SHA256: `875c32a36934875f194af7d68648a5454c63aaa6ec4a730532632d9424148cd3`
   
 v4.7
-* **PCILeech is free and open source. PCILeech is not directly affiliated with the PCIeScreamer/ScreamerM2 and do not gain financially from sales. If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
+* **PCILeech is free and open source. I'm not involved with hardware sold by 3rd parties! If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binaries below:
-  * [ScreamerM2](https://mega.nz/file/ZGoCBaRB#bqdbZFT3eGH9k1BHGuhtB16QHte_uJjsnfUt-VpYQB8) SHA256: `431959337c3321ddaa18d2eed85b7af5abf03f59db99880a1c9b1f5f9b204746`
+  * [ScreamerM2/RaptorDMA](https://mega.nz/file/ZGoCBaRB#bqdbZFT3eGH9k1BHGuhtB16QHte_uJjsnfUt-VpYQB8) SHA256: `431959337c3321ddaa18d2eed85b7af5abf03f59db99880a1c9b1f5f9b204746`
   

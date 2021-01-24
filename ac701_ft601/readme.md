@@ -77,7 +77,7 @@ v4.6
 * Download pre-built binary [here](https://mega.nz/file/oP4T1SqJ#ng6h0DYTiE8kxEtdCWEh5To8xD8Ehgn19ZvBzgiPsvg). <br>SHA256: `8ea10e48711f67bd38bf9fb0003ca1bf67ea8bd91243ae7fefa250a8257d6774`
 
 v4.7
-* **PCILeech is free and open source. PCILeech is not affiliated with the AC701 and do not gain financially from sales. If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
+* **PCILeech is free and open source. I'm not involved with hardware sold by 3rd parties! If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binary [here](https://mega.nz/file/5LhgyIAD#J0WxajgP4B8aTBsYFJo0zAkTJhdwDaF-rHjdOCHzmfs). <br>SHA256: `5d8ab88d1499ea002a2d22901f2ffba2a6319463401e532d58368f70224c2b2e`
