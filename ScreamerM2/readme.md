@@ -62,7 +62,7 @@ Please note that this instruction applies to the LambdaConcept programming cable
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2020.1 or later.
+1) Install Xilinx Vivado WebPACK 2020.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of ScreamerM2 (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.

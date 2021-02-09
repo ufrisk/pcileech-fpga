@@ -4,7 +4,7 @@ This readme details some customizations that are possible to perform prior to bu
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2019.1 or later.
+1) Install Xilinx Vivado WebPACK 2020.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the ac701_ft601 directory of the cloned or unpacked code (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
