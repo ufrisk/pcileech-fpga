@@ -68,16 +68,11 @@ Published source code are licensed under the MIT License. The end user that have
 
 Support PCILeech/MemProcFS development:
 =======================================
-**I'm not officially affiliated with any hardware sold! I do _NOT_ receive any revenue from hardware sold! If you purchase hardware to use PCILeech/MemProcFS please consider supporting the project as well!**
+PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
 
-PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time - since I'm not able to work with this. Unfortunately since some aspects also relate to hardware I also put quite some of money into my projects. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
-
-Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting sponsorships; even though a sponsorship would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A sponsorship will have to stay a sponsorship and no more. It's possible to sponsor via Github Sponsors (preferred way), but also via PayPal or Bitcoin.
-
- - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk) (preferred)
- - Paypal: `paypal@ulffrisk.com` 
- - Bitcoin: `bc1q9kur5pym8wmh5yxkf65792rdqm0guncd2gl4tu`
-
+ - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk)
+ 
+To all my sponsors, Thank You :sparkling_heart:
 
 
 Releases / Version History:
@@ -116,7 +111,6 @@ v4.5
   * [XC7A100T](https://mega.nz/file/UCRziabR#RaO0d3aivOy4pv4QXQ_vG6-f9eIASBqB05yCEkGSr5k) SHA256: `e4e4eee85012c2312878413c8ba6c49d07a51eb07967b46dea3c919e8ba8900e`
 
 v4.7
-* **PCILeech is free and open source. I'm not involved with hardware sold by 3rd parties! If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binaries for XC7A35T and XC7A100T versions below:

@@ -3,6 +3,7 @@ PCILeech AC701 / FT601 PCIe to USB3:
 This project contains software and HDL code for the Xilinx AC701 development board used together with the FTDI FT601 add-on board.
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+
 Capabilities:
 =================
 * Retrieve memory from the target system over USB3 at 150MB/s.
@@ -13,6 +14,7 @@ Capabilities:
 For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) or [MemProcFS](https://github.com/ufrisk/MemProcFS/) abilities and capabilities.
 
 For information about other supported FPGA based devices please check out [PCILeech FPGA](https://github.com/ufrisk/pcileech-fpga/).
+
 
 The Hardware:
 =================
@@ -39,13 +41,25 @@ Flashing:
 
 If this fails please check out the Xilinx documentation about how to manually flash with Vivado.
 
+
 Building:
 =================
 For building instructions please check out the [build readme](build.md) for information. The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on the target system by default. For instructions how to change the device id and other advanced build properties please also check out the [build readme](build.md) for information.
 
+
 Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have purchased a AC701 development board will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
+
+
+Support PCILeech/MemProcFS development:
+=======================================
+PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
+
+ - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk)
+ 
+To all my sponsors, Thank You :sparkling_heart:
+
 
 Releases / Version History:
 =================
@@ -77,7 +91,6 @@ v4.6
 * Download pre-built binary [here](https://mega.nz/file/oP4T1SqJ#ng6h0DYTiE8kxEtdCWEh5To8xD8Ehgn19ZvBzgiPsvg). <br>SHA256: `8ea10e48711f67bd38bf9fb0003ca1bf67ea8bd91243ae7fefa250a8257d6774`
 
 v4.7
-* **PCILeech is free and open source. I'm not involved with hardware sold by 3rd parties! If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binary [here](https://mega.nz/file/5LhgyIAD#J0WxajgP4B8aTBsYFJo0zAkTJhdwDaF-rHjdOCHzmfs). <br>SHA256: `5d8ab88d1499ea002a2d22901f2ffba2a6319463401e532d58368f70224c2b2e`

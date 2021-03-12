@@ -12,7 +12,6 @@ PCILeech currently supports multiple FPGA based devices - please see the table b
 | Device                       | Connection | Transfer Speed | PCIe Version  |
 | ---------------------------- | ---------- | -------------- | ------------- |
 | [AC701/FT601](ac701_ft601)   | USB3       | 150 MB/s       | PCIe gen2 x4* |
-| [RaptorDMA](ScreamerM2)      | USB3      | 150 MB/s       | PCIe gen2 x1 |
 | [ScreamerM2](ScreamerM2)     | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* |
 | [PCIeScreamer](pciescreamer) | USB3       | 100 MB/s       | PCIe gen2 x1  |
 | [SP605/FT601](sp605_ft601)   | USB3       | 75 MB/s        | PCIe gen1 x1  |
@@ -25,10 +24,10 @@ Please select the FPGA setup that best suits your needs from the above list. If 
 
 Please check out the individual FPGA projects in the table above for more information about the purchase, usage, building and flashing of the devices. Each device have different advantages and disadvantages.
 
-The images below depicts the SP605, ScreamerM2, PCIeScreamer, ScreamerM2, AC701, RaptorDMA devices used for PCILeech PCIe access over USB3 and the NeTV2 for access over 100Mbit UDP/IP.
+The images below depicts the SP605, ScreamerM2, PCIeScreamer, ScreamerM2, AC701 devices used for PCILeech PCIe access over USB3 and the NeTV2 for access over 100Mbit UDP/IP.
 
 <img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_sp605_front.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2dec37bf6f495b419fd78ff616beede45af6cec1/_gh_pciescreamer1.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/f806a68890c94561e53caa7758a5903bb01f5670/gh_m2_1.png" height="300"/>
-<img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_ac701_front.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/b98f6e12fe4265898aacdc34c47260f7f6f5fca4/_gh_raptor_front.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="300"/>
+<img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_ac701_front.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="300"/>
 
 Future Work:
 =================
@@ -36,11 +35,8 @@ Future Work:
 
 Support PCILeech/MemProcFS development:
 =======================================
-**I'm not involved with hardware sold by 3rd parties! If you purchase hardware to use PCILeech/MemProcFS please consider supporting the project as well!**
-
-PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time - since I'm not able to work with this. Unfortunately since some aspects also relate to hardware I also put quite some of money into my projects. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
-
-Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting sponsorships; even though a sponsorship would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a sponsorship. A sponsorship will have to stay a sponsorship and no more.
+PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
 
  - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk)
  
+To all my sponsors, Thank You :sparkling_heart:

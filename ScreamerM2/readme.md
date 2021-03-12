@@ -1,10 +1,8 @@
-RaptorDMA PCIe & ScreamerM2 M.2 Key M (PCIe) to USB3 / USB-C:
+ScreamerM2 M.2 Key M (PCIe) to USB3 / USB-C:
 =================
-This project contains software and HDL code for the [RaptorDMA PCIe board](https://www.raptor-dma.com/) and the [ScreamerM2 FPGA M.2. board](https://shop.lambdaconcept.com).
+This project contains software and HDL code for the [ScreamerM2 FPGA M.2. board](https://shop.lambdaconcept.com).
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
-
-Note! Even though RaptorDMA and the ScreamerM2 have different form factors they use the same bitstreams provided below. RaptorDMA is recommended if used in standard PCIe slot; whilst ScreamerM2 is recommended if having additional flexibility to M.2 slots, laptops etc. in addition to PCIe is important.
 
 
 Capabilities:
@@ -17,17 +15,6 @@ Capabilities:
 For information about more capabilities check out the general [PCILeech](https://github.com/ufrisk/pcileech/) or [MemProcFS](https://github.com/ufrisk/MemProcFS/) abilities and capabilities.
 
 For information about other supported FPGA based devices please check out [PCILeech FPGA](https://github.com/ufrisk/pcileech-fpga/).
-
-
-The Hardware: RaptorDMA
-=======================
-RaptorDMA PCIe x1 board. ([raptor-dma.com](https://www.raptor-dma.com/))
-
-For more information about the hardware please check out the [RaptorDMA site](https://www.raptor-dma.com/).
-
-NB! The picture below depicts a RaptorDMA with two USB-3 type A connectors. One port is used for DMA access towards PCIe. The other is used for flashing new bistreams onto the FPGA. No need for a separate flash cable to flash the RaptorDMA board. Just connect your USB cable to the flash usb connector on the RaptorDMA board and flash. For more detailed instructions please check the [RaptorDMA site](https://www.raptor-dma.com/).
-
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/b98f6e12fe4265898aacdc34c47260f7f6f5fca4/_gh_raptor_front.jpg"/>
 
 
 The Hardware: ScreamerM2
@@ -81,11 +68,7 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 
 Support PCILeech/MemProcFS development:
 =======================================
-**I'm not involved with hardware sold by 3rd parties! If you purchase hardware to use PCILeech/MemProcFS please consider supporting the project as well!**
-
-PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time - since I'm not able to work with this. Unfortunately since some aspects also relate to hardware I also put quite some of money into my projects. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
-
-Please do note that PCILeech and MemProcFS are free and open source - as such I'm not expecting sponsorships; even though a sponsorship would be very much appreciated. I'm also not able to promise product features, consultancy or other things in return for a donation. A sponsorship will have to stay a sponsorship and no more. It's possible to sponsor via Github Sponsors.
+PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
 
  - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk)
  
@@ -128,9 +111,8 @@ v4.6
   * [ScreamerM2](https://mega.nz/file/wbhn3BDA#vEpzHxNOSRsaEJXI4ce6OnPtjZECZVhIV4HEnRxV1T0) SHA256: `875c32a36934875f194af7d68648a5454c63aaa6ec4a730532632d9424148cd3`
   
 v4.7
-* **PCILeech is free and open source. I'm not involved with hardware sold by 3rd parties! If you find PCILeech useful please consider [supporting the project](https://github.com/sponsors/ufrisk) for as low as $2. Thank You ❤️**
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binaries below:
-  * [ScreamerM2/RaptorDMA](https://mega.nz/file/ZGoCBaRB#bqdbZFT3eGH9k1BHGuhtB16QHte_uJjsnfUt-VpYQB8) SHA256: `431959337c3321ddaa18d2eed85b7af5abf03f59db99880a1c9b1f5f9b204746`
+  * [ScreamerM2](https://mega.nz/file/ZGoCBaRB#bqdbZFT3eGH9k1BHGuhtB16QHte_uJjsnfUt-VpYQB8) SHA256: `431959337c3321ddaa18d2eed85b7af5abf03f59db99880a1c9b1f5f9b204746`
   
