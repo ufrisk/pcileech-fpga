@@ -4,6 +4,8 @@ This project contains software and HDL code for the [ScreamerM2 FPGA M.2. board]
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+The ScreamerM2 bitstream also work with RaptorDMA hardware.
+
 
 Capabilities:
 =================
