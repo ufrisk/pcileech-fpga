@@ -218,9 +218,9 @@ module pcileech_pcie_tlptapcfgspace(
         .valid          ( tlp_tx.valid              )
     );
     
-    wire [63:0]     cpl_tlp_data_qw1_rd  = { tlp_pcie_id, 16'h0004, 32'b01001010000000000000000000000001 };
-    wire [63:0]     cpl_tlp_data_qw1_wr  = { tlp_pcie_id, 16'h0000, 32'b00001010000000000000000000000000 };
-    wire [63:0]     cpl_tlp_data_qw2    = { fiforx_data, fifotx_requester_id, fiforx_tag, 8'h00 };
+    wire [63:0]     cpl_tlp_data_qw1_rd  = { `_bs16(tlp_pcie_id), 16'h0004, 32'b01001010000000000000000000000001 };
+    wire [63:0]     cpl_tlp_data_qw1_wr  = { `_bs16(tlp_pcie_id), 16'h0000, 32'b00001010000000000000000000000000 };
+    wire [63:0]     cpl_tlp_data_qw2     = { fiforx_data, fifotx_requester_id, fiforx_tag, 8'h00 };
     
     assign tlp_tx.has_data = ~fiforx_empty;
     assign tlp_tx.data = {fiforx_tlprd, 1'b1, cpl_tlp_data_qw2, 2'b10, (fiforx_tlprd ? cpl_tlp_data_qw1_rd : cpl_tlp_data_qw1_wr)};

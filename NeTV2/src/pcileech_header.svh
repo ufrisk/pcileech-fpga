@@ -10,6 +10,9 @@
 `ifndef _pcileech_header_svh_
 `define _pcileech_header_svh_
 
+`define _bs16(v)   {{v}[7:0], {v}[15:8]}
+`define _bs32(v)   {{v}[7:0], {v}[15:8], {v}[23:16], {v}[31:24]}
+
 // ------------------------------------------------------------------------
 // Interface connecting COM to FIFO module.
 // ------------------------------------------------------------------------
@@ -362,7 +365,7 @@ interface IfTlp64;
     // [64]    = LAST DWORD
     // [65]    = KEEP DWORD 2
     // in total 6 dual-dword = 4 dw hdr + 8 dw data
-    wire    [66 * 6 : 0]        data;
+    wire    [66 * 6 - 1 : 0]        data;
     wire                        valid;
     wire                        has_data;
     wire                        req_data;
@@ -384,7 +387,7 @@ interface IfTlp16;
     // [64]    = LAST DWORD
     // [65]    = KEEP DWORD 2
     // in total 2 dual-dword = 3 dw hdr + 1 dw data
-    wire    [66 * 2 : 0]        data;
+    wire    [66 * 2 - 1: 0]        data;
     wire                        valid;
     wire                        has_data;
     wire                        req_data;

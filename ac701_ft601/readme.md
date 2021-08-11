@@ -94,3 +94,11 @@ v4.7
 * New USB core.
 * Support for auto-clear of PCIe status register / master abort flag.
 * Download pre-built binary [here](https://mega.nz/file/5LhgyIAD#J0WxajgP4B8aTBsYFJo0zAkTJhdwDaF-rHjdOCHzmfs). <br>SHA256: `5d8ab88d1499ea002a2d22901f2ffba2a6319463401e532d58368f70224c2b2e`
+
+v4.8
+* Bug fixes.
+* Download pre-built binary [here](https://mega.nz/file/0WgT1CoR#0UGvgxH6mpQvuwg7QOjiEjbr52OBw6FCQ3HVJuISvg4). <br>SHA256: `9131243d1d50b97b4dcfaff1436d770cda69999cf699b2e6862feca8a7a66166`
+
+v4.9
+* Bug fixes.
+* Download pre-built binary [here](https://mega.nz/file/dbhSSaDb#Dkyd9vnQugZpSjumBFvVTIAkomPEsfv8ojg6HMAXBMs). <br>SHA256: `1e031f660a2734f38eb8e42003521af66475a9cee3d13069fa93f1a92b1174e9`

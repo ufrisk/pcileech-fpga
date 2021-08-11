@@ -15,7 +15,7 @@ module pcileech_screamer_m2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2, 6-7 = RaptorDMA
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 8,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 9,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS
@@ -76,9 +76,6 @@ module pcileech_screamer_m2_top #(
     time tickcount64 = 0;
     always @ ( posedge clk )
         tickcount64 <= tickcount64 + 1;
-
-    assign rst = (tickcount64 < 64) ? 1'b1 : 1'b0;
-    assign ft601_rst_n = ~rst;
 
     assign rst = (tickcount64 < 64) ? 1'b1 : 1'b0;
     assign ft601_rst_n = ~rst;

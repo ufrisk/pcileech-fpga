@@ -154,7 +154,7 @@ module pcileech_com (
     assign dfifo.com_din_ready = ~out_buffer1_almost_full;
     OBUF led_ld3_obuf(.O( led_state_txdata ), .I( com_tx_prog_full ^ led_state_invert ));
     
-    fifo_32_32_clk1_comtx i_fifo_32_32_clk2_comtx(
+    fifo_32_32_clk1_comtx i_fifo_32_32_clk1_comtx(
         .clk            ( clk_com                   ),
         .srst           ( rst                       ),
         .din            ( ft601_bug_workaround ? 32'h66665555 : com_tx_data ),
@@ -168,7 +168,7 @@ module pcileech_com (
         .prog_full      ( com_tx_prog_full          ),  // threshold = 6
         .valid          ( core_din_wr_en            )
     );
-    fifo_256_32_clk2_comtx i_fifo_256_32_clk1_comtx(
+    fifo_256_32_clk2_comtx i_fifo_256_32_clk2_comtx(
         .rd_clk         ( clk_com                   ),
         .wr_clk         ( clk                       ),
         .rst            ( rst                       ),

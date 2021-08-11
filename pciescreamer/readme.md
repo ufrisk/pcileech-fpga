@@ -105,4 +105,14 @@ v4.7
   * [R01](https://mega.nz/file/tKoinKgC#RB9i0y0vSwo2J2nf21_XfHZhM_I-JCPuhxXlNpWMFMI) SHA256: `2f564b979f77202ec6153797657e169648ca52180553a77ae73a55005b759094`
   * [R02](https://mega.nz/file/VPxAjQqC#TpYO1Odakv6QD3dOwDWmWeXqUXcmzu0-8UnGsDdjlIc) SHA256: `29a6b06fc13034dfde65db87b6953b8d8531c00584ec8a3067cef89ba8d2b747`
 
+v4.8
+* Bug fixes.
+* NB! stability issues remain!
+  * [R02](https://mega.nz/file/9Xg3FAKT#fJSGvm4vNIB6nkFHaI1QhwrTatR-0ipKliAf0zmWIsU) SHA256: `8be43dbf89f30eb25db4582291de8a07e11cd4b36824c4f50125aa7488e9c6de`
+
+v4.9
+* Bug fixes.
+* NB! stability issues remain!
+  * [R02](https://mega.nz/file/MepgCYiY#zSQYu5SdgHtlui3eoU36vR-PlpXnIp3Q4Q3wml3KaoQ) SHA256: `f46c816b70d18a135f0587db4e5daeeba266c17bff94cc2cccb9e90703d1d884`
+
 **PCILeech-FPGA versions above v4.2 are only partially supported due to lack of hardware support.**
