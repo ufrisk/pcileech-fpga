@@ -9,17 +9,17 @@ Supported Devices:
 =================
 PCILeech currently supports multiple FPGA based devices - please see the table below:
 
-| Device                       | Connection | Transfer Speed | PCIe Version  |
-| ---------------------------- | ---------- | -------------- | ------------- |
-| [AC701/FT601](ac701_ft601)   | USB3       | 150 MB/s       | PCIe gen2 x4* |
-| [ScreamerM2](ScreamerM2)**   | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* |
-| [PCIeScreamer](pciescreamer) | USB3       | 100 MB/s       | PCIe gen2 x1  |
-| [SP605/FT601](sp605_ft601)   | USB3       | 75 MB/s        | PCIe gen1 x1  |
-| [NeTV2](NeTV2)               | UDP/IP     | 7 MB/s         | PCIe gen2 x4* |
+| Device                         | Connection | Transfer Speed | PCIe Version  |
+| ------------------------------ | ---------- | -------------- | ------------- |
+| [AC701/FT601](ac701_ft601)     | USB3       | 150 MB/s       | PCIe gen2 x4* |
+| [ScreamerM2](ScreamerM2)       | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* |
+| [PCIeScreamer](pciescreamer)   | USB3       | 100 MB/s       | PCIe gen2 x1  |
+| [Acorn/FT2232H](acorn_ft2232h) | USB2       | 25 MB/s        | PCIe gen2 x4* |
+| [SP605/FT601](sp605_ft601)     | USB3       | 75 MB/s        | PCIe gen1 x1  |
+| [NeTV2](NeTV2)                 | UDP/IP     | 7 MB/s         | PCIe gen2 x4* |
 | [SP605/TCP](https://github.com/Cr4sh/s6_pcie_microblaze) | TCP/IP | 100kB/s | PCIe gen1 x1 |
 
 ###### *) PCILeech FPGA uses PCIe x1 even if more PCIe lanes are available hardware-wise. This is sufficient to deliver neccessary performance.
-###### **) The ScreamerM2 bitstream also work with RaptorDMA hardware.
 
 Please select the FPGA setup that best suits your needs from the above list. If performance is key the ScreamerM2 or the AC701 is currently recommended.
 
