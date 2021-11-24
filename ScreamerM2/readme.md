@@ -1,10 +1,8 @@
-ScreamerM2 M.2 Key M (PCIe) to USB3 / USB-C:
+PCIeScreamerR04 and ScreamerM2:
 =================
-This project contains software and HDL code for the [ScreamerM2 FPGA M.2. board](https://shop.lambdaconcept.com).
+This project contains software and HDL code for the [PCIeScreamerR04 PCIe board](https://shop.lambdaconcept.com) and the [ScreamerM2 FPGA M.2. board](https://shop.lambdaconcept.com).
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
-
-The ScreamerM2 bitstream also work with RaptorDMA hardware.
 
 
 Capabilities:
@@ -70,9 +68,9 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 
 Support PCILeech/MemProcFS development:
 =======================================
-PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
+**Thank You [LambdaConcept](https://lambdaconcept.com/) for sponsoring the PCILeech project :sparkling_heart:**
 
- - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk)
+Other hardware sellers have chosen not to support the project! If you think PCILeech and/or MemProcFS is awesome or if you had a use for it it's now also possible to support the project via Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk).
  
 To all my sponsors, Thank You :sparkling_heart:
 
