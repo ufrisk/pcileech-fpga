@@ -70,13 +70,14 @@ Support PCILeech/MemProcFS development:
 =======================================
 **Thank You [LambdaConcept](https://lambdaconcept.com/) for sponsoring the PCILeech project :sparkling_heart:**
 
-Other hardware sellers have chosen not to support the project! If you think PCILeech and/or MemProcFS is awesome or if you had a use for it it's now also possible to support the project via Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk).
+Some other hardware sellers have chosen not to support the project! If you think PCILeech and/or MemProcFS is awesome or if you had a use for it it's now also possible to support the project via Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk).
  
 To all my sponsors, Thank You :sparkling_heart:
 
 
 Releases / Version History:
 =================
+<details><summary>Previous releases (click to expand):</summary>
 v4.1
 * Initial Release.
 * Download pre-built binaries below:
@@ -120,8 +121,9 @@ v4.8
 * Bug fixes.
 * Download pre-built binaries below:
   * [ScreamerM2](https://mega.nz/file/1agnzSIb#XcrGhKWvI4d23wUuyctWa6NGBi3xGJIf_815iaROmOg) SHA256: `926413ae821ef6b0e6cd5b0833691c04d67629d78c60b09a63dee5d0eb51e95d`
+</details>
 
 v4.9
 * Bug fixes.
 * Download pre-built binaries below:
-  * [ScreamerM2](https://mega.nz/file/NOhEjaLR#6Sf6sU0y7RBpwgBAFrYNAOL6XHSzcevRkuEfmvyv0Hw) SHA256: `f4095b649117182c5a3130c5ea48b049ad02a2dd9d095fe11a5715f582ff495a`
+  * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/NOhEjaLR#6Sf6sU0y7RBpwgBAFrYNAOL6XHSzcevRkuEfmvyv0Hw) SHA256: `f4095b649117182c5a3130c5ea48b049ad02a2dd9d095fe11a5715f582ff495a`
