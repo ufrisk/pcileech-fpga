@@ -9,27 +9,28 @@ Supported Devices:
 =================
 PCILeech currently supports multiple FPGA based devices - please see the table below:
 
-| Device                         | Connection | Transfer Speed | PCIe Version  | Project<br>Sponsor |
-| ------------------------------ | ---------- | -------------- | ------------- | ------------------ |
-| [Enigma X1](EnigmaX1)          | USB-C      | 180 MB/s       | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
-| [PCIeScreamerR04](ScreamerM2)  | USB-C      | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
-| [ScreamerM2](ScreamerM2)       | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
-| [PCIeScreamer](pciescreamer)   | USB3       | 100 MB/s       | PCIe gen2 x1  |                    |
-| [AC701/FT601](ac701_ft601)     | USB3       | 150 MB/s       | PCIe gen2 x4* |                    |
-| [SP605/FT601](sp605_ft601)     | USB3       | 75 MB/s        | PCIe gen1 x1  |                    |
-| [Acorn/FT2232H](acorn_ft2232h) | USB2       | 25 MB/s        | PCIe gen2 x4* |                    |
-| [NeTV2](NeTV2)                 | UDP/IP     | 7 MB/s         | PCIe gen2 x4* |                    |
+| Device                                | Connection | Transfer Speed | PCIe Version  | Project<br>Sponsor |
+| ------------------------------------- | ---------- | -------------- | ------------- | ------------------ |
+| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C      | 150 MB/s       | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
+| [Enigma X1](EnigmaX1)                 | USB-C      | 180 MB/s       | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
+| [PCIeScreamerR04](ScreamerM2)         | USB-C      | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [ScreamerM2](ScreamerM2)              | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [PCIeScreamer](pciescreamer)          | USB3       | 100 MB/s       | PCIe gen2 x1  |                    |
+| [AC701/FT601](ac701_ft601)            | USB3       | 150 MB/s       | PCIe gen2 x4* |                    |
+| [SP605/FT601](sp605_ft601)            | USB3       | 75 MB/s        | PCIe gen1 x1  |                    |
+| [Acorn/FT2232H](acorn_ft2232h)        | USB2       | 25 MB/s        | PCIe gen2 x4* |                    |
+| [NeTV2](NeTV2)                        | UDP/IP     | 7 MB/s         | PCIe gen2 x4* |                    |
 | [SP605/TCP](https://github.com/Cr4sh/s6_pcie_microblaze) | TCP/IP | 100kB/s | PCIe gen1 x1 |      |
 
 ###### *) PCILeech FPGA uses PCIe x1 even if more PCIe lanes are available hardware-wise. This is sufficient to deliver neccessary performance.
 
-Please select the FPGA setup that best suits your needs from the above list. If performance is key the ScreamerM2 or the AC701 is currently recommended.
+Please select the FPGA setup that best suits your needs from the above list. If performance is key the Screamer Series, Enigma X1 or AC701 is currently recommended.
 
 Please check out the individual FPGA projects in the table above for more information about the purchase, usage, building and flashing of the devices. Each device have different advantages and disadvantages.
 
-The images below depicts the ScreamerM2 and PCIeScreamer (top row), the Enigma X1 and NeTV2 (middle row) and the SP605 and the AC701 (bottom row).
+The images below depicts the ScreamerM2 and Screamer PCIe Squirrel (top row), the Enigma X1 and NeTV2 (middle row) and the SP605 and the AC701 (bottom row).
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/f806a68890c94561e53caa7758a5903bb01f5670/gh_m2_1.png" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2dec37bf6f495b419fd78ff616beede45af6cec1/_gh_pciescreamer1.jpg" height="300"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/f806a68890c94561e53caa7758a5903bb01f5670/gh_m2_1.png" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/19ae5834c61f267bfe440cb2a3b2894633078d0a/sqr-1.jpg" height="300"/>
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/bb6d57bcb214b7ac0252b0a175885d55cc0438c2/enigmax1.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="300"/>
 
