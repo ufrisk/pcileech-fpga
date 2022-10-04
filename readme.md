@@ -11,10 +11,10 @@ PCILeech currently supports multiple FPGA based devices - please see the table b
 
 | Device                                | Connection | Transfer Speed | PCIe Version  | Project<br>Sponsor |
 | ------------------------------------- | ---------- | -------------- | ------------- | ------------------ |
-| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C      | 190 MB/s       | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
-| [Enigma X1](EnigmaX1)                 | USB-C      | 200 MB/s       | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
-| [PCIeScreamerR04](ScreamerM2)         | USB-C      | 190 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
-| [ScreamerM2](ScreamerM2)              | USB3/USB-C | 190 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C      | 150 MB/s       | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
+| [Enigma X1](EnigmaX1)                 | USB-C      | 180 MB/s       | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
+| [PCIeScreamerR04](ScreamerM2)         | USB-C      | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [ScreamerM2](ScreamerM2)              | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
 | [PCIeScreamer](pciescreamer)          | USB3       | 100 MB/s       | PCIe gen2 x1  |                    |
 | [AC701/FT601](ac701_ft601)            | USB3       | 150 MB/s       | PCIe gen2 x4* |                    |
 | [SP605/FT601](sp605_ft601)            | USB3       | 75 MB/s        | PCIe gen1 x1  |                    |
