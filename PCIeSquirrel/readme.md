@@ -67,3 +67,8 @@ v4.10
 * Initial Release.
 * Download pre-built binaries below:
   * [Screamer PCIe Squirrel](https://mega.nz/file/UXQ2xZTK#fENkArWDadoWlWCUCI8l2k7k03mIfreHs2kBEFcVwx8) SHA256: `0a519ef2312feb4984bb0dacbea85b479b3a51789a7915ae9a28e0b61b4fd60f`
+
+v4.11
+* Bug fixes and new USB core.
+* Download pre-built binaries below:
+  * [Screamer PCIe Squirrel](https://mega.nz/file/ZGx30ZxB#9S7vDbQGnepPnV8XEUIWr93KkcM9O_Dzl1-ivcC-G94) SHA256: `4d0038ce607723dbc84c85393c391733a74fccd5627d2653c06fdf20890cafb7`

@@ -3,7 +3,7 @@
 //
 // FIFO network / control.
 //
-// (c) Ulf Frisk, 2017-2020
+// (c) Ulf Frisk, 2017-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 // Special thanks to: Dmytro Oleksiuk @d_olex
 //
@@ -11,7 +11,7 @@
 `timescale 1ns / 1ps
 `include "pcileech_header.svh"
 
-//`define ENABLE_STARTUPE2
+`define ENABLE_STARTUPE2
 
 module pcileech_fifo #(
     parameter               PARAM_DEVICE_ID = 0,
@@ -21,6 +21,7 @@ module pcileech_fifo #(
 ) (
     input                   clk,
     input                   rst,
+    input                   rst_cfg_reload,
     
     input                   pcie_present,
     input                   pcie_perst_n,
@@ -426,7 +427,7 @@ module pcileech_fifo #(
       .EOS              (                   ), // ->
       .PREQ             (                   ), // ->
       .CLK              ( clk               ), // <-
-      .GSR              ( rw[RWPOS_GLOBAL_SYSTEM_RESET] ), // <- GLOBAL SYSTEM RESET
+      .GSR              ( rw[RWPOS_GLOBAL_SYSTEM_RESET] | rst_cfg_reload ), // <- GLOBAL SYSTEM RESET
       .GTS              ( 1'b0              ), // <-
       .KEYCLEARB        ( 1'b0              ), // <-
       .PACK             ( 1'b0              ), // <-

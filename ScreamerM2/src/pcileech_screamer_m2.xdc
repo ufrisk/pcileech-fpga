@@ -77,9 +77,9 @@ set_output_delay -clock [get_clocks net_ft601_clk] -min 4.8 [get_ports {{ft601_b
 set_property IOB TRUE [get_cells i_pcileech_com/i_pcileech_ft601/FT601_OE_N_reg]
 set_property IOB TRUE [get_cells i_pcileech_com/i_pcileech_ft601/FT601_RD_N_reg]
 set_property IOB TRUE [get_cells i_pcileech_com/i_pcileech_ft601/FT601_WR_N_reg]
-set_property IOB TRUE [get_cells i_pcileech_com/i_pcileech_ft601/txo_dout_reg[*]]
+set_property IOB TRUE [get_cells i_pcileech_com/i_pcileech_ft601/FT601_DATA_OUT_reg[0][*]]
 
-set_multicycle_path 2 -from [get_pins i_pcileech_com/i_pcileech_ft601/oe_reg/C] -to [get_ports {{ft601_be[*]} {ft601_data[*]}}]
+set_multicycle_path 2 -from [get_pins i_pcileech_com/i_pcileech_ft601/OE_reg/C] -to [get_ports {{ft601_be[*]} {ft601_data[*]}}]
 set_false_path -from [get_pins {tickcount64_reg[*]/C}]
 set_false_path -from [get_pins {i_pcileech_fifo/_pcie_core_config_reg[*]/C}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_lnk_up_int_reg/C] -to [get_pins {i_pcileech_fifo/_cmd_tx_din_reg[16]/D}]

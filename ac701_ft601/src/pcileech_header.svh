@@ -3,7 +3,7 @@
 //
 // SystemVerilog Header File for PCILeech FPGA projects.
 //
-// (c) Ulf Frisk, 2019-2020
+// (c) Ulf Frisk, 2019-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 

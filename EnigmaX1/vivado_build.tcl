@@ -20,6 +20,7 @@ puts " WAITING FOR IMPLEMENTATION STEP TO FINISH ...         "
 puts " THIS IS LIKELY TO TAKE A VERY LONG TIME.              "
 puts "-------------------------------------------------------"
 wait_on_run impl_1
+file copy -force ./pcileech_enigma_x1/pcileech_enigma_x1.runs/impl_1/pcileech_enigma_x1_top.bin pcileech_enigma_x1.bin
 puts "-------------------------------------------------------"
 puts " BUILD HOPEFULLY COMPLETED.                            "
 puts "-------------------------------------------------------"

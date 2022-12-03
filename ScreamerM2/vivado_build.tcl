@@ -20,6 +20,7 @@ puts " WAITING FOR IMPLEMENTATION STEP TO FINISH ...         "
 puts " THIS IS LIKELY TO TAKE A VERY LONG TIME.              "
 puts "-------------------------------------------------------"
 wait_on_run impl_1
+file copy -force ./pcileech_screamer_m2/pcileech_screamer_m2.runs/impl_1/pcileech_screamer_m2_top.bin pcileech_screamer_m2.bin
 puts "-------------------------------------------------------"
 puts " BUILD HOPEFULLY COMPLETED.                            "
 puts "-------------------------------------------------------"

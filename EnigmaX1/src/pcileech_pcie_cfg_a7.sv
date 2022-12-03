@@ -3,7 +3,7 @@
 //
 // PCIe configuration module - CFG handling for Artix-7.
 //
-// (c) Ulf Frisk, 2018-2020
+// (c) Ulf Frisk, 2018-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 

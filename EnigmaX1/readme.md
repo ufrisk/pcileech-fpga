@@ -76,3 +76,8 @@ v4.10
 * Initial Release
 * Download pre-built binaries below:
   * [Enigma x1](https://mega.nz/file/FfwyWBoI#SNNV4k-K11Hr39hvrNVNdPGWi4ZBxMPG3wnHftp4MBo) SHA256: `7fbb3891f600443e2b9966d778d6d27363ea4dbca6863bef9ceabdbfb4425a24`
+
+v4.11
+* Bug fixes and new USB core.
+* Download pre-built binaries below:
+  * [Enigma x1](https://mega.nz/file/BTIAVDQR#62Fu-9VRJv-zSZH-IFzz-eWiP9wzFCjCtNocIDYIstQ) SHA256: `253ec0d7ef2361269589d35d948b0d4786619c5eb376e9d0237573494fb79b53`

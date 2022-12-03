@@ -3,7 +3,7 @@
 //
 // FIFO network / control.
 //
-// (c) Ulf Frisk, 2017-2020
+// (c) Ulf Frisk, 2017-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 // Special thanks to: Dmytro Oleksiuk @d_olex
 //

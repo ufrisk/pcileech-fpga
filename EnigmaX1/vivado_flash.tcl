@@ -5,7 +5,7 @@
 puts "-------------------------------------------------------"
 puts " SEARCHING FOR PROGRAMMING CABLE AND OPENING DEVICE ..."
 puts "-------------------------------------------------------"
-set programming_files {./pcileech_enigma_x1/pcileech_enigma_x1.runs/impl_1/pcileech_enigma_x1_top.bin}
+set programming_files {./pcileech_enigma_x1.bin}
 open_hw
 connect_hw_server
 current_hw_target [get_hw_targets]

@@ -63,6 +63,7 @@ To all my sponsors, Thank You :sparkling_heart:
 
 Releases / Version History:
 =================
+<details><summary>Previous releases (click to expand):</summary>
 v4.0
 * Major internal re-design for increased future flexibility and ease of use.
 * Download pre-built binary [here](https://mega.nz/#!4DxE1AoR!0o8BiuwaU1YOACDXE1mXhzoopNKcc86Eexd5GMCBG44). <br>SHA256: `f9873de8f63a2844585c2450fa1aff5a8edd7e8d297655a65fe9883277957d55`
@@ -102,3 +103,8 @@ v4.8
 v4.9
 * Bug fixes.
 * Download pre-built binary [here](https://mega.nz/file/dbhSSaDb#Dkyd9vnQugZpSjumBFvVTIAkomPEsfv8ojg6HMAXBMs). <br>SHA256: `1e031f660a2734f38eb8e42003521af66475a9cee3d13069fa93f1a92b1174e9`
+</details>
+
+v4.11
+* Bug fixes and new USB core.
+* Download pre-built binary [here](https://mega.nz/file/UewDmbDa#I3f9faoiKzC7Ll9WLsEky3jy4nNCPOJft6zJAFzAQrA). <br>SHA256: `6ba15d949184da08ac9bfe321994ff95ab99c1dd831a496a7ee22ac2db763755`

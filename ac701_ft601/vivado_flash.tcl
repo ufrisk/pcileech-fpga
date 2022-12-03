@@ -5,7 +5,7 @@
 puts "-------------------------------------------------------"
 puts " SEARCHING FOR PROGRAMMING CABLE AND OPENING DEVICE ..."
 puts "-------------------------------------------------------"
-set programming_files {./pcileech_ac701_ft601/pcileech_ac701_ft601.runs/impl_1/pcileech_ac701_top.bin}
+set programming_files {./pcileech_ac701.bin}
 open_hw
 connect_hw_server
 current_hw_target [get_hw_targets]

@@ -3,7 +3,7 @@
 //
 // Top module for the AC701 Artix-7 board.
 //
-// (c) Ulf Frisk, 2018-2020
+// (c) Ulf Frisk, 2018-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -15,7 +15,7 @@ module pcileech_ac701_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2, 6-7 = RaptorDMA
     parameter       PARAM_DEVICE_ID = 2,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 9,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 11,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS
@@ -53,6 +53,8 @@ module pcileech_ac701_top #(
     // SYS
 	wire            clk;                // 100MHz
     wire 			rst;
+    wire            led_com;
+    wire            led_pcie;
     
     // FIFO CTL <--> COM CTL
     IfComToFifo     dcom_fifo();
@@ -82,6 +84,9 @@ module pcileech_ac701_top #(
         tickcount64 <= tickcount64 + 1;
 
     OBUF led0_obuf(.O( gpio_led[0] ), .I( gpio_sw_south ^ gpio_sw_north ^ tickcount64[26] ));
+	OBUF led_ld1_obuf(.O(gpio_led[2]), .I(~led_pcie));
+    OBUF led_ld2_obuf(.O(gpio_led[1]), .I(~led_com));
+	
     assign rst = gpio_sw_north | ((tickcount64 < 64) ? 1'b1 : 1'b0);
     assign ft601_rst_n = ~rst;
     
@@ -94,7 +99,7 @@ module pcileech_ac701_top #(
         .clk                ( clk                   ),
         .clk_com            ( ft601_clk             ),
         .rst                ( rst                   ),
-        .led_state_txdata   ( gpio_led[1]           ),  // ->
+        .led_state_txdata   ( led_com               ),  // ->
         .led_state_invert   ( gpio_sw_south         ),  // <-
         // FIFO CTL <--> COM CTL
         .dfifo              ( dcom_fifo.mp_com      ),
@@ -148,7 +153,7 @@ module pcileech_ac701_top #(
         .pcie_clk_n         ( pcie_clk_n            ),
         .pcie_perst_n       ( pcie_perst_n          ),
         // State and Activity LEDs
-        .led_state          ( gpio_led[2]           ),
+        .led_state          ( led_pcie              ),
         // FIFO CTL <--> PCIe
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),

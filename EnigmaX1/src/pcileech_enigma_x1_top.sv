@@ -3,7 +3,7 @@
 //
 // Top module for the Enigma X1 Artix-7 board.
 //
-// (c) Ulf Frisk, 2019-2021
+// (c) Ulf Frisk, 2019-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -16,7 +16,7 @@ module pcileech_enigma_x1_top #(
     // 5 = NeTV2, 6-7 = RaptorDMA.     8 = FT2232H, 9-10 = Enigma X1,    11 = Screamer M2x4,
     parameter       PARAM_DEVICE_ID = 9,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 10,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 11,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS

@@ -3,7 +3,7 @@
 //
 // Top module for the ScreamerM2 Artix-7 board.
 //
-// (c) Ulf Frisk, 2019-2020
+// (c) Ulf Frisk, 2019-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -15,7 +15,7 @@ module pcileech_screamer_m2_top #(
     // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2, 6-7 = RaptorDMA
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 9,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 11,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS
@@ -59,6 +59,8 @@ module pcileech_screamer_m2_top #(
     wire [255:0]    com_din;
     wire            com_din_wr_en;
     wire            com_din_ready;
+    wire            led_com;
+    wire            led_pcie;
     
     // FIFO CTL <--> COM CTL
     IfComToFifo     dcom_fifo();
@@ -80,6 +82,9 @@ module pcileech_screamer_m2_top #(
     assign rst = (tickcount64 < 64) ? 1'b1 : 1'b0;
     assign ft601_rst_n = ~rst;
     wire led_pwronblink = tickcount64[24] & (tickcount64[63:27] == 0);
+	
+    OBUF led_ld1_obuf(.O(user_led_ld1), .I(led_pcie));
+    OBUF led_ld2_obuf(.O(user_led_ld2), .I(led_com));
     
     // ----------------------------------------------------
     // BUFFERED COMMUNICATION DEVICE (FT601)
@@ -90,7 +95,7 @@ module pcileech_screamer_m2_top #(
         .clk                ( clk                   ),
         .clk_com            ( ft601_clk             ),
         .rst                ( rst                   ),
-        .led_state_txdata   ( user_led_ld2          ),  // ->
+        .led_state_txdata   ( led_com               ),  // ->
         .led_state_invert   ( led_pwronblink        ),  // <-
         // FIFO CTL <--> COM CTL
         .dfifo              ( dcom_fifo.mp_com      ),
@@ -144,7 +149,7 @@ module pcileech_screamer_m2_top #(
         .pcie_clk_n         ( pcie_clk_n            ),
         .pcie_perst_n       ( pcie_perst_n          ),
         // State and Activity LEDs
-        .led_state          ( user_led_ld1          ),
+        .led_state          ( led_pcie              ),
         // FIFO CTL <--> PCIe
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),
