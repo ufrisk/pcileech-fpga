@@ -11,10 +11,11 @@ PCILeech currently supports multiple FPGA based devices - please see the table b
 
 | Device                                | Connection | Transfer Speed | PCIe Version  | Project<br>Sponsor |
 | ------------------------------------- | ---------- | -------------- | ------------- | ------------------ |
-| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C      | 150 MB/s       | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
-| [Enigma X1](EnigmaX1)                 | USB-C      | 180 MB/s       | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
-| [PCIeScreamerR04](ScreamerM2)         | USB-C      | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
-| [ScreamerM2](ScreamerM2)              | USB3/USB-C | 150 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C      | 180 MB/s       | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
+| [LeetDMA](https://enigma-x1.com/)     | USB-C      | 180 MB/s       | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
+| [Enigma X1](EnigmaX1)                 | USB-C      | 200 MB/s       | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
+| [PCIeScreamerR04](ScreamerM2)         | USB-C      | 180 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [ScreamerM2](ScreamerM2)              | USB3/USB-C | 180 MB/s       | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
 | [PCIeScreamer](pciescreamer)          | USB3       | 100 MB/s       | PCIe gen2 x1  |                    |
 | [AC701/FT601](ac701_ft601)            | USB3       | 150 MB/s       | PCIe gen2 x4* |                    |
 | [SP605/FT601](sp605_ft601)            | USB3       | 75 MB/s        | PCIe gen1 x1  |                    |
@@ -28,13 +29,13 @@ Please select the FPGA setup that best suits your needs from the above list. If 
 
 Please check out the individual FPGA projects in the table above for more information about the purchase, usage, building and flashing of the devices. Each device have different advantages and disadvantages.
 
-The images below depicts the ScreamerM2 and Screamer PCIe Squirrel (top row), the Enigma X1 and NeTV2 (middle row) and the SP605 and the AC701 (bottom row).
+The images below depicts the ScreamerM2 and Screamer PCIe Squirrel (top row), the Enigma X1 and the LeetDMA(middle row) and the NeTV2, the SP605 and the AC701 (bottom row).
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/f806a68890c94561e53caa7758a5903bb01f5670/gh_m2_1.png" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/19ae5834c61f267bfe440cb2a3b2894633078d0a/sqr-1.jpg" height="300"/>
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/bb6d57bcb214b7ac0252b0a175885d55cc0438c2/enigmax1.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="300"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/bb6d57bcb214b7ac0252b0a175885d55cc0438c2/enigmax1.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/5d214db54bcba428690007d8705ed6b4012b15d5/leet-1.jpg" height="300"/>
 
-<img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_sp605_front.jpg" height="200"/><img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_ac701_front.jpg" height="200"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="200"/><img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_sp605_front.jpg" height="200"/><img src="https://gist.github.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/31a153ab0ee8769e5971bfc2ed955008f422be21/_gh_ac701_front.jpg" height="200"/>
 
 Support PCILeech/MemProcFS development:
 =======================================
