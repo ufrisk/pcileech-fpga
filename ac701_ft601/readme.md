@@ -107,4 +107,4 @@ v4.9
 
 v4.11
 * Bug fixes and new USB core.
-* Download pre-built binary [here](https://mega.nz/file/UewDmbDa#I3f9faoiKzC7Ll9WLsEky3jy4nNCPOJft6zJAFzAQrA). <br>SHA256: `6ba15d949184da08ac9bfe321994ff95ab99c1dd831a496a7ee22ac2db763755`
+* Download pre-built binary [here](https://mega.nz/file/1CQ0lb4Y#TmcP3GTrTum5EhEBOyti5q7aQ_uqg7WEFltkSj-Hk8A). <br>SHA256: `281b8f068fa3b74e5ee3653497ea94d03f0bd95c42f4f995cf3047b4bcc5a710`
