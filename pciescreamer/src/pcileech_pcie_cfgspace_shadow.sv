@@ -33,7 +33,7 @@ module pcileech_pcie_cfgspace_shadow(
     wire            bram_wr_1_tlp = dshadow2tlp.rx_wren & dshadow2fifo.cfgtlp_wren;
     wire            bram_wr_2_usb = ~bram_wr_1_tlp & dshadow2fifo.rx_wren;
     wire            bram_wr_3_int = ~bram_wr_1_tlp & ~bram_wr_2_usb & int_wren;
-    wire [3:0]      bram_wr_be = bram_wr_1_tlp ? dshadow2tlp.rx_be : (bram_wr_2_usb ? dshadow2fifo.rx_be : (bram_wr_3_int ? 4'b1111 : 4'b0000));
+    wire [3:0]      bram_wr_be = bram_wr_1_tlp ? (dshadow2fifo.cfgtlp_wren ? dshadow2tlp.rx_be : 4'b0000) : (bram_wr_2_usb ? dshadow2fifo.rx_be : (bram_wr_3_int ? 4'b1111 : 4'b0000));
     wire [9:0]      bram_wr_addr = bram_wr_1_tlp ? dshadow2tlp.rx_addr : (bram_wr_2_usb ? dshadow2fifo.rx_addr : int_wr_addr);
     wire [31:0]     bram_wr_data = bram_wr_1_tlp ? dshadow2tlp.rx_data : (bram_wr_2_usb ? dshadow2fifo.rx_data : int_wr_data);
     
