@@ -267,7 +267,7 @@ module pcileech_fifo #(
             rw[203]     <= 1'b1;                        //       CFGTLP ZERO DATA
             rw[204]     <= 1'b1;                        //       CFGTLP FILTER TLP FROM USER
             rw[205]     <= 1'b1;                        //       CLK_IS_ENABLED [if clk not started _pcie_core_config[77] will remain zero].
-            rw[206]     <= 1'b1;                        //       CFGTLP PCIE WRITE ENABLE
+            rw[206]     <= 1'b0;                        //       CFGTLP PCIE WRITE ENABLE
             rw[207:207] <= 0;                           //       SLACK
             // PCIe DRP, PRSNT#, PERST#
             rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di
