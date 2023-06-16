@@ -30,7 +30,7 @@ module pcileech_pcie_cfgspace_shadow(
     // (1) PCIe (if enabled), (2) USB, (3) INTERNAL.
     // Collisions will be discarded (it's assumed that they'll be very rare)
     // ----------------------------------------------------------------------------
-    wire            bram_wr_1_tlp = dshadow2tlp.rx_wren & dshadow2fifo.cfgtlp_wren;
+    wire            bram_wr_1_tlp = dshadow2tlp.rx_wren;
     wire            bram_wr_2_usb = ~bram_wr_1_tlp & dshadow2fifo.rx_wren;
     wire            bram_wr_3_int = ~bram_wr_1_tlp & ~bram_wr_2_usb & int_wren;
     wire [3:0]      bram_wr_be = bram_wr_1_tlp ? (dshadow2fifo.cfgtlp_wren ? dshadow2tlp.rx_be : 4'b0000) : (bram_wr_2_usb ? dshadow2fifo.rx_be : (bram_wr_3_int ? 4'b1111 : 4'b0000));
