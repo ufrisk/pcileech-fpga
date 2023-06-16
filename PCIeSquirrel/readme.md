@@ -62,7 +62,7 @@ To all my sponsors, Thank You :sparkling_heart:
 
 Releases / Version History:
 =================
-
+<details><summary>Previous releases (click to expand):</summary>
 v4.10
 * Initial Release.
 * Download pre-built binaries below:
@@ -72,3 +72,9 @@ v4.11
 * Bug fixes and new USB core.
 * Download pre-built binaries below:
   * [Screamer PCIe Squirrel](https://mega.nz/file/ZGx30ZxB#9S7vDbQGnepPnV8XEUIWr93KkcM9O_Dzl1-ivcC-G94) SHA256: `4d0038ce607723dbc84c85393c391733a74fccd5627d2653c06fdf20890cafb7`
+</details>
+
+v4.12
+* Bug fixes.
+* Download pre-built binaries below:
+  * [Screamer PCIe Squirrel](https://mega.nz/file/YGgjHJCR#KawMhx_r1jZVkm2hyi_mSFKtqwBh0q7eddIf10G-Jj8) SHA256: `68c8cd753b1feabf5319b6bab5d28e5b23378913f5326f39d5ac96224c5fcef9`

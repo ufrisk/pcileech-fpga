@@ -12,10 +12,10 @@
 
 module pcileech_screamer_m2_top #(
     // DEVICE IDs as follows:
-    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2, 6-7 = RaptorDMA
+    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 11,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 12,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS

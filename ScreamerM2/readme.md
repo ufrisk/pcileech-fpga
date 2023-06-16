@@ -126,9 +126,14 @@ v4.9
 * Bug fixes.
 * Download pre-built binaries below:
   * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/NOhEjaLR#6Sf6sU0y7RBpwgBAFrYNAOL6XHSzcevRkuEfmvyv0Hw) SHA256: `f4095b649117182c5a3130c5ea48b049ad02a2dd9d095fe11a5715f582ff495a`
-</details>
 
 v4.11
 * Bug fixes.
 * Download pre-built binaries below:
   * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/8HRnQTJb#ksoa5QyW3l4FmlQuSkX1UsL_n2zvhmWGnV1zSxFMcYQ) SHA256: `64be806e262e859126b93ebb3283c91be18c942bc2a690c95e6b966538572385`
+</details>
+
+v4.12
+* Bug fixes.
+* Download pre-built binaries below:
+  * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/kSRW0S5A#J6oZtYc9FwW459VqKVcuXEpvKmD9esZiDs9yOCv2WDk) SHA256: `d2e063f26367fbf2d00df52f0f5fb7ec18732d91aaa47cca8733399e55d697a0`

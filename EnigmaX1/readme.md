@@ -72,6 +72,7 @@ To all my sponsors, Thank You :sparkling_heart:
 
 Releases / Version History:
 =================
+<details><summary>Previous releases (click to expand):</summary>
 v4.10
 * Initial Release
 * Download pre-built binaries below:
@@ -81,3 +82,9 @@ v4.11
 * Bug fixes and new USB core.
 * Download pre-built binaries below:
   * [Enigma x1](https://mega.nz/file/BTIAVDQR#62Fu-9VRJv-zSZH-IFzz-eWiP9wzFCjCtNocIDYIstQ) SHA256: `253ec0d7ef2361269589d35d948b0d4786619c5eb376e9d0237573494fb79b53`
+</details>
+
+v4.12
+* Bug fixes.
+* Download pre-built binaries below:
+  * [Enigma x1](https://mega.nz/file/NGRWWBrQ#konYF9UIyNYfset4aiCid3eE3XJXspu1mreQJqn6eMg) SHA256: `cdba0ddfbcd0b1b03f55e7c2d5d301be8ce25d3dcac756439c9910d6faa87927`
