@@ -34,7 +34,7 @@ Flashing Screamer PCIe Squirrel: (built-in update port):
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2021.2 or later.
+1) Install Xilinx Vivado WebPACK 2022.1 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of PCIeSquirrel (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
