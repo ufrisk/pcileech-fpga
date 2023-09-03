@@ -47,6 +47,7 @@ set_property IOSTANDARD LVCMOS33 [get_ports eth_mdc]
 set_property IOSTANDARD LVCMOS33 [get_ports eth_mdio]
 set_property IOSTANDARD LVCMOS33 [get_ports eth_rx_err]
 
+set_false_path -from [get_pins {tickcount64_reg[*]/C}]
 set_false_path -from [get_pins {i_pcileech_fifo/_pcie_core_config_reg[*]/C}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_lnk_up_int_reg/C] -to [get_pins {i_pcileech_fifo/_cmd_tx_din_reg[16]/D}]
 set_false_path -from [get_pins i_pcileech_pcie_a7/i_pcie_7x_0/inst/inst/user_reset_out_reg/C]

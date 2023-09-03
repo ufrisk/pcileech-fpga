@@ -126,3 +126,8 @@ v4.9
 * Bug fixes.
 * Download pre-built binaries for XC7A35T version below:
   * [XC7A35T](https://mega.nz/file/YGxQCCpD#ZZ5Yu_SvyERCl6Atx0OSdqX36yyBnKHByqIWQvOQmaI) SHA256: `3ed45eeb66408090cee6aa5a4b0706e1b857af6199c5e515da37a27a019defbe`
+
+v4.12
+* Bug fixes.
+* Download pre-built binaries for XC7A35T version below:
+  * [XC7A35T](https://mega.nz/file/JH5nFTbQ#-vn3nrpubC9V4KF0E-GZgNnx6UrQk9p0CHUQvDUE0pM) SHA256: `6a70cc7d969f25c85ed1195ce1f7f98c7f54b3a44944bc09e1009c4b2a9ae1fa`

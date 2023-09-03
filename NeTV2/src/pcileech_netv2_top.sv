@@ -3,7 +3,7 @@
 //
 // Top module for the NeTV2 Artix-7 board.
 //
-// (c) Ulf Frisk, 2019-2020
+// (c) Ulf Frisk, 2019-2023
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -12,10 +12,10 @@
 
 module pcileech_netv2_top #(
     // DEVICE IDs as follows:
-    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2, 6-7 = RaptorDMA
+    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer M2, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 5,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 9,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 12,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff,
     parameter       PARAM_UDP_STATIC_ADDR = 32'hc0a800de,   // 192.168.0.222
     parameter       PARAM_UDP_STATIC_FORCE = 1'b0,
@@ -57,7 +57,7 @@ module pcileech_netv2_top #(
     
     // SYS
     wire            clk;                // 100MHz
-    wire            rst = 1'b0;
+    wire            rst;
     
     // FIFO CTL <--> COM CTL
     IfComToFifo     dcom_fifo();
@@ -67,6 +67,17 @@ module pcileech_netv2_top #(
     IfPCIeFifoTlp   dtlp();
     IfPCIeFifoCore  dpcie();
     IfShadow2Fifo   dshadow2fifo();
+	
+    // ----------------------------------------------------
+    // TickCount64 CLK
+    // ----------------------------------------------------
+
+    time tickcount64 = 0;
+    always @ ( posedge clk ) begin
+        tickcount64 <= tickcount64 + 1;
+    end
+
+    assign rst = ((tickcount64 < 64) ? 1'b1 : 1'b0);
     
     // ----------------------------------------------------
     // CLK 50MHz -> 100MHz:

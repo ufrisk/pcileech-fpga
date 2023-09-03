@@ -3,7 +3,7 @@
 //
 // PCIe module for Artix-7.
 //
-// (c) Ulf Frisk, 2018-2020
+// (c) Ulf Frisk, 2018-2022
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -25,6 +25,7 @@ module pcileech_pcie_a7(
     
     // State and Activity LEDs
     output                  led_state,
+    output                  led_state_n,
     
     // PCIe <--> FIFOs
     IfPCIeFifoCfg.mp_pcie   dfifo_cfg,
@@ -63,7 +64,7 @@ module pcileech_pcie_a7(
     time tickcount64_pcie_refclk = 0;
     always @ ( posedge pcie_clk_c )
         tickcount64_pcie_refclk <= tickcount64_pcie_refclk + 1;
-    OBUF led_ld2_obuf(.O( led_state ), .I( user_lnk_up | tickcount64_pcie_refclk[25] ));
+    assign led_state = user_lnk_up | tickcount64_pcie_refclk[25];
     
     // ----------------------------------------------------------------------------
     // PCIe CFG RX/TX <--> FIFO below
@@ -132,7 +133,7 @@ module pcileech_pcie_a7(
         .m_axis_rx_tdata            ( tlp_rx.data               ),  // -> [63:0]
         .m_axis_rx_tkeep            ( tlp_rx.keep               ),  // -> [7:0]
         .m_axis_rx_tlast            ( tlp_rx.last               ),  // -> 
-        .m_axis_rx_tready           ( tlp_rx.ready | ~dfifo_pcie.clk100_en  ),  // <-
+        .m_axis_rx_tready           ( 1'b1                      ),  // <-
         .m_axis_rx_tuser            (                           ),  // -> [21:0]
         .m_axis_rx_tvalid           ( tlp_rx.valid              ),  // ->
     
