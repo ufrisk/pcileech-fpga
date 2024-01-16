@@ -3,6 +3,8 @@ PCILeech SP605 / FT601 PCIe to USB3:
 This project contains software and HDL code for the Xilinx SP605 development board used together with the FTDI FT601 add-on board.
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+> :warning: **The SP605 / FT601** firmware is not actively maintained and may not be up-to-date. The current firmware will still work with PCILeech.
+
 Capabilities:
 =================
 * Retrieve memory from the target system over USB3 at 50-75MB/s.

@@ -3,6 +3,8 @@ PCIeScreamer PCIe to USB3:
 This project contains software and HDL code for the [PCIeScreamer FPGA PCIe board](https://shop.lambdaconcept.com).
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+> :warning: **The PCIeScreamer R01/R02** firmware is not actively maintained and may not be up-to-date. The current firmware will still work with PCILeech.
+
 Capabilities:
 =================
 * Retrieve memory from the target system over USB3 up to 100MB/s.
@@ -72,6 +74,8 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 
 Releases / Version History:
 =================
+<details><summary>Previous releases (click to expand):</summary>
+
 v4.0
 * Major internal re-design for increased future flexibility and ease of use.
 * Download pre-built binaries for R01 and R02 versions of the PCIeScreamer below:
@@ -109,6 +113,8 @@ v4.8
 * Bug fixes.
 * NB! stability issues remain!
   * [R02](https://mega.nz/file/9Xg3FAKT#fJSGvm4vNIB6nkFHaI1QhwrTatR-0ipKliAf0zmWIsU) SHA256: `8be43dbf89f30eb25db4582291de8a07e11cd4b36824c4f50125aa7488e9c6de`
+
+</details>
 
 v4.9
 * Bug fixes.

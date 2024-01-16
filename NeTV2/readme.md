@@ -3,6 +3,8 @@ NeTV2 PCIe to UDP/IP:
 This project contains software and HDL code for the [NeTV2 FPGA PCIe board](https://www.crowdsupply.com/alphamax/netv2).
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+> :warning: **NeTV2** firmware is not actively maintained and may not be up-to-date. The current firmware will still work with PCILeech.
+
 
 Capabilities:
 =================
@@ -77,6 +79,8 @@ To all my sponsors, Thank You :sparkling_heart:
 
 Releases / Version History:
 =================
+<details><summary>Previous releases (click to expand):</summary>
+
 v4.0
 * Initial Release.
 * Download pre-built binaries for XC7A35T and XC7A100T versions below:
@@ -126,6 +130,7 @@ v4.9
 * Bug fixes.
 * Download pre-built binaries for XC7A35T version below:
   * [XC7A35T](https://mega.nz/file/YGxQCCpD#ZZ5Yu_SvyERCl6Atx0OSdqX36yyBnKHByqIWQvOQmaI) SHA256: `3ed45eeb66408090cee6aa5a4b0706e1b857af6199c5e515da37a27a019defbe`
+</details>
 
 v4.12
 * Bug fixes.
