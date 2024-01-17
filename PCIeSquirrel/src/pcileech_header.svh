@@ -3,7 +3,7 @@
 //
 // SystemVerilog Header File for PCILeech FPGA projects.
 //
-// (c) Ulf Frisk, 2019-2022
+// (c) Ulf Frisk, 2019-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -159,19 +159,37 @@ interface IfPCIeSignals;
 endinterface
 
 // ------------------------------------------------------------------------
-// Interface PCIe CFG module to PCIe TLP module
+// Interface PCIe 128-bit RX stream
 // ------------------------------------------------------------------------
 
-interface IfCfg_TlpCfg;
-    wire    [2:0]   tlp_tx_en;
-    wire    [15:0]  tlp_pcie_id;
+interface IfAXIS128;
+    wire [127:0]    tdata;
+    wire [3:0]      tkeepdw;
+    wire            tvalid;
+    wire            tlast;
+    wire [8:0]      tuser;      // [0] = first
+                                // [1] = last
+                                // [8:2] = BAR, 2=BAR0, 3=BAR1, .. 7=BAR5, 8=EXPROM
     
-    modport cfg(
-        output tlp_pcie_id, tlp_tx_en
+    wire            tready;
+    wire            has_data;
+    
+    modport source(
+        input  tready,
+        output tdata, tkeepdw, tvalid, tlast, tuser, has_data
     );
     
-    modport tlp(
-        input tlp_pcie_id, tlp_tx_en
+    modport sink(
+        output tready,
+        input  tdata, tkeepdw, tvalid, tlast, tuser, has_data
+    );
+    
+    modport source_lite(
+        output tdata, tkeepdw, tvalid, tlast, tuser
+    );
+    
+    modport sink_lite(
+        input  tdata, tkeepdw, tvalid, tlast, tuser
     );
 endinterface
 
@@ -183,17 +201,16 @@ interface IfPCIeFifoCfg;
     wire                tx_valid;
     wire    [31:0]      rx_data;
     wire                rx_valid;
-    wire                rx_empty;
     wire                rx_rd_en;
 
     modport mp_fifo (
         output tx_data, tx_valid, rx_rd_en,
-        input rx_data, rx_valid, rx_empty
+        input rx_data, rx_valid
     );
 
     modport mp_pcie (
         input tx_data, tx_valid, rx_rd_en,
-        output rx_data, rx_valid, rx_empty
+        output rx_data, rx_valid
     );
 endinterface
 
@@ -204,20 +221,20 @@ interface IfPCIeFifoTlp;
     wire    [31:0]      tx_data;
     wire                tx_last;
     wire                tx_valid;   
-    wire    [31:0]      rx_data;
-    wire                rx_last;
-    wire                rx_valid;
-    wire                rx_empty;
+    wire    [31:0]      rx_data[4];
+    wire                rx_first[4];
+    wire                rx_last[4];
+    wire                rx_valid[4];
     wire                rx_rd_en;
 
     modport mp_fifo (
         output tx_data, tx_last, tx_valid, rx_rd_en,
-        input rx_data, rx_last, rx_valid, rx_empty    
+        input rx_data, rx_first, rx_last, rx_valid
     );
 
     modport mp_pcie (
         input tx_data, tx_last, tx_valid, rx_rd_en,
-        output rx_data, rx_last, rx_valid, rx_empty
+        output rx_data, rx_first, rx_last, rx_valid
     );
 endinterface
 
@@ -225,15 +242,9 @@ endinterface
 // Interface connecting PCIe CORE config to FIFO
 // ------------------------------------------------------------------------
 interface IfPCIeFifoCore;
-    wire                clk100_en;
     // PCIe optional config
     wire                pcie_rst_core;
     wire                pcie_rst_subsys;
-    wire    [15:0]      pcie_cfg_vend_id;
-    wire    [15:0]      pcie_cfg_dev_id;
-    wire    [7:0]       pcie_cfg_rev_id;
-    wire    [15:0]      pcie_cfg_subsys_vend_id;
-    wire    [15:0]      pcie_cfg_subsys_id;
     // DRP config
     wire                drp_rdy;
     wire    [15:0]      drp_do;
@@ -244,11 +255,11 @@ interface IfPCIeFifoCore;
     
     modport mp_fifo (
         input drp_rdy, drp_do,
-        output clk100_en, pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di
+        output pcie_rst_core, pcie_rst_subsys, drp_en, drp_we, drp_addr, drp_di
     );
 
     modport mp_pcie (
-        input clk100_en, pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di,
+        input pcie_rst_core, pcie_rst_subsys, drp_en, drp_we, drp_addr, drp_di,
         output drp_rdy, drp_do
     );
 endinterface
@@ -269,47 +280,18 @@ interface IfShadow2Fifo;
     wire                cfgtlp_zero;
     wire                cfgtlp_en;
     wire                cfgtlp_filter;
+    wire                alltlp_filter;
+    wire                bar_en;
     
     modport fifo (
-        output cfgtlp_wren, cfgtlp_zero, rx_rden, rx_wren, rx_be, rx_addr, rx_addr_lo, rx_data, cfgtlp_en, cfgtlp_filter,
+        output cfgtlp_wren, cfgtlp_zero, rx_rden, rx_wren, rx_be, rx_addr, rx_addr_lo, rx_data, cfgtlp_en, cfgtlp_filter, alltlp_filter, bar_en,
         input tx_valid, tx_addr, tx_addr_lo, tx_data
     );
 
-    modport src (
-        input cfgtlp_wren, cfgtlp_zero, rx_rden, rx_wren, rx_be, rx_addr, rx_addr_lo, rx_data,
+    modport shadow (
+        input cfgtlp_wren, cfgtlp_zero, rx_rden, rx_wren, rx_be, rx_addr, rx_addr_lo, rx_data, cfgtlp_en, cfgtlp_filter, alltlp_filter, bar_en,
         output tx_valid, tx_addr, tx_addr_lo, tx_data
     );
-    
-    modport tlp (
-        input cfgtlp_en, cfgtlp_filter
-    );
-endinterface
-
-interface IfShadow2Tlp;
-    // TLP -> SHADOW CONFIGURATION SPACE
-    wire                rx_rden;
-    wire                rx_wren;
-    wire    [3:0]       rx_be;
-    wire    [7:0]       rx_tag;
-    wire    [9:0]       rx_addr;
-    wire    [31:0]      rx_data;
-    
-    // SHADOW CONFIGURATION SPACE -> TLP
-    wire    [7:0]       tx_tag;
-    wire    [31:0]      tx_data;
-    wire                tx_valid;
-    wire                tx_tlprd;
-    
-    modport shadow (
-        input rx_be, rx_tag, rx_addr, rx_data, rx_rden, rx_wren,
-        output tx_tag, tx_data, tx_valid, tx_tlprd
-    );
-    
-    modport tlp (
-        output rx_be, rx_tag, rx_addr, rx_data, rx_rden, rx_wren,
-        input tx_tag, tx_data, tx_valid, tx_tlprd
-    );
-    
 endinterface
 
 // ------------------------------------------------------------------------
@@ -319,87 +301,35 @@ interface IfPCIeTlpRxTx;
     wire    [63:0]      data;
     wire    [7:0]       keep;
     wire                last;
+    wire    [21:0]      user;
     wire                valid;
     wire                ready;
     
     modport source (
-        output data, keep, last, valid,
+        output data, keep, last, user, valid,
         input ready
     );
     
     modport sink (
-        input data, keep, last, valid,
+        input data, keep, last, user, valid,
         output ready
     );
 endinterface
 
-
-// ------------------------------------------------------------------------
-// Interface TLP 128-byte connector
-// ------------------------------------------------------------------------
-interface IfTlp128;
-    // [31:0]  = DWORD 1 - always valid 
-    // [63:32] = DWORD 2 - depending on KEEP DWORD 2 if LAST DWORD
-    // [64]    = LAST DWORD
-    // [65]    = KEEP DWORD 2
-    // in total 18 dual-dword = 4 dw hdr + 32 dw data
-    wire    [66 * 18 - 1 : 0]   data;
-    wire                        valid;
-    wire                        has_data;
-    wire                        req_data;
+interface IfPCIeTlpRx128;
+    wire    [127:0]     data;
+    wire    [21:0]      user;
+    wire                valid;
+    wire                ready;
     
     modport source (
-        output data, valid, has_data,
-        input req_data
+        output data, user, valid,
+        input ready
     );
     
     modport sink (
-        input data, valid, has_data,
-        output req_data
-    );
-endinterface
-
-interface IfTlp64;
-    // [31:0]  = DWORD 1 - always valid 
-    // [63:32] = DWORD 2 - depending on KEEP DWORD 2 if LAST DWORD
-    // [64]    = LAST DWORD
-    // [65]    = KEEP DWORD 2
-    // in total 6 dual-dword = 4 dw hdr + 8 dw data
-    wire    [66 * 6 - 1 : 0]        data;
-    wire                        valid;
-    wire                        has_data;
-    wire                        req_data;
-    
-    modport source (
-        output data, valid, has_data,
-        input req_data
-    );
-    
-    modport sink (
-        input data, valid, has_data,
-        output req_data
-    );
-endinterface
-
-interface IfTlp16;
-    // [31:0]  = DWORD 1 - always valid 
-    // [63:32] = DWORD 2 - depending on KEEP DWORD 2 if LAST DWORD
-    // [64]    = LAST DWORD
-    // [65]    = KEEP DWORD 2
-    // in total 2 dual-dword = 3 dw hdr + 1 dw data
-    wire    [66 * 2 - 1: 0]        data;
-    wire                        valid;
-    wire                        has_data;
-    wire                        req_data;
-    
-    modport source (
-        output data, valid, has_data,
-        input req_data
-    );
-    
-    modport sink (
-        input data, valid, has_data,
-        output req_data
+        input data, user, valid,
+        output ready
     );
 endinterface
 

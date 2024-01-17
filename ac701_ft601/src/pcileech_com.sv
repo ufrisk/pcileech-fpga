@@ -4,7 +4,7 @@
 //   - FPGA RMII ETHERNET.
 //
 //
-// (c) Ulf Frisk, 2019-2022
+// (c) Ulf Frisk, 2019-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 

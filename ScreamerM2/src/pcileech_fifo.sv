@@ -3,7 +3,7 @@
 //
 // FIFO network / control.
 //
-// (c) Ulf Frisk, 2017-2022
+// (c) Ulf Frisk, 2017-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 // Special thanks to: Dmytro Oleksiuk @d_olex
 //
@@ -104,7 +104,6 @@ module pcileech_fifo #(
     // ----------------------------------------------------------
     wire [33:0]       _loop_dout;
     wire              _loop_valid;
-    wire              _loop_empty;
     wire              _loop_rd_en;
     fifo_34_34 i_fifo_loop_tx(
         .clk            ( clk                       ),
@@ -115,7 +114,7 @@ module pcileech_fifo #(
         .wr_en          ( _loop_rx_wren             ),
         .full           (                           ),
         .almost_full    (                           ),
-        .empty          ( _loop_empty               ),
+        .empty          (                           ),
         .valid          ( _loop_valid               )
     );
    
@@ -124,7 +123,6 @@ module pcileech_fifo #(
     // ----------------------------------------------------------
     wire [33:0]       _cmd_tx_dout;
     wire              _cmd_tx_valid;
-    wire              _cmd_tx_empty;
     wire              _cmd_tx_rd_en;
     wire              _cmd_tx_almost_full;
     reg               _cmd_tx_wr_en;
@@ -138,7 +136,7 @@ module pcileech_fifo #(
         .wr_en          ( _cmd_tx_wr_en             ),
         .full           (                           ),
         .almost_full    ( _cmd_tx_almost_full       ),
-        .empty          ( _cmd_tx_empty             ),
+        .empty          (                           ),
         .valid          ( _cmd_tx_valid             )
     );
 
@@ -146,36 +144,60 @@ module pcileech_fifo #(
     // MULTIPLEXER
     // ----------------------------------------------------------
     pcileech_mux i_pcileech_mux(
-        .clk            ( clk                       ),
-        .rst            ( rst                       ),
+        .clk            ( clk                           ),
+        .rst            ( rst                           ),
         // output
-        .dout           ( dcom.com_din              ),
-        .valid          ( dcom.com_din_wr_en        ),
-        .rd_en          ( dcom.com_din_ready        ),
-        // port0: PCIe TLP (highest priority)
-        .p0_din         ( dtlp.rx_data              ),
-        .p0_ctx         ( {1'b0, dtlp.rx_last}      ),
-        .p0_wr_en       ( dtlp.rx_valid             ),
-        .p0_has_data    ( ~dtlp.rx_empty            ),
-        .p0_req_data    ( dtlp.rx_rd_en             ),
-        // port1: PCIe CFG
-        .p1_din         ( dcfg.rx_data              ),
-        .p1_ctx         ( 2'b00                     ),
-        .p1_wr_en       ( dcfg.rx_valid             ),
-        .p1_has_data    ( ~dcfg.rx_empty            ),
-        .p1_req_data    ( dcfg.rx_rd_en             ),
-        // port2: LOOPBACK
-        .p2_din         ( _loop_dout[31:0]          ),
-        .p2_ctx         ( _loop_dout[33:32]         ),
-        .p2_wr_en       ( _loop_valid               ),
-        .p2_has_data    ( ~_loop_empty              ),
-        .p2_req_data    ( _loop_rd_en               ),
-        // port3: COMMAND (lowest priority)
-        .p3_din         ( _cmd_tx_dout[31:0]        ),
-        .p3_ctx         ( _cmd_tx_dout[33:32]       ),
-        .p3_wr_en       ( _cmd_tx_valid             ),
-        .p3_has_data    ( ~_cmd_tx_empty            ),
-        .p3_req_data    ( _cmd_tx_rd_en             )
+        .dout           ( dcom.com_din                  ),
+        .valid          ( dcom.com_din_wr_en            ),
+        .rd_en          ( dcom.com_din_ready            ),
+        // LOOPBACK:
+        .p0_din         ( _loop_dout[31:0]              ),
+        .p0_tag         ( 2'b10                         ),
+        .p0_ctx         ( _loop_dout[33:32]             ),
+        .p0_wr_en       ( _loop_valid                   ),
+        .p0_req_data    ( _loop_rd_en                   ),
+        // COMMAND:
+        .p1_din         ( _cmd_tx_dout[31:0]            ),
+        .p1_tag         ( 2'b11                         ),
+        .p1_ctx         ( _cmd_tx_dout[33:32]           ),
+        .p1_wr_en       ( _cmd_tx_valid                 ),
+        .p1_req_data    ( _cmd_tx_rd_en                 ),
+        // PCIe CFG
+        .p2_din         ( dcfg.rx_data                  ),
+        .p2_tag         ( 2'b01                         ),
+        .p2_ctx         ( 2'b00                         ),
+        .p2_wr_en       ( dcfg.rx_valid                 ),
+        .p2_req_data    ( dcfg.rx_rd_en                 ),
+        // PCIe TLP #1
+        .p3_din         ( dtlp.rx_data[0]               ),
+        .p3_tag         ( 2'b00                         ),
+        .p3_ctx         ( {dtlp.rx_first[0], dtlp.rx_last[0]} ),
+        .p3_wr_en       ( dtlp.rx_valid[0]              ),
+        .p3_req_data    ( dtlp.rx_rd_en                 ),
+        // PCIe TLP #2
+        .p4_din         ( dtlp.rx_data[1]               ),
+        .p4_tag         ( 2'b00                         ),
+        .p4_ctx         ( {dtlp.rx_first[1], dtlp.rx_last[1]} ),
+        .p4_wr_en       ( dtlp.rx_valid[1]              ),
+        .p4_req_data    (                               ),
+        // PCIe TLP #3
+        .p5_din         ( dtlp.rx_data[2]               ),
+        .p5_tag         ( 2'b00                         ),
+        .p5_ctx         ( {dtlp.rx_first[2], dtlp.rx_last[2]} ),
+        .p5_wr_en       ( dtlp.rx_valid[2]              ),
+        .p5_req_data    ( dtlp.rx_rd_en                 ),
+        // PCIe TLP #4
+        .p6_din         ( dtlp.rx_data[3]               ),
+        .p6_tag         ( 2'b00                         ),
+        .p6_ctx         ( {dtlp.rx_first[3], dtlp.rx_last[3]} ),
+        .p6_wr_en       ( dtlp.rx_valid[3]              ),
+        .p6_req_data    (                               ),
+        // P7
+        .p7_din         ( 32'h00000000                  ),
+        .p7_tag         ( 2'b11                         ),
+        .p7_ctx         ( 2'b00                         ),
+        .p7_wr_en       ( 1'b0                          ),
+        .p7_req_data    (                               )
     );
    
     // ------------------------------------------------------------------------
@@ -191,7 +213,7 @@ module pcileech_fifo #(
     reg     [239:0]     rw;
     
     // special non-user accessible registers 
-    reg     [77:0]      _pcie_core_config = { 1'b0, 1'b1, 1'b1, 1'b1, 1'b0, 1'b0, 8'h02, 16'h0666, 16'h10EE, 16'h0007, 16'h10EE };
+    reg     [79:0]      _pcie_core_config = { 4'hf, 1'b1, 1'b1, 1'b0, 1'b0, 8'h02, 16'h0666, 16'h10EE, 16'h0007, 16'h10EE };
     time                _cmd_timer_inactivity_base;
     reg                 rwi_drp_rd_en;
     reg                 rwi_drp_wr_en;
@@ -258,18 +280,18 @@ module pcileech_fifo #(
             // PCIE INITIAL CONFIG (SPECIAL BITSTREAM)
             // NB! "initial" CLK0 values may also be changed in: '_pcie_core_config = {...};' [important on PCIeScreamer].
             rw[143:128] <= 16'h10EE;                    // +010: CFG_SUBSYS_VEND_ID (NOT IMPLEMENTED)
-            rw[159:144] <= 16'h0007;                    // +012: CFG_SUBSYS_ID (NOT IMPLEMENTED)
-            rw[175:160] <= 16'h10EE;                    // +014: CFG_VEND_ID (NOT IMPLEMENTED)
-            rw[191:176] <= 16'h0666;                    // +016: CFG_DEV_ID (NOT IMPLEMENTED)
-            rw[199:192] <= 8'h02;                       // +018: CFG_REV_ID (NOT IMPLEMENTED)
+            rw[159:144] <= 16'h0007;                    // +012: CFG_SUBSYS_ID      (NOT IMPLEMENTED)
+            rw[175:160] <= 16'h10EE;                    // +014: CFG_VEND_ID        (NOT IMPLEMENTED)
+            rw[191:176] <= 16'h0666;                    // +016: CFG_DEV_ID         (NOT IMPLEMENTED)
+            rw[199:192] <= 8'h02;                       // +018: CFG_REV_ID         (NOT IMPLEMENTED)
             rw[200]     <= 1'b1;                        // +019: PCIE CORE RESET
             rw[201]     <= 1'b0;                        //       PCIE SUBSYSTEM RESET
             rw[202]     <= 1'b1;                        //       CFGTLP PROCESSING ENABLE
             rw[203]     <= 1'b1;                        //       CFGTLP ZERO DATA
             rw[204]     <= 1'b1;                        //       CFGTLP FILTER TLP FROM USER
-            rw[205]     <= 1'b1;                        //       CLK_IS_ENABLED [if clk not started _pcie_core_config[77] will remain zero].
+            rw[205]     <= 1'b1;                        //       PCIE BAR PIO ON-BOARD PROCESSING ENABLE
             rw[206]     <= 1'b0;                        //       CFGTLP PCIE WRITE ENABLE
-            rw[207:207] <= 0;                           //       SLACK
+            rw[207]     <= 1'b0;                        //       TLP FILTER FROM USER: EXCEPT: Cpl,CplD and CfgRd/CfgWr (handled by rw[204])
             // PCIe DRP, PRSNT#, PERST#
             rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di
             rw[224+:9]  <= 0;                           // +01C: DRP: pcie_drp_addr
@@ -285,20 +307,15 @@ module pcileech_fifo #(
     wire                _cmd_send_count_enable          = rw[17] & (_cmd_send_count_dword != 16'h0000);
     
     always @ ( posedge clk )
-         _pcie_core_config <= rw[205:128];
-    assign dpcie.pcie_cfg_subsys_vend_id                = _pcie_core_config[0+:16];
-    assign dpcie.pcie_cfg_subsys_id                     = _pcie_core_config[16+:16];
-    assign dpcie.pcie_cfg_vend_id                       = _pcie_core_config[32+:16];
-    assign dpcie.pcie_cfg_dev_id                        = _pcie_core_config[48+:16];
-    assign dpcie.pcie_cfg_rev_id                        = _pcie_core_config[64+:8];
+         _pcie_core_config <= rw[207:128];
     assign dpcie.pcie_rst_core                          = _pcie_core_config[72];
     assign dpcie.pcie_rst_subsys                        = _pcie_core_config[73];
-    assign dpcie.clk100_en                              = _pcie_core_config[77];
-    
     assign dshadow2fifo.cfgtlp_en                       = _pcie_core_config[74];
-    assign dshadow2fifo.cfgtlp_zero                     = rw[203];
+    assign dshadow2fifo.cfgtlp_zero                     = _pcie_core_config[75];
     assign dshadow2fifo.cfgtlp_filter                   = _pcie_core_config[76];
-    assign dshadow2fifo.cfgtlp_wren                     = rw[206];
+    assign dshadow2fifo.bar_en                          = _pcie_core_config[77];
+    assign dshadow2fifo.cfgtlp_wren                     = _pcie_core_config[78];
+    assign dshadow2fifo.alltlp_filter                   = _pcie_core_config[79];
     assign dpcie.drp_en                                 = rw[RWPOS_DRP_WR_EN] | rw[RWPOS_DRP_RD_EN];
     assign dpcie.drp_we                                 = rw[RWPOS_DRP_WR_EN];
     assign dpcie.drp_addr                               = rw[224+:9];

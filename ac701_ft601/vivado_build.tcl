@@ -5,7 +5,7 @@
 puts "-------------------------------------------------------"
 puts " STARTING SYNTHESIS STEP.                              "
 puts "-------------------------------------------------------"
-launch_runs synth_1
+launch_runs -jobs 4 synth_1
 puts "-------------------------------------------------------"
 puts " WAITING FOR SYNTHESIS STEP TO FINISH ...              "
 puts " THIS IS LIKELY TO TAKE A VERY LONG TIME.              "
@@ -14,13 +14,13 @@ wait_on_run synth_1
 puts "-------------------------------------------------------"
 puts " STARTING IMPLEMENTATION STEP.                         "
 puts "-------------------------------------------------------"
-launch_runs impl_1 -to_step write_bitstream
+launch_runs -jobs 4 impl_1 -to_step write_bitstream
 puts "-------------------------------------------------------"
 puts " WAITING FOR IMPLEMENTATION STEP TO FINISH ...         "
 puts " THIS IS LIKELY TO TAKE A VERY LONG TIME.              "
 puts "-------------------------------------------------------"
 wait_on_run impl_1
-file copy -force ./pcileech_ac701_ft601/pcileech_ac701_ft601.runs/impl_1/pcileech_ac701_top.bin pcileech_ac701.bin
+file copy -force ./pcileech_ac701_ft601/pcileech_ac701_ft601.runs/impl_1/pcileech_ac701_ft601_top.bin pcileech_ac701_ft601.bin
 puts "-------------------------------------------------------"
 puts " BUILD HOPEFULLY COMPLETED.                            "
 puts "-------------------------------------------------------"

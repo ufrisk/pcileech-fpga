@@ -4,10 +4,12 @@ This project contains software and HDL code for the [Screamer PCIe Squirrel PCIe
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+> :warning: **3rd party boards** not listed on this Github may not always be compatible with the firmware. It would depend on the 3rd party hardware vendor. No support can be given on 3rd party boards not mentioned on this Github. **If you purchase a 3rd party board please consider [sponsoring](https://github.com/sponsors/ufrisk)** this project with a small sum since the 3rd party vendor does not.
+
 
 Capabilities:
 =================
-* Retrieve memory from the target system over USB3 up to 150MB/s.
+* Retrieve memory from the target system over USB3 in excess of 190MB/s.
 * Access all memory of target system without the need for kernel module (KMD) unless protected with VT-d/IOMMU.
 * Enumerate/Probe accessible memory at >1GB/s.
 * Raw PCIe Transaction Layer Packet (TLP) access.
@@ -34,7 +36,7 @@ Flashing Screamer PCIe Squirrel: (built-in update port):
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2022.1 or later.
+1) Install Xilinx Vivado WebPACK 2023.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of PCIeSquirrel (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -63,6 +65,7 @@ To all my sponsors, Thank You :sparkling_heart:
 Releases / Version History:
 =================
 <details><summary>Previous releases (click to expand):</summary>
+
 v4.10
 * Initial Release.
 * Download pre-built binaries below:
@@ -72,9 +75,17 @@ v4.11
 * Bug fixes and new USB core.
 * Download pre-built binaries below:
   * [Screamer PCIe Squirrel](https://mega.nz/file/ZGx30ZxB#9S7vDbQGnepPnV8XEUIWr93KkcM9O_Dzl1-ivcC-G94) SHA256: `4d0038ce607723dbc84c85393c391733a74fccd5627d2653c06fdf20890cafb7`
-</details>
 
 v4.12
 * Bug fixes.
 * Download pre-built binaries below:
   * [Screamer PCIe Squirrel](https://mega.nz/file/YGgjHJCR#KawMhx_r1jZVkm2hyi_mSFKtqwBh0q7eddIf10G-Jj8) SHA256: `68c8cd753b1feabf5319b6bab5d28e5b23378913f5326f39d5ac96224c5fcef9`
+
+</details>
+
+v4.13
+* Bug fixes.
+* New internal design with on-board PIO BAR support.
+* Download pre-built binaries below:
+  * [Screamer PCIe Squirrel](https://mega.nz/file/dexBFIKa#cdjTryyluiFDNCbbz0xhrk75UziyBKPZLokfEt5xEGo) SHA256: `ee5e2886a923b0ac19e0bb9207e879fd211ef835097bc8c224a060c3f55c417f`
+  

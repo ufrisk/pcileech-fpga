@@ -7,7 +7,7 @@ Once flashed it may be used together with the [PCILeech Direct Memory Access (DM
 
 Capabilities:
 =================
-* Retrieve memory from the target system over USB3 up to 150MB/s.
+* Retrieve memory from the target system over USB3/USB-C in excess of 190MB/s.
 * Access all memory of target system without the need for kernel module (KMD) unless protected with VT-d/IOMMU.
 * Enumerate/Probe accessible memory at >1GB/s.
 * Raw PCIe Transaction Layer Packet (TLP) access.
@@ -49,7 +49,7 @@ Please note that this instruction applies to the LambdaConcept programming cable
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2020.2 or later.
+1) Install Xilinx Vivado WebPACK 2023.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of ScreamerM2 (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -68,7 +68,7 @@ The completed solution contains Xilinx proprietary IP cores licensed under the X
 
 Support PCILeech/MemProcFS development:
 =======================================
-**Thank You [LambdaConcept](https://lambdaconcept.com/) for sponsoring the PCILeech project :sparkling_heart:**
+**Thank You [LambdaConcept](https://shop.lambdaconcept.com/) for sponsoring the PCILeech project :sparkling_heart:**
 
 Some other hardware sellers have chosen not to support the project! If you think PCILeech and/or MemProcFS is awesome or if you had a use for it it's now also possible to support the project via Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk).
  
@@ -131,9 +131,15 @@ v4.11
 * Bug fixes.
 * Download pre-built binaries below:
   * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/8HRnQTJb#ksoa5QyW3l4FmlQuSkX1UsL_n2zvhmWGnV1zSxFMcYQ) SHA256: `64be806e262e859126b93ebb3283c91be18c942bc2a690c95e6b966538572385`
-</details>
-
+ 
 v4.12
 * Bug fixes.
 * Download pre-built binaries below:
   * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/kSRW0S5A#J6oZtYc9FwW459VqKVcuXEpvKmD9esZiDs9yOCv2WDk) SHA256: `d2e063f26367fbf2d00df52f0f5fb7ec18732d91aaa47cca8733399e55d697a0`
+</details>
+ 
+v4.13
+* Bug fixes.
+* New internal design with on-board PIO BAR support.
+* Download pre-built binaries below:
+  * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/MSQ0HBrb#e1OJqMkQrq3fTG2rXQe695fYnsp1neOr_8FH3kWymoA) SHA256: `25d5b47a7ba6d485bc8cf35c6f45c8a9f99ab906657ce706a012353437c37b39`

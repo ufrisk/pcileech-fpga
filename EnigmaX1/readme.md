@@ -4,10 +4,13 @@ This project contains software and HDL code for the [Enigma X1 board](https://en
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
+> :warning: **LeetDMA**, also sold by enigma-x1.com, uses the [PCIeSquirrel firmware](../PCIeSquirrel/readme.md) and is not compatible with the EnigmaX1 firmware.
+
+> :warning: **This guide only applies to Enigma X1**. There are other DMA boards selling as 75T devices under different names that may not to work since they have different PIN layouts on the FPGA. Please consult your DMA card vendor if your 75T DMA board is not an Enigma X1 board.
 
 Capabilities:
 =================
-* Retrieve memory from the target system over USB3/USB-C around 180MB/s.
+* Retrieve memory from the target system over USB3/USB-C in excess of 200MB/s.
 * Access physical memory of target system unless protected with VT-d/IOMMU.
 * Raw PCIe Transaction Layer Packet (TLP) access.
 
@@ -44,9 +47,9 @@ Please note that this instruction applies to the built-in update port. There is 
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2020.2 or later.
+1) Install Xilinx Vivado WebPACK 2023.2 or later.
 2) Open Vivado Tcl Shell command prompt.
-3) cd into the directory of ScreamerM2 (forward slash instead of backslash in path).
+3) cd into the directory of EnigmaX1 (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
 5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
 6) Finished !!!
@@ -73,6 +76,7 @@ To all my sponsors, Thank You :sparkling_heart:
 Releases / Version History:
 =================
 <details><summary>Previous releases (click to expand):</summary>
+
 v4.10
 * Initial Release
 * Download pre-built binaries below:
@@ -82,9 +86,16 @@ v4.11
 * Bug fixes and new USB core.
 * Download pre-built binaries below:
   * [Enigma x1](https://mega.nz/file/BTIAVDQR#62Fu-9VRJv-zSZH-IFzz-eWiP9wzFCjCtNocIDYIstQ) SHA256: `253ec0d7ef2361269589d35d948b0d4786619c5eb376e9d0237573494fb79b53`
-</details>
-
+ 
 v4.12
 * Bug fixes.
 * Download pre-built binaries below:
   * [Enigma x1](https://mega.nz/file/NGRWWBrQ#konYF9UIyNYfset4aiCid3eE3XJXspu1mreQJqn6eMg) SHA256: `cdba0ddfbcd0b1b03f55e7c2d5d301be8ce25d3dcac756439c9910d6faa87927`
+
+</details>
+ 
+v4.13
+* Bug fixes.
+* New internal design with on-board PIO BAR support.
+* Download pre-built binaries below:
+  * [Enigma x1](https://mega.nz/file/tfgSjSSK#Qd3qVgNveFo2rOkIo-Wyee4N6-C1FGdhYi_p5r_aV0s) SHA256: `69a21c8f32298df81e288d7c4f6745da27cf6bfc6e4bbd8ffa68297980b725d7`

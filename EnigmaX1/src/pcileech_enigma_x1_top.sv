@@ -11,11 +11,9 @@
 `include "pcileech_header.svh"
 
 module pcileech_enigma_x1_top #(
-    // DEVICE IDs as follows:
-    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 9,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 12,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 13,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS
@@ -144,7 +142,7 @@ module pcileech_enigma_x1_top #(
     // ----------------------------------------------------
     
     pcileech_pcie_a7 i_pcileech_pcie_a7(
-        .clk_100            ( clk                   ),
+        .clk_sys            ( clk                   ),
         .rst                ( rst                   ),
         // PCIe fabric
         .pcie_tx_p          ( pcie_tx_p             ),
@@ -160,8 +158,8 @@ module pcileech_enigma_x1_top #(
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),
         .dfifo_pcie         ( dpcie.mp_pcie         ),
-        .dshadow2fifo_src   ( dshadow2fifo.src      ),
-        .dshadow2fifo_tlp   ( dshadow2fifo.tlp      )
+        .dshadow2fifo       ( dshadow2fifo.shadow   )
     );
 
 endmodule
+

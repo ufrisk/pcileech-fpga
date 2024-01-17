@@ -3,7 +3,7 @@
 //
 // PCIe module for Artix-7.
 //
-// (c) Ulf Frisk, 2018-2022
+// (c) Ulf Frisk, 2018-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -11,7 +11,7 @@
 `include "pcileech_header.svh"
 
 module pcileech_pcie_a7(
-    input                   clk_100,
+    input                   clk_sys,
     input                   rst,
 
     // PCIe fabric
@@ -25,34 +25,34 @@ module pcileech_pcie_a7(
     
     // State and Activity LEDs
     output                  led_state,
-    output                  led_state_n,
     
     // PCIe <--> FIFOs
     IfPCIeFifoCfg.mp_pcie   dfifo_cfg,
     IfPCIeFifoTlp.mp_pcie   dfifo_tlp,
     IfPCIeFifoCore.mp_pcie  dfifo_pcie,
-    IfShadow2Fifo.src       dshadow2fifo_src,
-    IfShadow2Fifo.tlp       dshadow2fifo_tlp
+    IfShadow2Fifo.shadow    dshadow2fifo
     );
        
     // ----------------------------------------------------------------------------
     // PCIe DEFINES AND WIRES
     // ----------------------------------------------------------------------------
     
-    IfPCIeSignals   ctx();
-    IfPCIeTlpRxTx   tlp_tx();
-    IfPCIeTlpRxTx   tlp_rx();
-    IfCfg_TlpCfg    cfg_tlpcfg();
-    IfTlp64         tlp_static();       // static tlp transmit from cfg->tlp
-    IfShadow2Tlp    dshadow2tlp();
-    wire            user_lnk_up;
+    IfPCIeSignals           ctx();
+    IfPCIeTlpRxTx           tlp_tx();
+    IfPCIeTlpRxTx           tlp_rx();
+    IfAXIS128               tlps_tx();
+    IfAXIS128               tlps_rx();
+    
+    IfAXIS128               tlps_static();       // static tlp transmit from cfg->tlp
+    wire [15:0]             pcie_id;
+    wire                    user_lnk_up;
     
     // system interface
     wire pcie_clk_c;
-    wire clk_user;
-    wire rst_user;
-    wire rst_subsys = rst | rst_user | dfifo_pcie.pcie_rst_subsys;
-    wire rst_pcie = rst | ~pcie_perst_n | dfifo_pcie.pcie_rst_core;
+    wire clk_pcie;
+    wire rst_pcie_user;
+    wire rst_subsys = rst || rst_pcie_user || dfifo_pcie.pcie_rst_subsys;
+    wire rst_pcie = rst || ~pcie_perst_n || dfifo_pcie.pcie_rst_core;
        
     // Buffer for differential system clock
     IBUFDS_GTE2 refclk_ibuf (.O(pcie_clk_c), .ODIV2(), .I(pcie_clk_p), .CEB(1'b0), .IB(pcie_clk_n));
@@ -64,7 +64,7 @@ module pcileech_pcie_a7(
     time tickcount64_pcie_refclk = 0;
     always @ ( posedge pcie_clk_c )
         tickcount64_pcie_refclk <= tickcount64_pcie_refclk + 1;
-    assign led_state = user_lnk_up | tickcount64_pcie_refclk[25];
+    assign led_state = user_lnk_up || tickcount64_pcie_refclk[25];
     
     // ----------------------------------------------------------------------------
     // PCIe CFG RX/TX <--> FIFO below
@@ -72,40 +72,42 @@ module pcileech_pcie_a7(
     
     pcileech_pcie_cfg_a7 i_pcileech_pcie_cfg_a7(
         .rst                        ( rst_subsys                ),
-        .clk_100                    ( clk_100                   ),
-        .clk_pcie                   ( clk_user                  ),
+        .clk_sys                    ( clk_sys                   ),
+        .clk_pcie                   ( clk_pcie                  ),
         .dfifo                      ( dfifo_cfg                 ),        
         .ctx                        ( ctx                       ),
-        .cfg_tlpcfg                 ( cfg_tlpcfg                ),
-        .tlp_static                 ( tlp_static                )
+        .tlps_static                ( tlps_static.source        ),
+        .pcie_id                    ( pcie_id                   )   // -> [15:0]
     );
     
     // ----------------------------------------------------------------------------
     // PCIe TLP RX/TX <--> FIFO below
     // ----------------------------------------------------------------------------
     
-    pcileech_pcie_tlp_a7 i_pcileech_pcie_tlp_a7(
+    pcileech_tlps128_src64 i_pcileech_tlps128_src64(
         .rst                        ( rst_subsys                ),
-        .clk_100                    ( clk_100                   ),
-        .clk_pcie                   ( clk_user                  ),
-        .dfifo                      ( dfifo_tlp                 ),
-        .tlp_tx                     ( tlp_tx                    ),       
-        .tlp_rx                     ( tlp_rx                    ),
-        .cfg_tlpcfg                 ( cfg_tlpcfg                ),
-        .tlp_static                 ( tlp_static                ),
-        .dshadow2fifo               ( dshadow2fifo_tlp          ),
-        .dshadow2tlp                ( dshadow2tlp.tlp           )
+        .clk_pcie                   ( clk_pcie                  ),
+        .tlp_rx                     ( tlp_rx.sink               ),
+        .tlps_out                   ( tlps_rx.source_lite       )
     );
     
-    // ----------------------------------------------------------------------------
-    // PCIe SHADOW CONFIGURTION SPACE BELOW
-    // ----------------------------------------------------------------------------
-    
-    pcileech_pcie_cfgspace_shadow i_pcileech_pcie_cfgspace_shadow(
+    pcileech_pcie_tlp_a7 i_pcileech_pcie_tlp_a7(
         .rst                        ( rst_subsys                ),
-        .clk                        ( clk_100                   ),
-        .dshadow2fifo               ( dshadow2fifo_src          ),
-        .dshadow2tlp                ( dshadow2tlp.shadow        )
+        .clk_pcie                   ( clk_pcie                  ),
+        .clk_sys                    ( clk_sys                   ),
+        .dfifo                      ( dfifo_tlp                 ),
+        .tlps_tx                    ( tlps_tx.source            ),       
+        .tlps_rx                    ( tlps_rx.sink_lite         ),
+        .tlps_static                ( tlps_static.sink          ),
+        .dshadow2fifo               ( dshadow2fifo              ),
+        .pcie_id                    ( pcie_id                   )   // <- [15:0]
+    );
+    
+    pcileech_tlps128_dst64 i_pcileech_tlps128_dst64(
+        .rst                        ( rst                       ),
+        .clk_pcie                   ( clk_pcie                  ),
+        .tlp_tx                     ( tlp_tx.source             ),
+        .tlps_in                    ( tlps_tx.sink              )
     );
     
     // ----------------------------------------------------------------------------
@@ -133,8 +135,8 @@ module pcileech_pcie_a7(
         .m_axis_rx_tdata            ( tlp_rx.data               ),  // -> [63:0]
         .m_axis_rx_tkeep            ( tlp_rx.keep               ),  // -> [7:0]
         .m_axis_rx_tlast            ( tlp_rx.last               ),  // -> 
-        .m_axis_rx_tready           ( 1'b1                      ),  // <-
-        .m_axis_rx_tuser            (                           ),  // -> [21:0]
+        .m_axis_rx_tready           ( tlp_rx.ready              ),  // <-
+        .m_axis_rx_tuser            ( tlp_rx.user               ),  // -> [21:0]
         .m_axis_rx_tvalid           ( tlp_rx.valid              ),  // ->
     
         // pcie_cfg_mgmt
@@ -242,7 +244,7 @@ module pcileech_pcie_a7(
         .pl_downstream_deemph_source( ctx.pl_downstream_deemph_source   ),  // <-
         
         // DRP - clock domain clk_100 - write should only happen when core is in reset state ...
-        .pcie_drp_clk               ( clk_100                           ),  // <-
+        .pcie_drp_clk               ( clk_sys                           ),  // <-
         .pcie_drp_en                ( dfifo_pcie.drp_en                 ),  // <-
         .pcie_drp_we                ( dfifo_pcie.drp_we                 ),  // <-
         .pcie_drp_addr              ( dfifo_pcie.drp_addr               ),  // <- [8:0]
@@ -251,10 +253,98 @@ module pcileech_pcie_a7(
         .pcie_drp_do                ( dfifo_pcie.drp_do                 ),  // -> [15:0]
     
         // user interface
-        .user_clk_out               ( clk_user                          ),  // ->
-        .user_reset_out             ( rst_user                          ),  // ->
+        .user_clk_out               ( clk_pcie                          ),  // ->
+        .user_reset_out             ( rst_pcie_user                     ),  // ->
         .user_lnk_up                ( user_lnk_up                       ),  // ->
         .user_app_rdy               (                                   )   // ->
     );
 
+endmodule
+
+
+// ------------------------------------------------------------------------
+// TLP STREAM SINK:
+// Convert a 128-bit TLP-AXI-STREAM to a 64-bit PCIe core AXI-STREAM.
+// ------------------------------------------------------------------------
+module pcileech_tlps128_dst64(
+    input                   rst,
+    input                   clk_pcie,
+    IfPCIeTlpRxTx.source    tlp_tx,
+    IfAXIS128.sink          tlps_in
+);
+
+    bit [63:0]  d1_tdata;
+    bit         d1_tkeepdw2;
+    bit         d1_tlast;
+    bit         d1_tvalid = 0;
+    
+    assign tlps_in.tready = tlp_tx.ready && !(tlps_in.tvalid && tlps_in.tkeepdw[2]);
+    
+    wire tkeepdw2       = d1_tvalid ? d1_tkeepdw2 : tlps_in.tkeepdw[1];
+    assign tlp_tx.data  = d1_tvalid ? d1_tdata : tlps_in.tdata[63:0];
+    assign tlp_tx.last  = d1_tvalid ? d1_tlast : (tlps_in.tlast && !tlps_in.tkeepdw[2]);
+    assign tlp_tx.keep  = tkeepdw2 ? 8'hff : 8'h0f;
+    assign tlp_tx.valid = d1_tvalid || tlps_in.tvalid;
+    
+    always @ ( posedge clk_pcie ) begin
+        d1_tvalid    <= !rst && tlps_in.tvalid && tlps_in.tkeepdw[2];
+        d1_tdata     <= tlps_in.tdata[127:64];
+        d1_tlast     <= tlps_in.tlast;
+        d1_tkeepdw2  <= tlps_in.tkeepdw[3];
+    end
+
+endmodule
+
+
+// ------------------------------------------------------------------------
+// TLP STREAM SOURCE:
+// Convert a 64-bit PCIe core AXIS to a 128-bit TLP-AXI-STREAM 
+// ------------------------------------------------------------------------
+module pcileech_tlps128_src64(
+    input                   rst,
+    input                   clk_pcie,
+    IfPCIeTlpRxTx.sink      tlp_rx,
+    IfAXIS128.source_lite   tlps_out
+);
+
+    bit [127:0] tdata;
+    bit         first       = 1;
+    bit         tlast       = 0;
+    bit [3:0]   len         = 0;
+    bit [6:0]   bar_hit     = 0;
+    wire        tvalid      = tlast || (len>2);
+    
+    assign tlp_rx.ready     = 1'b1;
+    assign tlps_out.tdata   = tdata;
+    assign tlps_out.tkeepdw = {(len>3), (len>2), (len>1), 1'b1};
+    assign tlps_out.tlast   = tlast;   
+    assign tlps_out.tvalid  = tvalid; 
+    assign tlps_out.tuser[0]    = first;
+    assign tlps_out.tuser[1]    = tlast;
+    assign tlps_out.tuser[8:2]  = bar_hit;
+    
+    wire [3:0]  next_base   = (tlast || tvalid) ? 0 : len;
+    wire [3:0]  next_len    = next_base + 1 + tlp_rx.keep[4];
+
+    always @ ( posedge clk_pcie )
+        if ( rst ) begin
+            first   <= 1;
+            tlast   <= 0;
+            len     <= 0;
+            bar_hit <= 0;
+        end
+        else if ( tlp_rx.valid ) begin
+            tdata[(32*next_base)+:64] <= tlp_rx.data;
+            first   <= tvalid ? tlast : first;
+            tlast   <= tlp_rx.last;
+            len     <= next_len;
+            bar_hit <= tlp_rx.user[8:2];
+        end
+        else if ( tvalid ) begin 
+            first   <= tlast;
+            tlast   <= 0;
+            len     <= 0;
+            bar_hit <= 0;
+        end
+    
 endmodule

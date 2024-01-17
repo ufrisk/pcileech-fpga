@@ -4,7 +4,7 @@ This readme details some customizations that are possible to perform prior to bu
 
 Building:
 =================
-1) Install Xilinx Vivado WebPACK 2020.2 or later.
+1) Install Xilinx Vivado WebPACK 2023.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the EnigmaX1 directory of the cloned or unpacked code (forward slash instead of backslash in path).
 4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
@@ -22,7 +22,7 @@ Please note that many combinations of device types, vendor IDs and product IDs w
 Please also note that changing the device and vendor ID is not in itself sufficient to make the device "undetectable" by software looking for malicious DMA devices. There are, more settings that are or aren't, directly modifiable in the PCIe configuration wizard that will alter the device PCIe configuration space.
 
 * Please first generate the initial project as outlined in points 1-4 above.
-* Open the project in Vivado Web Pack 2020.2 or later by double clicking on `pcileech_enigma_x1.xpr` in the generated pcileech_enigma_x1 sub-folder.
+* Open the project in Vivado by double clicking on `pcileech_enigma_x1.xpr` in the generated pcileech_enigma_x1 sub-folder.
 * In the PROJECT MANAGER - EnigmaX1 window expand: Design Sources > pcileech_enigma_x1_top > i_pcileech_pcie_a7.
 * Double click on i_pcie_7x_0 shown in the expanded hierarchy from above to open the PCIe core designer GUI.
 * Navigate to the IDs tab. Alter ID Initial Values and Class Code to custom values.
@@ -49,9 +49,19 @@ rw[203]     <= 1'b1;                        //       CFGTLP ZERO DATA
 ```
 into:
 ```verilog
-rw[203]     <= 1'b0;                        //       CUSTOM CONFIGURATION SPACE ENABLED
+rw[203]     <= 1'b0;                        //       CFGTLP ZERO DATA (0 = CUSTOM CONFIGURATION SPACE ENABLED)
 ```
 
 It's not currently possible to read the custom configuration space from within PCILeech, but on a Linux system it's possible to view it using the `lspci` command. The command line, if the vendor/device id is the default 10ee:0666, is:
 
 Linux lspci command line: `lspci -d 10ee:0666 -xxxx`.
+
+
+
+#### BAR PIO Memory Regions:
+
+It's possible to implement a custom BAR PIO memory region, commonly used by devices. Properly implemented BAR PIO memory regions may allow for more complete device emulation.
+
+First, edit the Xilinx PCIe core in Vivado. By default there is one BAR, BAR0 which have 4kB of all-zero read/write memory assigned. This is possible to change.
+
+Secondly, edit the file: `pcileech_tlps128_bar_controller.sv` and follow the instructions in the file to implement custom BAR PIO memory regions.

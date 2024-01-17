@@ -3,7 +3,7 @@
 //
 // FT601 / FT245 controller module (v4).
 //
-// (c) Ulf Frisk, 2017-2022
+// (c) Ulf Frisk, 2017-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -17,17 +17,26 @@ module pcileech_ft601(
     inout [31:0]        FT601_DATA,
     input               FT601_RXF_N,
     input               FT601_TXE_N,
-    output reg          FT601_OE_N      = 1'b1,
-    output reg          FT601_RD_N      = 1'b1,
-    output reg          FT601_WR_N      = 1'b1,
-    output reg          FT601_SIWU_N    = 1'b1,
+    output bit          FT601_OE_N,
+    output bit          FT601_RD_N,
+    output bit          FT601_WR_N,
+    output bit          FT601_SIWU_N,
     // TO/FROM FIFO
-    output reg [31:0]   dout,
-    output reg          dout_valid      = 1'b0,
+    output bit [31:0]   dout,
+    output bit          dout_valid,
     input [31:0]        din,
     input               din_wr_en,
     output              din_req_data
     );
+    
+    initial begin
+        FT601_OE_N   <= 1'b1;
+        FT601_RD_N   <= 1'b1;
+        FT601_WR_N   <= 1'b1;
+        FT601_SIWU_N <= 1'b1;
+        dout_valid   <= 1'b0;
+        dout         <= 32'h00000000;
+    end
 
     `define S_FT601_IDLE         4'h0
     `define S_FT601_RX_WAIT1     4'h2
@@ -42,12 +51,12 @@ module pcileech_ft601(
     `define S_FT601_TX_COOLDOWN1 4'hb
     `define S_FT601_TX_COOLDOWN2 4'hc
 
-                        reg [31:0]      FT601_DATA_OUT[5];
+                        bit [31:0]      FT601_DATA_OUT[5];
     (* KEEP = "TRUE" *) wire            FWD;
-    (* KEEP = "TRUE" *) reg             OE                  = 1'b1;
-    (* KEEP = "TRUE" *) reg [3:0]       data_cooldown_count = 0;
-    (* KEEP = "TRUE" *) reg [2:0]       data_queue_count    = 0;     
-    (* KEEP = "TRUE" *) reg [3:0]       state               = `S_FT601_IDLE;
+    (* KEEP = "TRUE" *) bit             OE                  = 1'b1;
+    (* KEEP = "TRUE" *) bit [3:0]       data_cooldown_count = 0;
+    (* KEEP = "TRUE" *) bit [2:0]       data_queue_count    = 0;     
+    (* KEEP = "TRUE" *) bit [3:0]       state               = `S_FT601_IDLE;
 
 
 

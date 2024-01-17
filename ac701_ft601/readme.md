@@ -6,7 +6,7 @@ Once flashed it may be used together with the [PCILeech Direct Memory Access (DM
 
 Capabilities:
 =================
-* Retrieve memory from the target system over USB3 at 150MB/s.
+* Retrieve memory from the target system over USB3/USB-C in excess of 190MB/s.
 * Access all memory of target system without the need for kernel module (KMD) unless protected with VT-d/IOMMU.
 * Enumerate/Probe accessible memory at >1GB/s.
 * Raw PCIe Transaction Layer Packet (TLP) access.
@@ -107,8 +107,13 @@ v4.9
 v4.11
 * Bug fixes and new USB core.
 * Download pre-built binary [here](https://mega.nz/file/1CQ0lb4Y#TmcP3GTrTum5EhEBOyti5q7aQ_uqg7WEFltkSj-Hk8A). <br>SHA256: `281b8f068fa3b74e5ee3653497ea94d03f0bd95c42f4f995cf3047b4bcc5a710`
-</details>
 
 v4.12
 * Bug fixes.
 * Download pre-built binary [here](https://mega.nz/file/haxAFYZR#6oEOklJH4hmyWYW7Ffhj88wdiUoaxVgyIpbEFhS95aY). <br>SHA256: `4581fda04fb681c7d0fe909c156c7c8dcb2c789bb3c0422ade0a973d8962365b`
+</details>
+
+v4.13
+* Bug fixes.
+* New internal design with on-board PIO BAR support.
+* Download pre-built binary [here](https://mega.nz/file/1W4QgILB#t5pBSs2eznL8crm3GgSNRzbk1CSzb3_YSTI5Ok65-Ww) SHA256: `1607eed95b24b470be20b4ea710c0a4d0f446786a7acae939df4b827201cddea`

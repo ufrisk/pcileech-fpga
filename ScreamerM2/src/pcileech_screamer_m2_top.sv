@@ -1,9 +1,9 @@
 //
 // PCILeech FPGA.
 //
-// Top module for the ScreamerM2 Artix-7 board.
+// Top module for various 35T-325 x1 Artix-7 boards.
 //
-// (c) Ulf Frisk, 2019-2022
+// (c) Ulf Frisk, 2019-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -11,11 +11,9 @@
 `include "pcileech_header.svh"
 
 module pcileech_screamer_m2_top #(
-    // DEVICE IDs as follows:
-    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 12,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 13,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS
@@ -23,8 +21,8 @@ module pcileech_screamer_m2_top #(
     input           ft601_clk,
     
     // SYSTEM LEDs and BUTTONs
-    output          user_led_ld1,
-    output          user_led_ld2,
+    output          user_ld1,
+    output          user_ld2,
     
     // PCI-E FABRIC
     output  [0:0]   pcie_tx_p,
@@ -82,9 +80,9 @@ module pcileech_screamer_m2_top #(
     assign rst = (tickcount64 < 64) ? 1'b1 : 1'b0;
     assign ft601_rst_n = ~rst;
     wire led_pwronblink = tickcount64[24] & (tickcount64[63:27] == 0);
-	
-    OBUF led_ld1_obuf(.O(user_led_ld1), .I(led_pcie));
-    OBUF led_ld2_obuf(.O(user_led_ld2), .I(led_com));
+    
+    OBUF led_ld1_obuf(.O(user_ld1), .I(led_pcie));
+    OBUF led_ld2_obuf(.O(user_ld2), .I(led_com));
     
     // ----------------------------------------------------
     // BUFFERED COMMUNICATION DEVICE (FT601)
@@ -122,6 +120,7 @@ module pcileech_screamer_m2_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
+        .rst_cfg_reload     ( 1'b0                  ),
         .pcie_present       ( pcie_present          ),
         .pcie_perst_n       ( pcie_perst_n          ),
         // FIFO CTL <--> COM CTL
@@ -138,7 +137,7 @@ module pcileech_screamer_m2_top #(
     // ----------------------------------------------------
     
     pcileech_pcie_a7 i_pcileech_pcie_a7(
-        .clk_100            ( clk                   ),
+        .clk_sys            ( clk                   ),
         .rst                ( rst                   ),
         // PCIe fabric
         .pcie_tx_p          ( pcie_tx_p             ),
@@ -154,8 +153,7 @@ module pcileech_screamer_m2_top #(
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),
         .dfifo_pcie         ( dpcie.mp_pcie         ),
-        .dshadow2fifo_src   ( dshadow2fifo.src      ),
-        .dshadow2fifo_tlp   ( dshadow2fifo.tlp      )
+        .dshadow2fifo       ( dshadow2fifo.shadow   )
     );
 
 endmodule

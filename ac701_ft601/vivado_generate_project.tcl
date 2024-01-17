@@ -1,5 +1,5 @@
 #
-# Vivado generated .tcl for creating the pcileech_ac701_ft601 vivado project.
+# Vivado generated .tcl for creating the pcileech_ac701_ft601 (ac701/ft601) vivado project.
 # Run from within "Vivado Tcl Shell" with command: source vivado_generate_project.tcl -notrace
 #
 
@@ -67,8 +67,16 @@ if { $::argc > 0 } {
   }
 }
 
-# Set the directory path for the original project from where this script was exported
-set orig_proj_dir "[file normalize "$origin_dir/pcileech_ac701_ft601"]"
+# Check for paths and files needed for project creation
+set validate_required 0
+if { $validate_required } {
+  if { [checkRequiredFiles $origin_dir] } {
+    puts "Tcl file $script_file is valid. All files required for project creation is accesable. "
+  } else {
+    puts "Tcl file $script_file is not valid. Not all files required for project creation is accesable. "
+    return
+  }
+}
 
 # Create project
 create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7a200tfbg676-2
@@ -78,25 +86,24 @@ set proj_dir [get_property directory [current_project]]
 
 # Set project properties
 set obj [current_project]
-set_property -name "board_part" -value "xilinx.com:ac701:part0:1.4" -objects $obj
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
 set_property -name "enable_vhdl_2008" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
 set_property -name "ip_output_repo" -value "$proj_dir/${_xil_proj_name_}.cache/ip" -objects $obj
 set_property -name "mem.enable_memory_map_generation" -value "1" -objects $obj
-set_property -name "platform.board_id" -value "ac701" -objects $obj
+set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
 set_property -name "platform.description" -value "Vivado generated DSA" -objects $obj
 set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
-set_property -name "webtalk.activehdl_export_sim" -value "2" -objects $obj
-set_property -name "webtalk.ies_export_sim" -value "2" -objects $obj
-set_property -name "webtalk.modelsim_export_sim" -value "2" -objects $obj
-set_property -name "webtalk.questa_export_sim" -value "2" -objects $obj
-set_property -name "webtalk.riviera_export_sim" -value "2" -objects $obj
-set_property -name "webtalk.vcs_export_sim" -value "2" -objects $obj
-set_property -name "webtalk.xcelium_export_sim" -value "1" -objects $obj
-set_property -name "webtalk.xsim_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.activehdl_export_sim" -value "27" -objects $obj
+set_property -name "webtalk.ies_export_sim" -value "27" -objects $obj
+set_property -name "webtalk.modelsim_export_sim" -value "27" -objects $obj
+set_property -name "webtalk.questa_export_sim" -value "27" -objects $obj
+set_property -name "webtalk.riviera_export_sim" -value "27" -objects $obj
+set_property -name "webtalk.vcs_export_sim" -value "27" -objects $obj
+set_property -name "webtalk.xcelium_export_sim" -value "4" -objects $obj
+set_property -name "webtalk.xsim_export_sim" -value "27" -objects $obj
 set_property -name "xpm_libraries" -value "XPM_CDC XPM_MEMORY" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
@@ -109,15 +116,16 @@ set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
  [file normalize "${origin_dir}/src/pcileech_header.svh"]\
- [file normalize "${origin_dir}/src/pcileech_com.sv"]\
+ [file normalize "${origin_dir}/src/pcileech_com.sv" ]\
  [file normalize "${origin_dir}/src/pcileech_fifo.sv"]\
  [file normalize "${origin_dir}/src/pcileech_ft601.sv"]\
  [file normalize "${origin_dir}/src/pcileech_mux.sv"]\
- [file normalize "${origin_dir}/src/pcileech_pcie_a7.sv"]\
+ [file normalize "${origin_dir}/src/pcileech_pcie_a7x4.sv"]\
  [file normalize "${origin_dir}/src/pcileech_pcie_cfg_a7.sv"]\
  [file normalize "${origin_dir}/src/pcileech_pcie_tlp_a7.sv"]\
- [file normalize "${origin_dir}/src/pcileech_pcie_cfgspace_shadow.sv"]\
- [file normalize "${origin_dir}/src/pcileech_ac701_top.sv"]\
+ [file normalize "${origin_dir}/src/pcileech_tlps128_bar_controller.sv"]\
+ [file normalize "${origin_dir}/src/pcileech_tlps128_cfgspace_shadow.sv"]\
+ [file normalize "${origin_dir}/src/pcileech_ac701_ft601_top.sv" ]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 
@@ -145,7 +153,7 @@ set file "src/pcileech_mux.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
-set file "src/pcileech_pcie_a7.sv"
+set file "src/pcileech_pcie_a7x4.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
@@ -157,33 +165,36 @@ set file "src/pcileech_pcie_tlp_a7.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
-set file "src/pcileech_pcie_cfgspace_shadow.sv"
+set file "src/pcileech_tlps128_bar_controller.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
-set file "src/pcileech_ac701_top.sv"
+set file "src/pcileech_tlps128_cfgspace_shadow.sv"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
+
+set file "src/pcileech_ac701_ft601_top.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "pcileech_ac701_top" -objects $obj
+set_property -name "top" -value "pcileech_ac701_ft601_top" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
-
 
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
+ [file normalize "${origin_dir}/ip/pcileech_bar_zero4k.coe" ]\
  [file normalize "${origin_dir}/ip/pcileech_cfgspace.coe" ]\
+ [file normalize "${origin_dir}/ip/pcileech_cfgspace_writemask.coe" ]\
  [file normalize "${origin_dir}/ip/bram_pcie_cfgspace.xci" ]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "bram_pcie_cfgspace/bram_pcie_cfgspace.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
@@ -195,19 +206,16 @@ if { ![get_property "is_locked" $file_obj] } {
 
 
 # Set 'sources_1' fileset object
-
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_41_41_clk2_tlptapcfgspace.xci"]\
+ [file normalize "${origin_dir}/ip/drom_pcie_cfgspace_writemask.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
-set file "fifo_41_41_clk2_tlptapcfgspace/fifo_41_41_clk2_tlptapcfgspace.xci"
+set file "drom_pcie_cfgspace_writemask/drom_pcie_cfgspace_writemask.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -217,19 +225,130 @@ if { ![get_property "is_locked" $file_obj] } {
 
 
 # Set 'sources_1' fileset object
-
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_55_55_clk2_tlptapcfgspace.xci"]\
+ [file normalize "${origin_dir}/ip/fifo_74_74_clk1_bar_rd1.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
-set file "fifo_55_55_clk2_tlptapcfgspace/fifo_55_55_clk2_tlptapcfgspace.xci"
+set file "fifo_74_74_clk1_bar_rd1/fifo_74_74_clk1_bar_rd1.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/bram_bar_zero4k.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "bram_bar_zero4k/bram_bar_zero4k.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/fifo_134_134_clk1_bar_rdrsp.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "fifo_134_134_clk1_bar_rdrsp/fifo_134_134_clk1_bar_rdrsp.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/fifo_141_141_clk1_bar_wr.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "fifo_141_141_clk1_bar_wr/fifo_141_141_clk1_bar_wr.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/fifo_134_134_clk2_rxfifo.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "fifo_134_134_clk2_rxfifo/fifo_134_134_clk2_rxfifo.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/fifo_1_1_clk2.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "fifo_1_1_clk2/fifo_1_1_clk2.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/fifo_134_134_clk2.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "fifo_134_134_clk2/fifo_134_134_clk2.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -245,33 +364,10 @@ set files [list \
  [file normalize "${origin_dir}/ip/fifo_64_64_clk1_fifocmd.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "fifo_64_64_clk1_fifocmd/fifo_64_64_clk1_fifocmd.xci"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
-set_property -name "registered_with_manager" -value "1" -objects $file_obj
-if { ![get_property "is_locked" $file_obj] } {
-  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
-}
-
-
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-# Import local files from the original project
-set files [list \
- [file normalize "${origin_dir}/ip/clk_wiz.xci" ]\
-]
-set imported_files [import_files -fileset sources_1 $files]
-
-# Set 'sources_1' fileset file properties for remote files
-# None
-
-# Set 'sources_1' fileset file properties for local files
-set file "clk_wiz/clk_wiz.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -287,10 +383,8 @@ set files [list \
  [file normalize "${origin_dir}/ip/fifo_256_32_clk2_comtx.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "fifo_256_32_clk2_comtx/fifo_256_32_clk2_comtx.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
@@ -308,10 +402,8 @@ set files [list \
  [file normalize "${origin_dir}/ip/fifo_32_32_clk1_comtx.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "fifo_32_32_clk1_comtx/fifo_32_32_clk1_comtx.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
@@ -326,15 +418,13 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_68_34.xci"]\
+ [file normalize "${origin_dir}/ip/fifo_129_129_clk1.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
-set file "fifo_68_34/fifo_68_34.xci"
+set file "fifo_129_129_clk1/fifo_129_129_clk1.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -350,12 +440,29 @@ set files [list \
  [file normalize "${origin_dir}/ip/pcie_7x_0.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "pcie_7x_0/pcie_7x_0.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/clk_wiz.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "clk_wiz/clk_wiz.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -371,10 +478,8 @@ set files [list \
  [file normalize "${origin_dir}/ip/fifo_64_64.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "fifo_64_64/fifo_64_64.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
@@ -392,10 +497,8 @@ set files [list \
  [file normalize "${origin_dir}/ip/fifo_32_32_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "fifo_32_32_clk2/fifo_32_32_clk2.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
@@ -410,15 +513,13 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_66_66.xci"]\
+ [file normalize "${origin_dir}/ip/fifo_49_49_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
-set file "fifo_66_66/fifo_66_66.xci"
+set file "fifo_49_49_clk2/fifo_49_49_clk2.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -431,15 +532,13 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_64_64_clk2_comrx.xci"]\
+ [file normalize "${origin_dir}/ip/fifo_43_43_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
-set file "fifo_64_64_clk2_comrx/fifo_64_64_clk2_comrx.xci"
+set file "fifo_43_43_clk2/fifo_43_43_clk2.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -455,12 +554,29 @@ set files [list \
  [file normalize "${origin_dir}/ip/fifo_34_34.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
-
 # Set 'sources_1' fileset file properties for remote files
 # None
-
 # Set 'sources_1' fileset file properties for local files
 set file "fifo_34_34/fifo_34_34.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/fifo_64_64_clk2_comrx.xci" ]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "fifo_64_64_clk2_comrx/fifo_64_64_clk2_comrx.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -478,16 +594,16 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 set obj [get_filesets constrs_1]
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize ${origin_dir}/src/pcileech_ac701.xdc]"
+set file "[file normalize ${origin_dir}/src/pcileech_ac701_ft601.xdc]"
 set file_imported [import_files -fileset constrs_1 [list $file]]
-set file "src/pcileech_ac701.xdc"
+set file "src/pcileech_ac701_ft601.xdc"
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
+set_property -name "processing_order" -value "EARLY" -objects $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
-set_property -name "target_constrs_file" -value "$proj_dir/${_xil_proj_name_}.srcs/constrs_1/imports/src/pcileech_ac701.xdc" -objects $obj
-set_property -name "target_ucf" -value "$proj_dir/${_xil_proj_name_}.srcs/constrs_1/imports/src/pcileech_ac701.xdc" -objects $obj
+set_property -name "target_part" -value "xc7a200tfbg676-2" -objects $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -500,7 +616,8 @@ set obj [get_filesets sim_1]
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property -name "top" -value "pcileech_ac701_top" -objects $obj
+set_property -name "hbs.configure_design_for_hier_access" -value "1" -objects $obj
+set_property -name "top" -value "pcileech_ac701_ft601_top" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Upgrade IP from the currently installed Vivado version
@@ -515,10 +632,10 @@ set obj [get_filesets utils_1]
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
-    create_run -name synth_1 -part xc7a200tfbg676-2 -flow {Vivado Synthesis 2017} -strategy "Vivado Synthesis Defaults" -report_strategy {No Reports} -constrset constrs_1
+    create_run -name synth_1 -part xc7a200tfbg676-2 -flow {Vivado Synthesis 2023} -strategy "Vivado Synthesis Defaults" -report_strategy {No Reports} -constrset constrs_1
 } else {
   set_property strategy "Vivado Synthesis Defaults" [get_runs synth_1]
-  set_property flow "Vivado Synthesis 2017" [get_runs synth_1]
+  set_property flow "Vivado Synthesis 2023" [get_runs synth_1]
 }
 set obj [get_runs synth_1]
 set_property set_report_strategy_name 1 $obj
@@ -533,6 +650,7 @@ if { $obj != "" } {
 
 }
 set obj [get_runs synth_1]
+set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
 set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
 
 # set the current synth run
@@ -540,10 +658,10 @@ current_run -synthesis [get_runs synth_1]
 
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs -quiet impl_1] ""]} {
-    create_run -name impl_1 -part xc7a200tfbg676-2 -flow {Vivado Implementation 2019} -strategy "Performance_ExtraTimingOpt" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
+    create_run -name impl_1 -part xc7a200tfbg676-2 -flow {Vivado Implementation 2023} -strategy "Vivado Implementation Defaults" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
 } else {
-  set_property strategy "Performance_ExtraTimingOpt" [get_runs impl_1]
-  set_property flow "Vivado Implementation 2019" [get_runs impl_1]
+  set_property strategy "Vivado Implementation Defaults" [get_runs impl_1]
+  set_property flow "Vivado Implementation 2023" [get_runs impl_1]
 }
 set obj [get_runs impl_1]
 set_property set_report_strategy_name 1 $obj
@@ -746,7 +864,8 @@ set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
 set obj [get_runs impl_1]
-set_property -name "strategy" -value "Performance_ExtraTimingOpt" -objects $obj
+set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
+set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
 set_property -name "steps.phys_opt_design.is_enabled" -value "1" -objects $obj
 set_property -name "steps.write_bitstream.args.bin_file" -value "1" -objects $obj
 set_property -name "steps.write_bitstream.args.readback_file" -value "0" -objects $obj

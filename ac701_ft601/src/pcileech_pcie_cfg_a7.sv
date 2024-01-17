@@ -3,7 +3,7 @@
 //
 // PCIe configuration module - CFG handling for Artix-7.
 //
-// (c) Ulf Frisk, 2018-2022
+// (c) Ulf Frisk, 2018-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -12,12 +12,12 @@
 
 module pcileech_pcie_cfg_a7(
     input                   rst,
-    input                   clk_100,    // 100MHz
-    input                   clk_pcie,   // 62.5MHz
+    input                   clk_sys,
+    input                   clk_pcie,
     IfPCIeFifoCfg.mp_pcie   dfifo,
     IfPCIeSignals.mpm       ctx,
-    IfCfg_TlpCfg.cfg        cfg_tlpcfg,
-    IfTlp64.source          tlp_static
+    IfAXIS128.source        tlps_static,
+    output [15:0]           pcie_id
     );
 
     // ----------------------------------------------------
@@ -44,7 +44,7 @@ module pcileech_pcie_cfg_a7(
 	
     fifo_64_64 i_fifo_pcie_cfg_tx(
         .rst            ( rst                   ),
-        .wr_clk         ( clk_100               ),
+        .wr_clk         ( clk_sys               ),
         .rd_clk         ( clk_pcie              ),
         .din            ( dfifo.tx_data         ),
         .wr_en          ( dfifo.tx_valid        ),
@@ -66,14 +66,14 @@ module pcileech_pcie_cfg_a7(
     fifo_32_32_clk2 i_fifo_pcie_cfg_rx(
         .rst            ( rst                   ),
         .wr_clk         ( clk_pcie              ),
-        .rd_clk         ( clk_100               ),
+        .rd_clk         ( clk_sys               ),
         .din            ( out_data              ),
         .wr_en          ( out_wren              ),
         .rd_en          ( dfifo.rx_rd_en        ),
         .dout           ( dfifo.rx_data         ),
         .full           (                       ),
         .almost_full    ( pcie_cfg_rx_almost_full ),
-        .empty          ( dfifo.rx_empty        ),
+        .empty          (                       ),
         .valid          ( dfifo.rx_valid        )
     );
     
@@ -92,6 +92,7 @@ module pcileech_pcie_cfg_a7(
     reg     [3:0]       rwi_cfgrd_byte_en;
     reg     [31:0]      rwi_cfgrd_data;
     reg                 rwi_tlp_static_valid;
+    reg                 rwi_tlp_static_2nd;
     reg                 rwi_tlp_static_has_data;
     reg     [31:0]      rwi_count_cfgspace_status_cl;
    
@@ -207,8 +208,7 @@ module pcileech_pcie_cfg_a7(
             rw[19]      <= 0;                       //       TLP_STATIC TX ENABLE
             rw[20]      <= 0;                       //       CFGSPACE_STATUS_REGISTER_AUTO_CLEAR [master abort flag]
             rw[21]      <= 0;                       //       CFGSPACE_COMMAND_REGISTER_AUTO_SET [bus master and other flags (set in rw[143:128] <= 16'h....;)]
-            rw[27:22]   <= 0;                       //       RESERVED FUTURE
-            rw[31:28]   <= 4'hf;                    //       PCIe TLP TX ENABLE FOR MUX CHANNEL 0-3 [MUX[0] == RW[28] ..].
+            rw[31:22]   <= 0;                       //       RESERVED FUTURE
             // SIZEOF / BYTECOUNT [little-endian]
             rw[63:32]   <= $bits(rw) >> 3;          // +004: bytecount [little endian]
             // DSN
@@ -248,10 +248,10 @@ module pcileech_pcie_cfg_a7(
             rw[219]     <= 1;                       //       tx_cfg_gnt
             rw[223:220] <= 0;                       //       SLACK 
             // PCIe STATIC TLP TRANSMIT
-            rw[224+:12] <= 0;                       // +01C: TLP_STATIC TLP QWORD VALID [each-2bit: [0] = last, [1] = keep]
-            rw[236+:4]  <= 0;                       // +01C: SLACK
+            rw[224+:8]  <= 0;                       // +01C: TLP_STATIC TLP DWORD VALID [each-2bit: [0] = last, [1] = valid] [TLP DWORD 0-3]
+            rw[232+:8]  <= 0;                       // +01D: TLP_STATIC TLP DWORD VALID [each-2bit: [0] = last, [1] = valid] [TLP DWORD 4-7]
             rw[240+:16] <= 0;                       // +01E: TLP_STATIC TLP TX SLEEP (ticks) [little-endian]
-            rw[256+:384] <= 0;                      // +020: TLP_STATIC TLP [6*64-bit, 12*32-bit hdr+data]
+            rw[256+:384] <= 0;                      // +020: TLP_STATIC TLP [8*32-bit hdr+data]
             rw[640+:32] <= 0;                       // +050: TLP_STATIC TLP RETRANSMIT COUNT
             // PCIe STATUS register clear timer
             rw[672+:32] <= 62500;                   // +054: CFGSPACE_STATUS_CLEAR TIMER (ticks) [little-endian] [default = 1ms - 62.5k @ 62.5MHz]
@@ -295,18 +295,24 @@ module pcileech_pcie_cfg_a7(
     assign ctx.rx_np_req                    = rw[218];
     assign ctx.tx_cfg_gnt                   = rw[219];
     
-    assign cfg_tlpcfg.tlp_tx_en             = rw[31:28];
-    assign cfg_tlpcfg.tlp_pcie_id           = ro[79:64];
-    
-    assign tlp_static.data[395:0]           = {
-        rw[(224+2*5)+:2], rw[(256+64*5+32)+:8], rw[(256+64*5+40)+:8], rw[(256+64*5+48)+:8], rw[(256+64*5+56)+:8], rw[(256+64*5+00)+:8], rw[(256+64*5+08)+:8], rw[(256+64*5+16)+:8], rw[(256+64*5+24)+:8],
-        rw[(224+2*4)+:2], rw[(256+64*4+32)+:8], rw[(256+64*4+40)+:8], rw[(256+64*4+48)+:8], rw[(256+64*4+56)+:8], rw[(256+64*4+00)+:8], rw[(256+64*4+08)+:8], rw[(256+64*4+16)+:8], rw[(256+64*4+24)+:8],
-        rw[(224+2*3)+:2], rw[(256+64*3+32)+:8], rw[(256+64*3+40)+:8], rw[(256+64*3+48)+:8], rw[(256+64*3+56)+:8], rw[(256+64*3+00)+:8], rw[(256+64*3+08)+:8], rw[(256+64*3+16)+:8], rw[(256+64*3+24)+:8],
-        rw[(224+2*2)+:2], rw[(256+64*2+32)+:8], rw[(256+64*2+40)+:8], rw[(256+64*2+48)+:8], rw[(256+64*2+56)+:8], rw[(256+64*2+00)+:8], rw[(256+64*2+08)+:8], rw[(256+64*2+16)+:8], rw[(256+64*2+24)+:8],
-        rw[(224+2*1)+:2], rw[(256+64*1+32)+:8], rw[(256+64*1+40)+:8], rw[(256+64*1+48)+:8], rw[(256+64*1+56)+:8], rw[(256+64*1+00)+:8], rw[(256+64*1+08)+:8], rw[(256+64*1+16)+:8], rw[(256+64*1+24)+:8],
-        rw[(224+2*0)+:2], rw[(256+64*0+32)+:8], rw[(256+64*0+40)+:8], rw[(256+64*0+48)+:8], rw[(256+64*0+56)+:8], rw[(256+64*0+00)+:8], rw[(256+64*0+08)+:8], rw[(256+64*0+16)+:8], rw[(256+64*0+24)+:8]};
-    assign tlp_static.valid                 = rwi_tlp_static_valid;
-    assign tlp_static.has_data              = rwi_tlp_static_has_data;
+    assign tlps_static.tdata[127:0]         = rwi_tlp_static_2nd ? {
+        rw[(256+32*7+00)+:8], rw[(256+32*7+08)+:8], rw[(256+32*7+16)+:8], rw[(256+32*7+24)+:8],   // STATIC TLP DWORD7
+        rw[(256+32*6+00)+:8], rw[(256+32*6+08)+:8], rw[(256+32*6+16)+:8], rw[(256+32*6+24)+:8],   // STATIC TLP DWORD6
+        rw[(256+32*5+00)+:8], rw[(256+32*5+08)+:8], rw[(256+32*5+16)+:8], rw[(256+32*5+24)+:8],   // STATIC TLP DWORD5
+        rw[(256+32*4+00)+:8], rw[(256+32*4+08)+:8], rw[(256+32*4+16)+:8], rw[(256+32*4+24)+:8]    // STATIC TLP DWORD4
+    } : {
+        rw[(256+32*3+00)+:8], rw[(256+32*3+08)+:8], rw[(256+32*3+16)+:8], rw[(256+32*3+24)+:8],   // STATIC TLP DWORD3
+        rw[(256+32*2+00)+:8], rw[(256+32*2+08)+:8], rw[(256+32*2+16)+:8], rw[(256+32*2+24)+:8],   // STATIC TLP DWORD2
+        rw[(256+32*1+00)+:8], rw[(256+32*1+08)+:8], rw[(256+32*1+16)+:8], rw[(256+32*1+24)+:8],   // STATIC TLP DWORD1
+        rw[(256+32*0+00)+:8], rw[(256+32*0+08)+:8], rw[(256+32*0+16)+:8], rw[(256+32*0+24)+:8]    // STATIC TLP DWORD0
+    };
+    assign tlps_static.tkeepdw              = rwi_tlp_static_2nd ? { rw[224+2*7], rw[224+2*6], rw[224+2*5], rw[224+2*4] } : { rw[224+2*3], rw[224+2*2], rw[224+2*1], rw[224+2*0] };
+    assign tlps_static.tlast                = rwi_tlp_static_2nd || rw[224+2*3+1] || rw[224+2*2+1] || rw[224+2*1+1] || rw[224+2*0+1];
+    assign tlps_static.tuser[0]             = !rwi_tlp_static_2nd;
+    assign tlps_static.tvalid               = rwi_tlp_static_valid && tlps_static.tkeepdw[0];
+    assign tlps_static.has_data             = rwi_tlp_static_has_data;
+        
+    assign pcie_id                          = ro[79:64];
     
     // ------------------------------------------------------------------------
     // STATE MACHINE / LOGIC FOR READ/WRITE AND OTHER HOUSEKEEPING TASKS
@@ -393,20 +399,25 @@ module pcileech_pcie_cfg_a7(
                     end
                     
                 // STATIC_TLP TRANSMIT
-                if ( rwi_tlp_static_valid | ~rw[RWPOS_CFG_STATIC_TLP_TX_EN] )
-                    begin
-                        rwi_tlp_static_valid <= 1'b0;
-                        rwi_tlp_static_has_data <= 1'b0;
-                    end
-                else if ( rwi_tlp_static_has_data & tlp_static.req_data )
-                     rwi_tlp_static_valid <= 1'b1;
-                else if ( ((tickcount64[0+:16] & rw[240+:16]) == rw[240+:16]) & (rw[640+:32] > 0) & (tlp_static.data[64] | tlp_static.data[65]) )
-                    begin
-                        rwi_tlp_static_has_data <= 1'b1;
-                        rw[640+:32] <= rw[640+:32] - 1;     // count - 1
-                        if ( rw[640+:32] == 32'h00000001 )
-                            rw[RWPOS_CFG_STATIC_TLP_TX_EN] <= 1'b0;
-                    end
+                if ( (rwi_tlp_static_valid && rwi_tlp_static_2nd) || ~rw[RWPOS_CFG_STATIC_TLP_TX_EN] ) begin    // STATE (3)
+                    rwi_tlp_static_valid    <= 1'b0;
+                    rwi_tlp_static_has_data <= 1'b0;
+                end
+                else if ( rwi_tlp_static_has_data && tlps_static.tready && rwi_tlp_static_2nd ) begin  // STATE (1)
+                     rwi_tlp_static_valid   <= 1'b1;
+                     rwi_tlp_static_2nd     <= 1'b0;
+                end
+                else if ( rwi_tlp_static_has_data && tlps_static.tready && !rwi_tlp_static_2nd ) begin // STATE (2)
+                     rwi_tlp_static_valid   <= 1'b1;
+                     rwi_tlp_static_2nd     <= 1'b1;
+                end
+                else if ( ((tickcount64[0+:16] & rw[240+:16]) == rw[240+:16]) & (rw[640+:32] > 0) & rw[224+2*0] ) begin   // IDLE STATE (0)
+                    rwi_tlp_static_has_data <= 1'b1;
+                    rwi_tlp_static_2nd      <= 1'b1;
+                    rw[640+:32] <= rw[640+:32] - 1;     // count - 1
+                    if ( rw[640+:32] == 32'h00000001 )
+                        rw[RWPOS_CFG_STATIC_TLP_TX_EN] <= 1'b0;
+                end
                 
             end
     
