@@ -30,7 +30,7 @@ The picture below depicts an LightingZDMA. The ZDMA contains a Thunderbolt port 
 
 Requirements:
 =================
-* A PCIe x4 or PCIe x8 slot on the target computer.
+* A PCIe x4 or PCIe x16 slot on the target computer.
 * A Thunderbolt capable port on the controlling computer.
 * 64-bit Windows on the controlling computer.
 
