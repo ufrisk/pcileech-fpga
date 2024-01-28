@@ -617,7 +617,7 @@ module pcileech_tlps128_bar_rdengine(
             tlast           <= rd_rsp_last;
             first           <= 1'b1;
             tdata[31:0]     <= { 22'b0100101000000000000000, rd_rsp_dwlen };            // format, type, length
-            tdata[63:32]    <= { pcie_id[7:0], pcie_id[15:0], 4'b0, rd_rsp_bc };        // pcie_id, byte_count
+            tdata[63:32]    <= { pcie_id[7:0], pcie_id[15:8], 4'b0, rd_rsp_bc };        // pcie_id, byte_count
             tdata[95:64]    <= { rd_rsp_reqid, rd_rsp_tag, 1'b0, rd_rsp_lowaddr };      // req_id, tag, lower_addr
             tdata[127:96]   <= rd_rsp_data_bs;
         end

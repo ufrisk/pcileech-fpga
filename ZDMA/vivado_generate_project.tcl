@@ -1,5 +1,5 @@
 #
-# Vivado generated .tcl for creating the pcileech_ac701_ft601 (ac701/ft601) vivado project.
+# Vivado generated .tcl for creating the pcileech_tbx4 vivado project.
 # Run from within "Vivado Tcl Shell" with command: source vivado_generate_project.tcl -notrace
 #
 
@@ -12,7 +12,7 @@ if { [info exists ::origin_dir_loc] } {
 }
 
 # Set the project name
-set _xil_proj_name_ "pcileech_ac701_ft601"
+set _xil_proj_name_ "pcileech_tbx4"
 
 # Use project name variable, if specified in the tcl shell
 if { [info exists ::user_project_name] } {
@@ -67,6 +67,9 @@ if { $::argc > 0 } {
   }
 }
 
+# Set the directory path for the original project from where this script was exported
+set orig_proj_dir "[file normalize "$origin_dir/../ScreamerM2_TEST4/pcileech_screamer_m2"]"
+
 # Check for paths and files needed for project creation
 set validate_required 0
 if { $validate_required } {
@@ -79,7 +82,7 @@ if { $validate_required } {
 }
 
 # Create project
-create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7a200tfbg676-2
+create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7a100tfgg484-2
 
 # Set the directory path for the new project
 set proj_dir [get_property directory [current_project]]
@@ -91,7 +94,7 @@ set_property -name "enable_vhdl_2008" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
 set_property -name "ip_output_repo" -value "$proj_dir/${_xil_proj_name_}.cache/ip" -objects $obj
 set_property -name "mem.enable_memory_map_generation" -value "1" -objects $obj
-set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
+set_property -name "part" -value "xc7a100tfgg484-2" -objects $obj
 set_property -name "platform.description" -value "Vivado generated DSA" -objects $obj
 set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
@@ -116,16 +119,15 @@ set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
  [file normalize "${origin_dir}/src/pcileech_header.svh"]\
- [file normalize "${origin_dir}/src/pcileech_com.sv" ]\
+ [file normalize "${origin_dir}/src/pcileech_com_e.v" ]\
  [file normalize "${origin_dir}/src/pcileech_fifo.sv"]\
- [file normalize "${origin_dir}/src/pcileech_ft601.sv"]\
  [file normalize "${origin_dir}/src/pcileech_mux.sv"]\
  [file normalize "${origin_dir}/src/pcileech_pcie_a7x4.sv"]\
  [file normalize "${origin_dir}/src/pcileech_pcie_cfg_a7.sv"]\
  [file normalize "${origin_dir}/src/pcileech_pcie_tlp_a7.sv"]\
  [file normalize "${origin_dir}/src/pcileech_tlps128_bar_controller.sv"]\
  [file normalize "${origin_dir}/src/pcileech_tlps128_cfgspace_shadow.sv"]\
- [file normalize "${origin_dir}/src/pcileech_ac701_ft601_top.sv" ]\
+ [file normalize "${origin_dir}/src/pcileech_tbx4_top.sv" ]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 
@@ -137,15 +139,11 @@ set file "src/pcileech_header.svh"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "Verilog Header" -objects $file_obj
 
-set file "src/pcileech_com.sv"
+set file "src/pcileech_com_e.v"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
 set file "src/pcileech_fifo.sv"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
-
-set file "src/pcileech_ft601.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
@@ -173,14 +171,14 @@ set file "src/pcileech_tlps128_cfgspace_shadow.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
-set file "src/pcileech_ac701_ft601_top.sv"
+set file "src/pcileech_tbx4_top.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "pcileech_ac701_ft601_top" -objects $obj
+set_property -name "top" -value "pcileech_tbx4_top" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Set 'sources_1' fileset object
@@ -197,6 +195,25 @@ set imported_files [import_files -fileset sources_1 $files]
 # None
 # Set 'sources_1' fileset file properties for local files
 set file "bram_pcie_cfgspace/bram_pcie_cfgspace.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/clk_wiz_0.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "clk_wiz_0/clk_wiz_0.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -376,43 +393,6 @@ if { ![get_property "is_locked" $file_obj] } {
 }
 
 
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-# Import local files from the original project
-set files [list \
- [file normalize "${origin_dir}/ip/fifo_256_32_clk2_comtx.xci"]\
-]
-set imported_files [import_files -fileset sources_1 $files]
-# Set 'sources_1' fileset file properties for remote files
-# None
-# Set 'sources_1' fileset file properties for local files
-set file "fifo_256_32_clk2_comtx/fifo_256_32_clk2_comtx.xci"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
-set_property -name "registered_with_manager" -value "1" -objects $file_obj
-if { ![get_property "is_locked" $file_obj] } {
-  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
-}
-
-
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-# Import local files from the original project
-set files [list \
- [file normalize "${origin_dir}/ip/fifo_32_32_clk1_comtx.xci"]\
-]
-set imported_files [import_files -fileset sources_1 $files]
-# Set 'sources_1' fileset file properties for remote files
-# None
-# Set 'sources_1' fileset file properties for local files
-set file "fifo_32_32_clk1_comtx/fifo_32_32_clk1_comtx.xci"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
-set_property -name "registered_with_manager" -value "1" -objects $file_obj
-if { ![get_property "is_locked" $file_obj] } {
-  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
-}
-
 
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
@@ -444,25 +424,6 @@ set imported_files [import_files -fileset sources_1 $files]
 # None
 # Set 'sources_1' fileset file properties for local files
 set file "pcie_7x_0/pcie_7x_0.xci"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
-set_property -name "registered_with_manager" -value "1" -objects $file_obj
-if { ![get_property "is_locked" $file_obj] } {
-  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
-}
-
-
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-# Import local files from the original project
-set files [list \
- [file normalize "${origin_dir}/ip/clk_wiz.xci"]\
-]
-set imported_files [import_files -fileset sources_1 $files]
-# Set 'sources_1' fileset file properties for remote files
-# None
-# Set 'sources_1' fileset file properties for local files
-set file "clk_wiz/clk_wiz.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -566,25 +527,6 @@ if { ![get_property "is_locked" $file_obj] } {
 }
 
 
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-# Import local files from the original project
-set files [list \
- [file normalize "${origin_dir}/ip/fifo_64_64_clk2_comrx.xci" ]\
-]
-set imported_files [import_files -fileset sources_1 $files]
-# Set 'sources_1' fileset file properties for remote files
-# None
-# Set 'sources_1' fileset file properties for local files
-set file "fifo_64_64_clk2_comrx/fifo_64_64_clk2_comrx.xci"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
-set_property -name "registered_with_manager" -value "1" -objects $file_obj
-if { ![get_property "is_locked" $file_obj] } {
-  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
-}
-
-
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
   create_fileset -constrset constrs_1
@@ -594,16 +536,16 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 set obj [get_filesets constrs_1]
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize ${origin_dir}/src/pcileech_ac701_ft601.xdc]"
+set file "[file normalize ${origin_dir}/src/pcileech_tbx4.xdc]"
 set file_imported [import_files -fileset constrs_1 [list $file]]
-set file "src/pcileech_ac701_ft601.xdc"
+set file "src/pcileech_tbx4.xdc"
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
 set_property -name "processing_order" -value "EARLY" -objects $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
-set_property -name "target_part" -value "xc7a200tfbg676-2" -objects $obj
+set_property -name "target_part" -value "xc7a100tfgg484-2" -objects $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -617,7 +559,7 @@ set obj [get_filesets sim_1]
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
 set_property -name "hbs.configure_design_for_hier_access" -value "1" -objects $obj
-set_property -name "top" -value "pcileech_ac701_ft601_top" -objects $obj
+set_property -name "top" -value "pcileech_tbx4_top" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Upgrade IP from the currently installed Vivado version
@@ -632,9 +574,9 @@ set obj [get_filesets utils_1]
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
-    create_run -name synth_1 -part xc7a200tfbg676-2 -flow {Vivado Synthesis 2023} -strategy "Vivado Synthesis Defaults" -report_strategy {No Reports} -constrset constrs_1
+    create_run -name synth_1 -part xc7a100tfgg484-2 -flow {Vivado Synthesis 2023} -strategy "Flow_PerfOptimized_high" -report_strategy {No Reports} -constrset constrs_1
 } else {
-  set_property strategy "Vivado Synthesis Defaults" [get_runs synth_1]
+  set_property strategy "Flow_PerfOptimized_high" [get_runs synth_1]
   set_property flow "Vivado Synthesis 2023" [get_runs synth_1]
 }
 set obj [get_runs synth_1]
@@ -650,17 +592,25 @@ if { $obj != "" } {
 
 }
 set obj [get_runs synth_1]
-set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
-set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
+set_property -name "needs_refresh" -value "1" -objects $obj
+set_property -name "part" -value "xc7a100tfgg484-2" -objects $obj
+set_property -name "auto_incremental_checkpoint" -value "1" -objects $obj
+set_property -name "strategy" -value "Flow_PerfOptimized_high" -objects $obj
+set_property -name "steps.synth_design.args.directive" -value "PerformanceOptimized" -objects $obj
+set_property -name "steps.synth_design.args.fsm_extraction" -value "one_hot" -objects $obj
+set_property -name "steps.synth_design.args.keep_equivalent_registers" -value "1" -objects $obj
+set_property -name "steps.synth_design.args.resource_sharing" -value "off" -objects $obj
+set_property -name "steps.synth_design.args.no_lc" -value "1" -objects $obj
+set_property -name "steps.synth_design.args.shreg_min_size" -value "5" -objects $obj
 
 # set the current synth run
 current_run -synthesis [get_runs synth_1]
 
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs -quiet impl_1] ""]} {
-    create_run -name impl_1 -part xc7a200tfbg676-2 -flow {Vivado Implementation 2023} -strategy "Vivado Implementation Defaults" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
+    create_run -name impl_1 -part xc7a100tfgg484-2 -flow {Vivado Implementation 2023} -strategy "Performance_ExtraTimingOpt" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
 } else {
-  set_property strategy "Vivado Implementation Defaults" [get_runs impl_1]
+  set_property strategy "Performance_ExtraTimingOpt" [get_runs impl_1]
   set_property flow "Vivado Implementation 2023" [get_runs impl_1]
 }
 set obj [get_runs impl_1]
@@ -675,6 +625,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_init_report_tim
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_opt_report_drc_0' report (if not found)
@@ -693,6 +644,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_opt_report_timi
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_power_opt_report_timing_summary_0' report (if not found)
@@ -703,6 +655,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_power_opt_repor
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_place_report_io_0' report (if not found)
@@ -756,6 +709,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_place_report_ti
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_post_place_power_opt_report_timing_summary_0' report (if not found)
@@ -766,6 +720,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_post_place_powe
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_phys_opt_report_timing_summary_0' report (if not found)
@@ -776,6 +731,7 @@ set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_phys_opt_report
 if { $obj != "" } {
 set_property -name "is_enabled" -value "0" -objects $obj
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_route_report_drc_0' report (if not found)
@@ -817,6 +773,7 @@ if { [ string equal [get_report_configs -of_objects [get_runs impl_1] impl_1_rou
 set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_route_report_timing_summary_0]
 if { $obj != "" } {
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 
 }
 # Create 'impl_1_route_report_incremental_reuse_0' report (if not found)
@@ -851,6 +808,7 @@ if { [ string equal [get_report_configs -of_objects [get_runs impl_1] impl_1_pos
 set obj [get_report_configs -of_objects [get_runs impl_1] impl_1_post_route_phys_opt_report_timing_summary_0]
 if { $obj != "" } {
 set_property -name "options.max_paths" -value "10" -objects $obj
+set_property -name "options.report_unconstrained" -value "1" -objects $obj
 set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
@@ -864,9 +822,11 @@ set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
 set obj [get_runs impl_1]
-set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
-set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
-set_property -name "steps.phys_opt_design.is_enabled" -value "1" -objects $obj
+set_property -name "part" -value "xc7a100tfgg484-2" -objects $obj
+set_property -name "strategy" -value "Performance_ExtraTimingOpt" -objects $obj
+set_property -name "steps.place_design.args.directive" -value "ExtraTimingOpt" -objects $obj
+set_property -name "steps.phys_opt_design.args.directive" -value "Explore" -objects $obj
+set_property -name "steps.route_design.args.directive" -value "NoTimingRelaxation" -objects $obj
 set_property -name "steps.post_route_phys_opt_design.is_enabled" -value "1" -objects $obj
 set_property -name "steps.post_route_phys_opt_design.args.directive" -value "AddRetime" -objects $obj
 set_property -name "steps.write_bitstream.args.bin_file" -value "1" -objects $obj
@@ -875,6 +835,11 @@ set_property -name "steps.write_bitstream.args.verbose" -value "0" -objects $obj
 
 # set the current impl run
 current_run -implementation [get_runs impl_1]
+catch {
+ if { $idrFlowPropertiesConstraints != {} } {
+   set_param runs.disableIDRFlowPropertyConstraints $idrFlowPropertiesConstraints
+ }
+}
 
 puts "INFO: Project created:${_xil_proj_name_}"
 # Create 'drc_1' gadget (if not found)

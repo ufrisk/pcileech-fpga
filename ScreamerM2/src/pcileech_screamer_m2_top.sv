@@ -13,7 +13,7 @@
 module pcileech_screamer_m2_top #(
     parameter       PARAM_DEVICE_ID = 4,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 13,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 14,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS

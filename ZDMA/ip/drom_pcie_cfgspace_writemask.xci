@@ -1,0 +1,102 @@
+{
+  "schema": "xilinx.com:schema:json_instance:1.0",
+  "ip_inst": {
+    "xci_name": "drom_pcie_cfgspace_writemask",
+    "component_reference": "xilinx.com:ip:dist_mem_gen:8.0",
+    "ip_revision": "14",
+    "gen_directory": "../../../../pcileech_tbx4.gen/sources_1/ip/drom_pcie_cfgspace_writemask",
+    "parameters": {
+      "component_parameters": {
+        "depth": [ { "value": "1024", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "data_width": [ { "value": "32", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "Component_Name": [ { "value": "drom_pcie_cfgspace_writemask", "resolve_type": "user", "usage": "all" } ],
+        "memory_type": [ { "value": "rom", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "input_options": [ { "value": "non_registered", "resolve_type": "user", "usage": "all" } ],
+        "input_clock_enable": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "qualify_we_with_i_ce": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "dual_port_address": [ { "value": "non_registered", "resolve_type": "user", "usage": "all" } ],
+        "simple_dual_port_address": [ { "value": "non_registered", "resolve_type": "user", "usage": "all" } ],
+        "output_options": [ { "value": "non_registered", "resolve_type": "user", "usage": "all" } ],
+        "Pipeline_Stages": [ { "value": "0", "resolve_type": "user", "usage": "all" } ],
+        "common_output_clk": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "single_port_output_clock_enable": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "common_output_ce": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "dual_port_output_clock_enable": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "simple_dual_port_output_clock_enable": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "coefficient_file": [ { "value": "pcileech_cfgspace_writemask.coe", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "default_data_radix": [ { "value": "16", "resolve_type": "user", "usage": "all" } ],
+        "default_data": [ { "value": "ffffffff", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "reset_qspo": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "reset_qdpo": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "reset_qsdpo": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "sync_reset_qspo": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "sync_reset_qdpo": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "sync_reset_qsdpo": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "ce_overrides": [ { "value": "ce_overrides_sync_controls", "resolve_type": "user", "usage": "all" } ]
+      },
+      "model_parameters": {
+        "C_FAMILY": [ { "value": "artix7", "resolve_type": "generated", "usage": "all" } ],
+        "C_ADDR_WIDTH": [ { "value": "10", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_DEFAULT_DATA": [ { "value": "11111111111111111111111111111111", "resolve_type": "generated", "usage": "all" } ],
+        "C_DEPTH": [ { "value": "1024", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_CLK": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_D": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_DPO": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_DPRA": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_I_CE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QDPO": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QDPO_CE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QDPO_CLK": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QDPO_RST": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QDPO_SRST": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QSPO": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QSPO_CE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QSPO_RST": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_QSPO_SRST": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_SPO": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_HAS_WE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_MEM_INIT_FILE": [ { "value": "drom_pcie_cfgspace_writemask.mif", "resolve_type": "generated", "usage": "all" } ],
+        "C_ELABORATION_DIR": [ { "value": "./", "resolve_type": "generated", "usage": "all" } ],
+        "C_MEM_TYPE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PIPELINE_STAGES": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_QCE_JOINED": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_QUALIFY_WE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_READ_MIF": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_REG_A_D_INPUTS": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_REG_DPRA_INPUT": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_SYNC_ENABLE": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PARSER_TYPE": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ]
+      },
+      "project_parameters": {
+        "ARCHITECTURE": [ { "value": "artix7" } ],
+        "BASE_BOARD_PART": [ { "value": "" } ],
+        "BOARD_CONNECTIONS": [ { "value": "" } ],
+        "DEVICE": [ { "value": "xc7a100t" } ],
+        "PACKAGE": [ { "value": "fgg484" } ],
+        "PREFHDL": [ { "value": "VERILOG" } ],
+        "SILICON_REVISION": [ { "value": "" } ],
+        "SIMULATOR_LANGUAGE": [ { "value": "MIXED" } ],
+        "SPEEDGRADE": [ { "value": "-2" } ],
+        "STATIC_POWER": [ { "value": "" } ],
+        "TEMPERATURE_GRADE": [ { "value": "" } ]
+      },
+      "runtime_parameters": {
+        "IPCONTEXT": [ { "value": "IP_Flow" } ],
+        "IPREVISION": [ { "value": "14" } ],
+        "MANAGED": [ { "value": "TRUE" } ],
+        "OUTPUTDIR": [ { "value": "../../../../pcileech_tbx4.gen/sources_1/ip/drom_pcie_cfgspace_writemask" } ],
+        "SELECTEDSIMMODEL": [ { "value": "" } ],
+        "SHAREDDIR": [ { "value": "." } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
+        "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
+      }
+    },
+    "boundary": {
+      "ports": {
+        "a": [ { "direction": "in", "size_left": "9", "size_right": "0", "driver_value": "0" } ],
+        "spo": [ { "direction": "out", "size_left": "31", "size_right": "0" } ]
+      }
+    }
+  }
+}

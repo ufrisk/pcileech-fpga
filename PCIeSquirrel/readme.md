@@ -88,4 +88,8 @@ v4.13
 * New internal design with on-board PIO BAR support.
 * Download pre-built binaries below:
   * [Screamer PCIe Squirrel](https://mega.nz/file/dexBFIKa#cdjTryyluiFDNCbbz0xhrk75UziyBKPZLokfEt5xEGo) SHA256: `ee5e2886a923b0ac19e0bb9207e879fd211ef835097bc8c224a060c3f55c417f`
-  
+
+v4.14
+* Bug fixes.
+* Download pre-built binaries below:
+  * [Screamer PCIe Squirrel](https://mega.nz/file/EX5C0SRa#20cjCl2SXuwPJC9lIOKAcF5kcMt1i7NO8yYvRaxQM3Q) SHA256: `c5f05117785c5d7b7b8a57054fa7648354e23b62e353ea94ad585aba9d0b8fb6`

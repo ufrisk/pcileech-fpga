@@ -1,7 +1,7 @@
 //
 // PCILeech FPGA.
 //
-// Top module for various 35T-484 x1 Artix-7 boards.
+// Top module for PCILeech TB x4
 //
 // (c) Ulf Frisk, 2019-2024
 // Author: Ulf Frisk, pcileech@frizk.net
@@ -10,49 +10,40 @@
 `timescale 1ns / 1ps
 `include "pcileech_header.svh"
 
-module pcileech_squirrel_top #(
-    parameter       PARAM_DEVICE_ID = 4,
+module pcileech_tbx4_top #(
+    // DEVICE IDs as follows:
+    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer, 5 = NeTV2
+    parameter       PARAM_DEVICE_ID = 17,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
     parameter       PARAM_VERSION_NUMBER_MINOR = 14,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS
-    input           clk,
-    input           ft601_clk,
+    input           clk_in,
     
     // SYSTEM LEDs and BUTTONs
-    output          user_ld1,
-    output          user_ld2,
-    input           user_sw1_n,
-    input           user_sw2_n,
+    output          pcie_led,
     
-    output          ft2232_rst_n,
+    // TO/FROM FPGA IO BRIDGE
+    input   [36:0]  BUS_DO,
+    output  [68:0]  BUS_DI,
+    input           BUS_DI_PROG_FULL,
     
     // PCI-E FABRIC
-    output  [0:0]   pcie_tx_p,
-    output  [0:0]   pcie_tx_n,
-    input   [0:0]   pcie_rx_p,
-    input   [0:0]   pcie_rx_n,
+    output  [3:0]   pcie_tx_p,
+    output  [3:0]   pcie_tx_n,
+    input   [3:0]   pcie_rx_p,
+    input   [3:0]   pcie_rx_n,
     input           pcie_clk_p,
     input           pcie_clk_n,
     input           pcie_present,
-    input           pcie_perst_n,
-    output reg      pcie_wake_n = 1'b1,
-    
-    // TO/FROM FT601 PADS
-    output          ft601_rst_n,
-    inout   [31:0]  ft601_data,
-    output  [3:0]   ft601_be,
-    input           ft601_rxf_n,
-    input           ft601_txe_n,
-    output          ft601_wr_n,
-    output          ft601_siwu_n,
-    output          ft601_rd_n,
-    output          ft601_oe_n
+    input           pcie_perst_n
     );
-    
+
     // SYS
-    wire            rst;
+    wire rst;
+    wire clk;
+    wire clk_com;
     
     // FIFO CTL <--> COM CTL
     wire [63:0]     com_dout;
@@ -60,8 +51,6 @@ module pcileech_squirrel_top #(
     wire [255:0]    com_din;
     wire            com_din_wr_en;
     wire            com_din_ready;
-    wire            led_com;
-    wire            led_pcie;
     
     // FIFO CTL <--> COM CTL
     IfComToFifo     dcom_fifo();
@@ -71,48 +60,55 @@ module pcileech_squirrel_top #(
     IfPCIeFifoTlp   dtlp();
     IfPCIeFifoCore  dpcie();
     IfShadow2Fifo   dshadow2fifo();
-	
+    
+    // ----------------------------------------------------
+    // CLK: INPUT (clkin): 50MHz
+    //      COM (clk_com): 250MHz
+    //      SYS (clk):     125MHz
+    // ----------------------------------------------------
+
+    wire clk_locked, clk_out1, clk_out2;
+    clk_wiz_0 i_clk_wiz_0(
+        .clk_in1    ( clk_in        ),  // <- 50MHz
+        .clk_out1   ( clk_out1      ),  // -> 250MHz
+        .clk_out2   ( clk_out2      ),  // -> 125MHz
+        .locked     ( clk_locked    )
+    );
+    
+    BUFG i_BUFG_1 ( .I( clk_locked ? clk_out1 : clk_in ), .O( clk_com ) );
+    BUFG i_BUFG_2 ( .I( clk_locked ? clk_out2 : clk_in ), .O( clk ) );
+    
     // ----------------------------------------------------
     // TickCount64 CLK
     // ----------------------------------------------------
 
     time tickcount64 = 0;
-    time tickcount64_reload = 0;
-    always @ ( posedge clk ) begin
-        tickcount64         <= user_sw2_n ? (tickcount64 + 1) : 0;
-        tickcount64_reload  <= user_sw2_n ? 0 : (tickcount64_reload + 1);
-    end
-
-    assign rst = ~user_sw2_n || ((tickcount64 < 64) ? 1'b1 : 1'b0);
-    assign ft601_rst_n = ~rst;
-    wire led_pwronblink = ~user_sw1_n ^ (tickcount64[24] & (tickcount64[63:27] == 0));
+    always @ ( posedge clk )
+        tickcount64 <= tickcount64 + 1;
+    assign rst = (tickcount64 < 64) ? 1'b1 : 1'b0;
     
-    OBUF led_ld1_obuf(.O(user_ld1), .I(led_pcie));
-    OBUF led_ld2_obuf(.O(user_ld2), .I(led_com));
-    OBUF ft2232_rst_obuf(.O(ft2232_rst_n), .I(user_sw2_n));
+    wire            led_pcie;
+    OBUF led_ld1_obuf(.O(pcie_led), .I(led_pcie));
     
     // ----------------------------------------------------
-    // BUFFERED COMMUNICATION DEVICE (FT601)
+    // BUFFERED COMMUNICATION DEVICE (FPGA IO BRIDGE)
     // ----------------------------------------------------
     
     pcileech_com i_pcileech_com (
         // SYS
         .clk                ( clk                   ),
-        .clk_com            ( ft601_clk             ),
+        .clk_com            ( clk_com               ),
         .rst                ( rst                   ),
-        .led_state_txdata   ( led_com               ),  // ->
-        .led_state_invert   ( led_pwronblink        ),  // <-
+        // TO/FROM FPGA IO BRIDGE
+        .BUS_DO             ( BUS_DO                ),
+        .BUS_DI             ( BUS_DI                ),
+        .BUS_DI_PROG_FULL   ( BUS_DI_PROG_FULL      ),
         // FIFO CTL <--> COM CTL
-        .dfifo              ( dcom_fifo.mp_com      ),
-        // TO/FROM FT601 PADS
-        .ft601_data         ( ft601_data            ),  // <> [31:0]
-        .ft601_be           ( ft601_be              ),  // -> [3:0]
-        .ft601_txe_n        ( ft601_txe_n           ),  // <-
-        .ft601_rxf_n        ( ft601_rxf_n           ),  // <-
-        .ft601_siwu_n       ( ft601_siwu_n          ),  // ->
-        .ft601_wr_n         ( ft601_wr_n            ),  // ->
-        .ft601_rd_n         ( ft601_rd_n            ),  // ->
-        .ft601_oe_n         ( ft601_oe_n            )   // ->
+        .com_dout           ( dcom_fifo.com_dout        ),
+        .com_dout_valid     ( dcom_fifo.com_dout_valid  ),
+        .com_din_ready      ( dcom_fifo.com_din_ready   ),
+        .com_din            ( dcom_fifo.com_din         ),
+        .com_din_wr_en      ( dcom_fifo.com_din_wr_en   )
     );
     
     // ----------------------------------------------------
@@ -127,7 +123,7 @@ module pcileech_squirrel_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
-        .rst_cfg_reload     ( (tickcount64_reload > 500000000) ? 1'b1 : 1'b0 ),     // config reload after 5s button press
+        .rst_cfg_reload     ( 1'b0                  ),
         .pcie_present       ( pcie_present          ),
         .pcie_perst_n       ( pcie_perst_n          ),
         // FIFO CTL <--> COM CTL
@@ -143,7 +139,7 @@ module pcileech_squirrel_top #(
     // PCIe
     // ----------------------------------------------------
     
-    pcileech_pcie_a7 i_pcileech_pcie_a7(
+    pcileech_pcie_a7x4 i_pcileech_pcie_a7x4(
         .clk_sys            ( clk                   ),
         .rst                ( rst                   ),
         // PCIe fabric

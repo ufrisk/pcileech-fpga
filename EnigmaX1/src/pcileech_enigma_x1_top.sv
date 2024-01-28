@@ -3,7 +3,7 @@
 //
 // Top module for the Enigma X1 Artix-7 board.
 //
-// (c) Ulf Frisk, 2019-2022
+// (c) Ulf Frisk, 2019-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -13,7 +13,7 @@
 module pcileech_enigma_x1_top #(
     parameter       PARAM_DEVICE_ID = 9,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 13,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 14,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS

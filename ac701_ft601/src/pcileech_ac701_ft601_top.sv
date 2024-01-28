@@ -13,7 +13,7 @@
 module pcileech_ac701_ft601_top #(
     parameter       PARAM_DEVICE_ID = 2,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 13,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 14,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
 ) (
     // SYS

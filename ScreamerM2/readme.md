@@ -143,3 +143,9 @@ v4.13
 * New internal design with on-board PIO BAR support.
 * Download pre-built binaries below:
   * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/MSQ0HBrb#e1OJqMkQrq3fTG2rXQe695fYnsp1neOr_8FH3kWymoA) SHA256: `25d5b47a7ba6d485bc8cf35c6f45c8a9f99ab906657ce706a012353437c37b39`
+
+v4.13
+* Bug fixes.
+* New internal design with on-board PIO BAR support.
+* Download pre-built binaries below:
+  * [PCIeScreamerR04/ScreamerM2](https://mega.nz/file/BO5ACQST#MgXLLu9ZHapz3sl3pDjHHndly3ph_fAbEqbfT3aD158) SHA256: `e0a93e9c0bfcba3f9ebe219d5d302a93599c13526fb0e6d9537847cd14a27565`

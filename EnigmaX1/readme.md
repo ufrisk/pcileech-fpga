@@ -99,3 +99,8 @@ v4.13
 * New internal design with on-board PIO BAR support.
 * Download pre-built binaries below:
   * [Enigma x1](https://mega.nz/file/tfgSjSSK#Qd3qVgNveFo2rOkIo-Wyee4N6-C1FGdhYi_p5r_aV0s) SHA256: `69a21c8f32298df81e288d7c4f6745da27cf6bfc6e4bbd8ffa68297980b725d7`
+
+v4.14
+* Bug fixes.
+* Download pre-built binaries below:
+  * [Enigma x1](https://mega.nz/file/0OJQUKAJ#_5bpybs_eGrC_XJAtn_OZTdHAUs1sMXf5hvf5aALKgU) SHA256: `de423196bd1f7a8c5d4e6f437c18bdfb1cbfdac2cc4d8878c093fdd3153ca186`
