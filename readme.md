@@ -9,26 +9,26 @@ Supported Devices:
 =================
 PCILeech currently supports multiple FPGA based devices with most recent firmware versions - please see the table below:
 
-| Device                                | Connection  | Transfer Speed | Version | FPGA         | PCIe Version  | Project<br>Sponsor |
-| ------------------------------------- | ----------- | -------------- | --------| ------------ | ------------- | ------------------ |
-| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C       | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
-| [ZDMA](ZDMA)                          | Thunderbolt | 800 MB/s       | 4.14    | XC7A100T-484 | PCIe gen2 x4  | [💖](https://lightingz.store/products/lightingzdma-fastest-dma-thunderbolt-interface-1gb-s-best-dma-ever-the-ultimate-experience) |
-| [LeetDMA](https://enigma-x1.com/)     | USB-C       | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
-| [Enigma X1](EnigmaX1)                 | USB-C       | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
-| [PCIeScreamerR04](ScreamerM2)         | USB-C       | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
-| [ScreamerM2](ScreamerM2)              | USB3/USB-C  | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
-| [AC701/FT601](ac701_ft601)            | USB3        | 190 MB/s       | 4.14    | XC7A200T-676 | PCIe gen2 x4  |                    |
+| Device                                | Connection   | Transfer Speed | Version | FPGA         | PCIe Version  | Project<br>Sponsor |
+| ------------------------------------- | ------------ | -------------- | --------| ------------ | ------------- | ------------------ |
+| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
+| [ZDMA](ZDMA)                          | Thunderbolt3 | 800 MB/s       | 4.14    | XC7A100T-484 | PCIe gen2 x4  | [💖](https://lightingz.store/products/lightingzdma-fastest-dma-thunderbolt-interface-1gb-s-best-dma-ever-the-ultimate-experience) |
+| [LeetDMA](https://enigma-x1.com/)     | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
+| [Enigma X1](EnigmaX1)                 | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
+| [PCIeScreamerR04](ScreamerM2)         | USB-C        | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [ScreamerM2](ScreamerM2)              | USB3/USB-C   | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
+| [AC701/FT601](ac701_ft601)            | USB3         | 190 MB/s       | 4.14    | XC7A200T-676 | PCIe gen2 x4  |                    |
 
 ###### *) PCILeech FPGA uses PCIe x1 even if more PCIe lanes are available hardware-wise. This is sufficient to deliver neccessary performance.
 
 PCILeech also supports multiple FPGA based devices that may not have the most recent firmware available for download, but will still work with some limitations:
 
-| Legacy Device                          | Connection | Transfer Speed | Version | PCIe Version  |
-| -------------------------------------- | ---------- | -------------- | ------- | ------------- |
-| [PCIeScreamer](pciescreamer)           | USB3       | 100 MB/s       | 4.9     | PCIe gen2 x1  |
-| [SP605/FT601](sp605_ft601)             | USB3       | 75 MB/s        | 2.2     | PCIe gen1 x1  |
-| [Acorn/FT2232H](acorn_ft2232h)         | USB2       | 25 MB/s        | 4.9     | PCIe gen2 x4* |
-| [NeTV2](NeTV2)                         | UDP/IP     | 7 MB/s         | 4.12    | PCIe gen2 x4* |
+| Legacy Device                          | Connection  | Transfer Speed | Version | PCIe Version  |
+| -------------------------------------- | ----------- | -------------- | ------- | ------------- |
+| [PCIeScreamer](pciescreamer)           | USB3        | 100 MB/s       | 4.9     | PCIe gen2 x1  |
+| [SP605/FT601](sp605_ft601)             | USB3        | 75 MB/s        | 2.2     | PCIe gen1 x1  |
+| [Acorn/FT2232H](acorn_ft2232h)         | USB2        | 25 MB/s        | 4.9     | PCIe gen2 x4* |
+| [NeTV2](NeTV2)                         | UDP/IP      | 7 MB/s         | 4.12    | PCIe gen2 x4* |
 
 Please select the FPGA setup that best suits your needs from the above list. If performance and value for money is key the Screamer PCIe Squirrel is currently recommended. If performance is key alone ZDMA is a good pick.
 
