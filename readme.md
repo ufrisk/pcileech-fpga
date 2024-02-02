@@ -12,7 +12,7 @@ PCILeech currently supports multiple FPGA based devices with most recent firmwar
 | Device                                | Connection   | Transfer Speed | Version | FPGA         | PCIe Version  | Project<br>Sponsor |
 | ------------------------------------- | ------------ | -------------- | --------| ------------ | ------------- | ------------------ |
 | [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
-| [ZDMA](ZDMA)                          | Thunderbolt3 | 800 MB/s       | 4.14    | XC7A100T-484 | PCIe gen2 x4  | [💖](https://lightingz.store/products/lightingzdma-fastest-dma-thunderbolt-interface-1gb-s-best-dma-ever-the-ultimate-experience) |
+| [ZDMA](ZDMA)                          | Thunderbolt3 | 800 MB/s       | 4.14    | XC7A100T-484 | PCIe gen2 x4  | [💖](https://lightingz.store/) |
 | [LeetDMA](https://enigma-x1.com/)     | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
 | [Enigma X1](EnigmaX1)                 | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
 | [PCIeScreamerR04](ScreamerM2)         | USB-C        | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |

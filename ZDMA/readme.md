@@ -1,6 +1,6 @@
 LightingZDMA - PCIe to Thunderbolt:
 =================
-This project contains software and HDL code for the [LightingZDMA board](https://lightingz.store/products/lightingzdma-fastest-dma-thunderbolt-interface-1gb-s-best-dma-ever-the-ultimate-experience).
+This project contains software and HDL code for the [LightingZDMA board](https://lightingz.store/).
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
@@ -21,7 +21,7 @@ For information about other supported FPGA based devices please check out [PCILe
 
 The Hardware: LightingZDMA
 ========================
-The LightingZDMA PCIe gen2 x4 board contains a powerful Artix7 100T FPGA which allows for good performance and also interesting applications besides PCILeech/MemProcFS. The LightingZDMA may be purchased from: [lightingz.store](https://lightingz.store/products/lightingzdma-fastest-dma-thunderbolt-interface-1gb-s-best-dma-ever-the-ultimate-experience). For more information about the hardware please check out [lightingz.store](https://lightingz.store/products/lightingzdma-fastest-dma-thunderbolt-interface-1gb-s-best-dma-ever-the-ultimate-experience). Please note that the LightingZDMA is sold by a 3rd party and not by the PCILeech project itself!
+The LightingZDMA PCIe gen2 x4 board contains a powerful Artix7 100T FPGA which allows for good performance and also interesting applications besides PCILeech/MemProcFS. The LightingZDMA may be purchased from: [lightingz.store](https://lightingz.store/). For more information about the hardware please check out [lightingz.store](https://lightingz.store/). Please note that the LightingZDMA is sold by a 3rd party and not by the PCILeech project itself!
 
 The picture below depicts an LightingZDMA. The ZDMA contains a Thunderbolt port for data transfer and an update port for easy updating without the need for additional hardware.
 
