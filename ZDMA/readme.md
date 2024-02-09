@@ -48,13 +48,13 @@ Please note that this instruction applies to the built-in JTAG update port.
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/6ad379a64900c8afb74f926445750ddaf3128fa0/zdma-flash.png"/>
 
 
-Building:
+Building (100T version):
 =================
 1) Install Xilinx Vivado WebPACK 2023.2 or later.
 2) Open Vivado Tcl Shell command prompt.
 3) cd into the directory of ZDMA (forward slash instead of backslash in path).
-4) Run `source vivado_generate_project.tcl -notrace` to generate required project files.
-5) Run `source vivado_build.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
+4) Run `source vivado_generate_project_100t.tcl -notrace` to generate required project files.
+5) Run `source vivado_build_100t.tcl -notrace` to generate Xilinx proprietary IP cores and build bitstream.
 6) Finished !!!
 
 Building the project may take a very long time (~1 hour).
@@ -81,4 +81,4 @@ Releases / Version History:
 v4.14
 * Initial Release
 * Download pre-built binaries below:
-  * [ZDMA](https://mega.nz/file/QDphFJBZ#CUhZcoysPE2i2PzZZVp9yvqvWsDFHfcFxylPpsg37cU) SHA256: `5a216a67af01760d67b238a76a1e73b5955c12995d782812004e0d4d02e59d08`
+  * [ZDMA](https://mega.nz/file/1ORw1TiI#r0CxKKnCYq1GmxQTQ4IJY_79ENpKZbExhzpWD2zo96E) SHA256: `6af51464a1d3dd586833cc7347cd401387e88f7b201904862d9e4b3f2e491a3f`

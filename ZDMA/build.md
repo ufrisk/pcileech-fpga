@@ -22,8 +22,8 @@ Please note that many combinations of device types, vendor IDs and product IDs w
 Please also note that changing the device and vendor ID is not in itself sufficient to make the device "undetectable" by software looking for malicious DMA devices. There are, more settings that are or aren't, directly modifiable in the PCIe configuration wizard that will alter the device PCIe configuration space.
 
 * Please first generate the initial project as outlined in points 1-4 above.
-* Open the project in Vivado by double clicking on `pcileech_enigma_x1.xpr` in the generated pcileech_enigma_x1 sub-folder.
-* In the PROJECT MANAGER - EnigmaX1 window expand: Design Sources > pcileech_enigma_x1_top > i_pcileech_pcie_a7.
+* Open the project in Vivado by double clicking on `pcileech_tbx4_100t.xpr` in the generated pcileech_tbx4_100t sub-folder.
+* In the PROJECT MANAGER - EnigmaX1 window expand: Design Sources > pcileech_tbx4_100t_top > i_pcileech_pcie_a7x4.
 * Double click on i_pcie_7x_0 shown in the expanded hierarchy from above to open the PCIe core designer GUI.
 * Navigate to the IDs tab. Alter ID Initial Values and Class Code to custom values.
 * (Optionally navigate to the BARs tab and alter the Bar0 Enabled memory values currently set to 4kB. It is not recommended to disable or go lower than 4kB).

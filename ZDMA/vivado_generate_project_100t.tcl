@@ -1,5 +1,5 @@
 #
-# Vivado generated .tcl for creating the pcileech_tbx4 vivado project.
+# Vivado generated .tcl for creating the pcileech_tbx4_100t vivado project.
 # Run from within "Vivado Tcl Shell" with command: source vivado_generate_project.tcl -notrace
 #
 
@@ -12,7 +12,7 @@ if { [info exists ::origin_dir_loc] } {
 }
 
 # Set the project name
-set _xil_proj_name_ "pcileech_tbx4"
+set _xil_proj_name_ "pcileech_tbx4_100t"
 
 # Use project name variable, if specified in the tcl shell
 if { [info exists ::user_project_name] } {
@@ -118,16 +118,16 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/src/pcileech_header.svh"]\
- [file normalize "${origin_dir}/src/pcileech_com_e.v" ]\
- [file normalize "${origin_dir}/src/pcileech_fifo.sv"]\
- [file normalize "${origin_dir}/src/pcileech_mux.sv"]\
- [file normalize "${origin_dir}/src/pcileech_pcie_a7x4.sv"]\
- [file normalize "${origin_dir}/src/pcileech_pcie_cfg_a7.sv"]\
- [file normalize "${origin_dir}/src/pcileech_pcie_tlp_a7.sv"]\
- [file normalize "${origin_dir}/src/pcileech_tlps128_bar_controller.sv"]\
- [file normalize "${origin_dir}/src/pcileech_tlps128_cfgspace_shadow.sv"]\
- [file normalize "${origin_dir}/src/pcileech_tbx4_top.sv" ]\
+ [file normalize "${origin_dir}/100T/src/pcileech_header.svh"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_com_e.v" ]\
+ [file normalize "${origin_dir}/100T/src/pcileech_fifo.sv"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_mux.sv"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_pcie_a7x4.sv"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_pcie_cfg_a7.sv"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_pcie_tlp_a7.sv"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_tlps128_bar_controller.sv"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_tlps128_cfgspace_shadow.sv"]\
+ [file normalize "${origin_dir}/100T/src/pcileech_tbx4_100t_top.sv" ]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 
@@ -171,24 +171,24 @@ set file "src/pcileech_tlps128_cfgspace_shadow.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
-set file "src/pcileech_tbx4_top.sv"
+set file "src/pcileech_tbx4_100t_top.sv"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "pcileech_tbx4_top" -objects $obj
+set_property -name "top" -value "pcileech_tbx4_100t_top" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/pcileech_bar_zero4k.coe" ]\
- [file normalize "${origin_dir}/ip/pcileech_cfgspace.coe" ]\
- [file normalize "${origin_dir}/ip/pcileech_cfgspace_writemask.coe" ]\
- [file normalize "${origin_dir}/ip/bram_pcie_cfgspace.xci" ]\
+ [file normalize "${origin_dir}/100T/ip/pcileech_bar_zero4k.coe" ]\
+ [file normalize "${origin_dir}/100T/ip/pcileech_cfgspace.coe" ]\
+ [file normalize "${origin_dir}/100T/ip/pcileech_cfgspace_writemask.coe" ]\
+ [file normalize "${origin_dir}/100T/ip/bram_pcie_cfgspace.xci" ]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -207,7 +207,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/clk_wiz_0.xci"]\
+ [file normalize "${origin_dir}/100T/ip/clk_wiz_0.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -226,7 +226,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/drom_pcie_cfgspace_writemask.xci"]\
+ [file normalize "${origin_dir}/100T/ip/drom_pcie_cfgspace_writemask.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -245,7 +245,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_74_74_clk1_bar_rd1.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_74_74_clk1_bar_rd1.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -264,7 +264,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/bram_bar_zero4k.xci"]\
+ [file normalize "${origin_dir}/100T/ip/bram_bar_zero4k.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -283,7 +283,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_134_134_clk1_bar_rdrsp.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_134_134_clk1_bar_rdrsp.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -302,7 +302,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_141_141_clk1_bar_wr.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_141_141_clk1_bar_wr.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -321,7 +321,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_134_134_clk2_rxfifo.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_134_134_clk2_rxfifo.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -340,7 +340,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_1_1_clk2.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_1_1_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -359,7 +359,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_134_134_clk2.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_134_134_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -378,7 +378,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_64_64_clk1_fifocmd.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_64_64_clk1_fifocmd.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -398,7 +398,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_129_129_clk1.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_129_129_clk1.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -417,7 +417,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/pcie_7x_0.xci"]\
+ [file normalize "${origin_dir}/100T/ip/pcie_7x_0.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -436,7 +436,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_64_64.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_64_64.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -455,7 +455,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_32_32_clk2.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_32_32_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -474,7 +474,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_49_49_clk2.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_49_49_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -493,7 +493,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_43_43_clk2.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_43_43_clk2.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -512,7 +512,7 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/fifo_34_34.xci"]\
+ [file normalize "${origin_dir}/100T/ip/fifo_34_34.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 # Set 'sources_1' fileset file properties for remote files
@@ -536,9 +536,9 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 set obj [get_filesets constrs_1]
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize ${origin_dir}/src/pcileech_tbx4.xdc]"
+set file "[file normalize ${origin_dir}/100T/src/pcileech_tbx4_100t.xdc]"
 set file_imported [import_files -fileset constrs_1 [list $file]]
-set file "src/pcileech_tbx4.xdc"
+set file "src/pcileech_tbx4_100t.xdc"
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
 set_property -name "processing_order" -value "EARLY" -objects $file_obj
@@ -559,7 +559,7 @@ set obj [get_filesets sim_1]
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
 set_property -name "hbs.configure_design_for_hier_access" -value "1" -objects $obj
-set_property -name "top" -value "pcileech_tbx4_top" -objects $obj
+set_property -name "top" -value "pcileech_tbx4_100t_top" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Upgrade IP from the currently installed Vivado version

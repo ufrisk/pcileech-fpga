@@ -10,9 +10,8 @@
 `timescale 1ns / 1ps
 `include "pcileech_header.svh"
 
-module pcileech_tbx4_top #(
+module pcileech_tbx4_100t_top #(
     // DEVICE IDs as follows:
-    // 0 = SP605, 1 = PCIeScreamer R1, 2 = AC701, 3 = PCIeScreamer R2, 4 = Screamer, 5 = NeTV2
     parameter       PARAM_DEVICE_ID = 17,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
     parameter       PARAM_VERSION_NUMBER_MINOR = 14,
@@ -36,8 +35,10 @@ module pcileech_tbx4_top #(
     input   [3:0]   pcie_rx_n,
     input           pcie_clk_p,
     input           pcie_clk_n,
-    input           pcie_present,
-    input           pcie_perst_n
+    input           pcie_present1,
+    input           pcie_present2,
+	input           pcie_perst1_n,
+	input           pcie_perst2_n
     );
 
     // SYS
@@ -60,6 +61,10 @@ module pcileech_tbx4_top #(
     IfPCIeFifoTlp   dtlp();
     IfPCIeFifoCore  dpcie();
     IfShadow2Fifo   dshadow2fifo();
+    
+    // PCIe
+    wire pcie_present = pcie_present1 && pcie_present2;
+    wire pcie_perst_n = pcie_perst1_n && pcie_perst2_n;
     
     // ----------------------------------------------------
     // CLK: INPUT (clkin): 50MHz

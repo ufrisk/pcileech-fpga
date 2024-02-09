@@ -129,10 +129,12 @@ set_false_path -from [get_pins i_pcileech_pcie_a7x4/i_pcie_7x_0/inst/inst/user_l
 set_false_path -from [get_pins i_pcileech_pcie_a7x4/i_pcie_7x_0/inst/inst/user_reset_out_reg/C]
 
 #PCIe signals
-set_property PACKAGE_PIN AB16 [get_ports pcie_present]
-set_property PACKAGE_PIN AB10 [get_ports pcie_perst_n]
-set_property IOSTANDARD LVCMOS33 [get_ports pcie_present]
-set_property IOSTANDARD LVCMOS33 [get_ports pcie_perst_n]
+set_property PACKAGE_PIN J14  [get_ports pcie_present1]
+set_property PACKAGE_PIN AB16 [get_ports pcie_present2]
+set_property PACKAGE_PIN J22  [get_ports pcie_perst1_n]
+set_property PACKAGE_PIN AB10 [get_ports pcie_perst2_n]
+set_property IOSTANDARD LVCMOS33 [get_ports {pcie_present1 pcie_present2 pcie_perst1_n pcie_perst2_n}]
+set_property PULLTYPE PULLUP [get_ports {pcie_present1 pcie_present2 pcie_perst1_n pcie_perst2_n}]
 
 set_property PACKAGE_PIN F10 [get_ports pcie_clk_p]
 set_property PACKAGE_PIN E10 [get_ports pcie_clk_n]
