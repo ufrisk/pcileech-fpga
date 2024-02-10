@@ -81,4 +81,4 @@ Releases / Version History:
 v4.14
 * Initial Release
 * Download pre-built binaries below:
-  * [ZDMA](https://mega.nz/file/1ORw1TiI#r0CxKKnCYq1GmxQTQ4IJY_79ENpKZbExhzpWD2zo96E) SHA256: `6af51464a1d3dd586833cc7347cd401387e88f7b201904862d9e4b3f2e491a3f`
+  * [ZDMA](https://mega.nz/file/gCQ2kKhR#zSKpIP_sfRQ85zdtDwriAb8J9aAifdkCbfjHvPmaSnI) SHA256: `759c5ac97ffe742b38aa0c9ff4f62e49af01f32e9eb85697edf5692b00269475`

@@ -136,6 +136,31 @@ set_property PACKAGE_PIN AB10 [get_ports pcie_perst2_n]
 set_property IOSTANDARD LVCMOS33 [get_ports {pcie_present1 pcie_present2 pcie_perst1_n pcie_perst2_n}]
 set_property PULLTYPE PULLUP [get_ports {pcie_present1 pcie_present2 pcie_perst1_n pcie_perst2_n}]
 
+set_property LOC GTPE2_CHANNEL_X0Y4 [get_cells {i_pcileech_pcie_a7x4/i_pcie_7x_0/inst/inst/gt_top_i/pipe_wrapper_i/pipe_lane[0].gt_wrapper_i/gtp_channel.gtpe2_channel_i}]
+set_property LOC GTPE2_CHANNEL_X0Y5 [get_cells {i_pcileech_pcie_a7x4/i_pcie_7x_0/inst/inst/gt_top_i/pipe_wrapper_i/pipe_lane[1].gt_wrapper_i/gtp_channel.gtpe2_channel_i}]
+set_property LOC GTPE2_CHANNEL_X0Y6 [get_cells {i_pcileech_pcie_a7x4/i_pcie_7x_0/inst/inst/gt_top_i/pipe_wrapper_i/pipe_lane[2].gt_wrapper_i/gtp_channel.gtpe2_channel_i}]
+set_property LOC GTPE2_CHANNEL_X0Y7 [get_cells {i_pcileech_pcie_a7x4/i_pcie_7x_0/inst/inst/gt_top_i/pipe_wrapper_i/pipe_lane[3].gt_wrapper_i/gtp_channel.gtpe2_channel_i}]
+
+set_property PACKAGE_PIN A8  [get_ports pcie_rx_n[0]]
+set_property PACKAGE_PIN B8  [get_ports pcie_rx_p[0]]
+set_property PACKAGE_PIN A4  [get_ports pcie_tx_n[0]]
+set_property PACKAGE_PIN B4  [get_ports pcie_tx_p[0]]
+
+set_property PACKAGE_PIN C11 [get_ports pcie_rx_n[1]]
+set_property PACKAGE_PIN D11 [get_ports pcie_rx_p[1]]
+set_property PACKAGE_PIN C5  [get_ports pcie_tx_n[1]]
+set_property PACKAGE_PIN D5  [get_ports pcie_tx_p[1]]
+
+set_property PACKAGE_PIN A10 [get_ports pcie_rx_n[2]]
+set_property PACKAGE_PIN B10 [get_ports pcie_rx_p[2]]
+set_property PACKAGE_PIN A6  [get_ports pcie_tx_n[2]]
+set_property PACKAGE_PIN B6  [get_ports pcie_tx_p[2]]
+
+set_property PACKAGE_PIN C9  [get_ports pcie_rx_n[3]]
+set_property PACKAGE_PIN D9  [get_ports pcie_rx_p[3]]
+set_property PACKAGE_PIN C7  [get_ports pcie_tx_n[3]]
+set_property PACKAGE_PIN D7  [get_ports pcie_tx_p[3]]
+
 set_property PACKAGE_PIN F10 [get_ports pcie_clk_p]
 set_property PACKAGE_PIN E10 [get_ports pcie_clk_n]
 create_clock -period 10.000 -name pcie_sys_clk_p [get_nets pcie_clk_p]
