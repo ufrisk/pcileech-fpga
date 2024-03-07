@@ -6,11 +6,9 @@ Once flashed it may be used together with the [PCILeech Direct Memory Access (DM
 
 > :warning: **ZDMA have additional requirements**. Make sure the [requirements](#Requirements) are met before purchase.
 
-> :warning: **ZDMA uses a test signed driver** as the driver is not yet signed by Microsoft. The controlling computer must be running in driver testing mode to support ZDMA.
-
 Capabilities:
 =================
-* Retrieve memory from the target system over Thunderbolt in excess of 800MB/s.
+* Retrieve memory from the target system over Thunderbolt in excess of 1000MB/s.
 * Access physical memory of target system unless protected with VT-d/IOMMU.
 * Raw PCIe Transaction Layer Packet (TLP) access.
 
@@ -33,6 +31,10 @@ Requirements:
 * A PCIe x4 or PCIe x16 slot on the target computer.
 * A Thunderbolt capable port on the controlling computer.
 * 64-bit Windows on the controlling computer.
+
+Windows Driver:
+===============
+ZDMA requires a signed Windows kernel driver. [Download it here](https://mega.nz/file/Eb5nwZ5K#4lAN0NddlSjET-5yPgtoBp4VMmatT63cjoRkMTa5Bu0). Right click on the .inf file and select "install" in the popup menu that appears to install the driver. Additionally ZDMA requires the file leechcore_driver.dll. This file should be included in the latest downloads of PCILeech and MemProcFS.
 
 Flashing:
 =================
