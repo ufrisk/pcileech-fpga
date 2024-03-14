@@ -1,3 +1,8 @@
+# SW
+set_property PACKAGE_PIN F21 [get_ports power_sw]
+set_property IOSTANDARD LVCMOS18 [get_ports power_sw]
+set_property PULLTYPE PULLUP [get_ports power_sw]
+
 # LED
 set_property PACKAGE_PIN AA5 [get_ports pcie_led]
 set_property IOSTANDARD LVCMOS18 [get_ports pcie_led]

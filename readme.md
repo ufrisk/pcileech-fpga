@@ -12,12 +12,12 @@ PCILeech currently supports multiple FPGA based devices with most recent firmwar
 | Device                                | Connection   | Transfer Speed | Version | FPGA         | PCIe Version  | Project<br>Sponsor |
 | ------------------------------------- | ------------ | -------------- | --------| ------------ | ------------- | ------------------ |
 | [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
-| [ZDMA](ZDMA)                          | Thunderbolt3 | 1000 MB/s      | 4.14    | XC7A100T-484 | PCIe gen2 x4  | [💖](https://lightingz.store/) |
+| [ZDMA](ZDMA)                          | Thunderbolt3 | 1000 MB/s      | 4.15    | XC7A100T-484 | PCIe gen2 x4  | [💖](https://lightingz.store/) |
 | [LeetDMA](https://enigma-x1.com/)     | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
 | [Enigma X1](EnigmaX1)                 | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
 | [PCIeScreamerR04](ScreamerM2)         | USB-C        | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
 | [ScreamerM2](ScreamerM2)              | USB3/USB-C   | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* | [💖](https://shop.lambdaconcept.com) |
-| [AC701/FT601](ac701_ft601)            | USB3         | 190 MB/s       | 4.14    | XC7A200T-676 | PCIe gen2 x4  |                    |
+| [AC701/FT601](ac701_ft601)            | USB3         | 190 MB/s       | 4.15    | XC7A200T-676 | PCIe gen2 x4  |                    |
 
 ###### *) PCILeech FPGA uses PCIe x1 even if more PCIe lanes are available hardware-wise. This is sufficient to deliver neccessary performance.
 

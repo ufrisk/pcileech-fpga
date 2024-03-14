@@ -14,14 +14,17 @@ module pcileech_tbx4_100t_top #(
     // DEVICE IDs as follows:
     parameter       PARAM_DEVICE_ID = 17,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 14,
-    parameter       PARAM_CUSTOM_VALUE = 32'hffffffff
+    parameter       PARAM_VERSION_NUMBER_MINOR = 15,
+    parameter       PARAM_CUSTOM_VALUE = 32'hffffffff,
+    parameter       POWER_SW_MODE = 0,                 // disable_pcie_on_thunderbolt_noconnect_not_enabled(0), disable_pcie_on_thunderbolt_noconnect_enabled(1)
+    parameter       POWER_SW_TIME = 60*125_000_000     // detection sample time in ticks of 125MHz (125M=1s)
 ) (
     // SYS
     input           clk_in,
     
     // SYSTEM LEDs and BUTTONs
     output          pcie_led,
+    input           power_sw,
     
     // TO/FROM FPGA IO BRIDGE
     input   [36:0]  BUS_DO,
@@ -45,6 +48,7 @@ module pcileech_tbx4_100t_top #(
     wire rst;
     wire clk;
     wire clk_com;
+    reg  rst_sw = 0;
     
     // FIFO CTL <--> COM CTL
     wire [63:0]     com_dout;
@@ -64,7 +68,7 @@ module pcileech_tbx4_100t_top #(
     
     // PCIe
     wire pcie_present = pcie_present1 && pcie_present2;
-    wire pcie_perst_n = pcie_perst1_n && pcie_perst2_n;
+    wire pcie_perst_n = pcie_perst1_n && pcie_perst2_n && ~rst_sw;
     
     // ----------------------------------------------------
     // CLK: INPUT (clkin): 50MHz
@@ -94,7 +98,20 @@ module pcileech_tbx4_100t_top #(
     
     wire            led_pcie;
     OBUF led_ld1_obuf(.O(pcie_led), .I(led_pcie));
-    
+	
+    // ----------------------------------------------------
+    // POWER SWITCH MODE (DISABLE PCIE WHEN THUNDERBOLT NOT CONNECTED)
+    // ----------------------------------------------------
+	
+    always @ ( posedge clk ) begin
+        if ( rst ) begin
+            rst_sw    <= 0;
+        end
+        else if ( (POWER_SW_MODE == 1) && (tickcount64 == POWER_SW_TIME) ) begin
+            rst_sw    <= ~power_sw; 
+        end
+    end
+	
     // ----------------------------------------------------
     // BUFFERED COMMUNICATION DEVICE (FPGA IO BRIDGE)
     // ----------------------------------------------------

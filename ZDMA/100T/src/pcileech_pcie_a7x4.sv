@@ -346,7 +346,7 @@ module pcileech_tlps128_src128(
     assign tlps_out.tuser[1]    = rxd_valid ? (rxd_eof || (rxf_eof && (rxf_eof_dw <= 1))) : rxf_eof;    // tlast
     assign tlps_out.tuser[8:2]  = rxd_valid ? rxd_bar_hit : rxf_bar_hit;
     assign tlps_out.tlast       = tlps_out.tuser[1];
-    assign tlps_out.tvalid      = rxd_valid || (rxf_valid && !(rxf_sof && rxf_sof_qw)); 
+    assign tlps_out.tvalid      = rxd_valid || (rxf_valid && rxf_eof) || (rxf_valid && !(rxf_sof && rxf_sof_qw)); 
     
     assign tlps_out.tkeepdw[0]  = rxd_valid || rxf_valid;
     assign tlps_out.tkeepdw[1]  = rxd_valid ? (!rxd_eof || rxd_eof_dw) :

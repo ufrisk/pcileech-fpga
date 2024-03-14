@@ -84,3 +84,9 @@ v4.14
 * Initial Release
 * Download pre-built binaries below:
   * [ZDMA](https://mega.nz/file/gCQ2kKhR#zSKpIP_sfRQ85zdtDwriAb8J9aAifdkCbfjHvPmaSnI) SHA256: `759c5ac97ffe742b38aa0c9ff4f62e49af01f32e9eb85697edf5692b00269475`
+
+v4.15
+* Bug fixes for PCIe x4 interface.
+* Support for disabling device when Thunderbolt is not connected (not enabled in pre-built version).
+* Download pre-built binaries below:
+  * [ZDMA](https://mega.nz/file/pD4XQKZJ#8RTqip8T2yXo1F8N0UgFikl4MEfaxtGotuZVabR_pGo) SHA256: `8084d838d2cd3715ffe52219a6faed599d40f228b0639eacdc337000cf89c419`

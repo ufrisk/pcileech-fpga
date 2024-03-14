@@ -111,13 +111,17 @@ v4.11
 v4.12
 * Bug fixes.
 * Download pre-built binary [here](https://mega.nz/file/haxAFYZR#6oEOklJH4hmyWYW7Ffhj88wdiUoaxVgyIpbEFhS95aY). <br>SHA256: `4581fda04fb681c7d0fe909c156c7c8dcb2c789bb3c0422ade0a973d8962365b`
-</details>
 
 v4.13
 * Bug fixes.
 * New internal design with on-board PIO BAR support.
 * Download pre-built binary [here](https://mega.nz/file/1W4QgILB#t5pBSs2eznL8crm3GgSNRzbk1CSzb3_YSTI5Ok65-Ww) SHA256: `1607eed95b24b470be20b4ea710c0a4d0f446786a7acae939df4b827201cddea`
+</details>
 
 v4.14
 * Bug fixes.
 * Download pre-built binary [here](https://mega.nz/file/AOhiSKDZ#OiQr9rgyWiOMMLE7S_qG3NDKLdRmpHs3tNENtKMw5v0) SHA256: `7d13e2626df82a352df16011ce94d0ca8f3958190fba08facda702f5e0a1916a`
+
+v4.15
+* Bug fixes for PCIe x4 interface.
+* Download pre-built binary [here](https://mega.nz/file/UDYmEYZL#oiF3EvQymhMSwcu1D4JJH8v32vRvNg0_BYZ6GB6wVOw) SHA256: `7b99dc9fd91e8ecc6d97a72919745da2d58d977331cc7334dc0f899cbe93f896`
