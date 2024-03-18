@@ -189,6 +189,7 @@ module pcileech_pcie_cfg_a7(
     localparam integer  RWPOS_CFG_WAIT_COMPLETE         = 18;
     localparam integer  RWPOS_CFG_STATIC_TLP_TX_EN      = 19;
     localparam integer  RWPOS_CFG_CFGSPACE_STATUS_CL_EN = 20;
+    localparam integer  RWPOS_CFG_CFGSPACE_COMMAND_EN   = 21;
     
     task pcileech_pcie_cfg_a7_initialvalues;        // task is non automatic
         begin
@@ -205,7 +206,8 @@ module pcileech_pcie_cfg_a7(
             rw[18]      <= 0;                       //       WAIT FOR PCIe CFG SPACE RD/WR COMPLETION BEFORE ACCEPT NEW FIFO READ/WRITES
             rw[19]      <= 0;                       //       TLP_STATIC TX ENABLE
             rw[20]      <= 0;                       //       CFGSPACE_STATUS_REGISTER_AUTO_CLEAR [master abort flag]
-            rw[27:21]   <= 0;                       //       RESERVED FUTURE
+            rw[21]      <= 0;                       //       CFGSPACE_COMMAND_REGISTER_AUTO_SET [bus master and other flags (set in rw[143:128] <= 16'h....;)]
+            rw[27:22]   <= 0;                       //       RESERVED FUTURE
             rw[31:28]   <= 4'hf;                    //       PCIe TLP TX ENABLE FOR MUX CHANNEL 0-3 [MUX[0] == RW[28] ..].
             // SIZEOF / BYTECOUNT [little-endian]
             rw[63:32]   <= $bits(rw) >> 3;          // +004: bytecount [little endian]
@@ -351,17 +353,21 @@ module pcileech_pcie_cfg_a7(
                         end
 
                 // STATUS REGISTER CLEAR
-                if ( rw[RWPOS_CFG_CFGSPACE_STATUS_CL_EN] & ~in_cmd_read & ~in_cmd_write & ~rw[RWPOS_CFG_RD_EN] & ~rw[RWPOS_CFG_WR_EN] & ~rwi_cfg_mgmt_rd_en & ~rwi_cfg_mgmt_wr_en )
+                if ( (rw[RWPOS_CFG_CFGSPACE_STATUS_CL_EN] | rw[RWPOS_CFG_CFGSPACE_COMMAND_EN]) & ~in_cmd_read & ~in_cmd_write & ~rw[RWPOS_CFG_RD_EN] & ~rw[RWPOS_CFG_WR_EN] & ~rwi_cfg_mgmt_rd_en & ~rwi_cfg_mgmt_wr_en )
                     if ( rwi_count_cfgspace_status_cl < rw[672+:32] )
                         rwi_count_cfgspace_status_cl <= rwi_count_cfgspace_status_cl + 1;
                     else begin
                         rwi_count_cfgspace_status_cl <= 0;
                         rw[RWPOS_CFG_WR_EN] <= 1'b1;
-                        rw[159:128] <= 32'hff000000;    // cfg_mgmt_di
-                        rw[169:160] <= 1;               // cfg_mgmt_dwaddr
-                        rw[170]     <= 0;               // cfg_mgmt_wr_readonly
-                        rw[171]     <= 0;               // cfg_mgmt_wr_rw1c_as_rw
-                        rw[175:172] <= 4'b1000;         // cfg_mgmt_byte_en
+                        rw[143:128] <= 16'h0007;                            // cfg_mgmt_di: command register [update to set individual command register bits]
+                        rw[159:144] <= 16'hff00;                            // cfg_mgmt_di: status register [do not update]
+                        rw[169:160] <= 1;                                   // cfg_mgmt_dwaddr
+                        rw[170]     <= 0;                                   // cfg_mgmt_wr_readonly
+                        rw[171]     <= 0;                                   // cfg_mgmt_wr_rw1c_as_rw
+                        rw[172]     <= rw[RWPOS_CFG_CFGSPACE_COMMAND_EN];   // cfg_mgmt_byte_en: command register
+                        rw[173]     <= rw[RWPOS_CFG_CFGSPACE_COMMAND_EN];   // cfg_mgmt_byte_en: command register
+                        rw[174]     <= 0;                                   // cfg_mgmt_byte_en: status register
+                        rw[175]     <= rw[RWPOS_CFG_CFGSPACE_STATUS_CL_EN]; // cfg_mgmt_byte_en: status register
                     end
 
                 // CONFIG SPACE READ/WRITE                        
