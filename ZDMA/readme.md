@@ -30,11 +30,15 @@ Requirements:
 =================
 * A PCIe x4 or PCIe x16 slot on the target computer.
 * A Thunderbolt capable port on the controlling computer.
-* 64-bit Windows on the controlling computer.
+* 64-bit Windows or on the controlling computer. 64-bit (x64) Ubuntu will also work.
 
 Windows Driver:
 ===============
 ZDMA requires a signed Windows kernel driver. [Download it here](https://mega.nz/file/Eb5nwZ5K#4lAN0NddlSjET-5yPgtoBp4VMmatT63cjoRkMTa5Bu0). Right click on the .inf file and select "install" in the popup menu that appears to install the driver. Additionally ZDMA requires the file leechcore_driver.dll. This file should be included in the latest downloads of PCILeech and MemProcFS.
+
+Linux Driver:
+===============
+ZDMA requires Linux driver to be compiled from source to a kernel module (.ko). [Download it here](https://mega.nz/file/xOZkgQJb#6BbC8mbE2_AHoRRoh58PuPQij0pZ_l6eJxvfPFME4MQ). Additionally ZDMA requires the file leechcore_driver.so. This file should be included in the latest downloads of PCILeech and MemProcFS.
 
 Flashing:
 =================
