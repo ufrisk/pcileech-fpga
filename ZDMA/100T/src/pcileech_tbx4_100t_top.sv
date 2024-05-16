@@ -14,7 +14,7 @@ module pcileech_tbx4_100t_top #(
     // DEVICE IDs as follows:
     parameter       PARAM_DEVICE_ID = 17,
     parameter       PARAM_VERSION_NUMBER_MAJOR = 4,
-    parameter       PARAM_VERSION_NUMBER_MINOR = 15,
+    parameter       PARAM_VERSION_NUMBER_MINOR = 16,
     parameter       PARAM_CUSTOM_VALUE = 32'hffffffff,
     parameter       POWER_SW_MODE = 0,                 // disable_pcie_on_thunderbolt_noconnect_not_enabled(0), disable_pcie_on_thunderbolt_noconnect_enabled(1)
     parameter       POWER_SW_TIME = 60*125_000_000     // detection sample time in ticks of 125MHz (125M=1s)
@@ -28,6 +28,7 @@ module pcileech_tbx4_100t_top #(
     
     // TO/FROM FPGA IO BRIDGE
     input   [36:0]  BUS_DO,
+    input   [7:0]   BUS_DO_ECC,
     output  [68:0]  BUS_DI,
     input           BUS_DI_PROG_FULL,
     
@@ -123,6 +124,7 @@ module pcileech_tbx4_100t_top #(
         .rst                ( rst                   ),
         // TO/FROM FPGA IO BRIDGE
         .BUS_DO             ( BUS_DO                ),
+        .BUS_DO_ECC         ( BUS_DO_ECC            ),
         .BUS_DI             ( BUS_DI                ),
         .BUS_DI_PROG_FULL   ( BUS_DI_PROG_FULL      ),
         // FIFO CTL <--> COM CTL

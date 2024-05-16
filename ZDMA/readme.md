@@ -94,3 +94,8 @@ v4.15
 * Support for disabling device when Thunderbolt is not connected (not enabled in pre-built version).
 * Download pre-built binaries below:
   * [ZDMA](https://mega.nz/file/pD4XQKZJ#8RTqip8T2yXo1F8N0UgFikl4MEfaxtGotuZVabR_pGo) SHA256: `8084d838d2cd3715ffe52219a6faed599d40f228b0639eacdc337000cf89c419`
+
+v4.15
+* Bug fixes: stability improvements.
+* Download pre-built binaries below:
+  * [ZDMA](https://mega.nz/file/9bhlVKCK#Sgh_J8RL1FMePuOeBioHEmL4kHiL3iPlI_l9FiPvzq8) SHA256: `d72b31e0f78b597166e8a44409dcdce6d6fd12213886ae501445583980e624fd`

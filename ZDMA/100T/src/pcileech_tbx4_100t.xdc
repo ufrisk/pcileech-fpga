@@ -52,6 +52,17 @@ set_property PACKAGE_PIN Y6  [get_ports {BUS_DO[35]}]
 set_property PACKAGE_PIN AA6 [get_ports {BUS_DO[36]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {BUS_DO[*]}]
 
+set_property PACKAGE_PIN E22 [get_ports {BUS_DO_ECC[0]}]
+set_property PACKAGE_PIN E21 [get_ports {BUS_DO_ECC[1]}]
+set_property PACKAGE_PIN G21 [get_ports {BUS_DO_ECC[2]}]
+set_property PACKAGE_PIN G22 [get_ports {BUS_DO_ECC[3]}]
+set_property PACKAGE_PIN C13 [get_ports {BUS_DO_ECC[4]}]
+set_property PACKAGE_PIN C14 [get_ports {BUS_DO_ECC[5]}]
+set_property PACKAGE_PIN C15 [get_ports {BUS_DO_ECC[6]}]
+set_property PACKAGE_PIN C17 [get_ports {BUS_DO_ECC[7]}]
+set_property IOSTANDARD LVCMOS18 [get_ports {BUS_DO_ECC[*]}]
+set_property PULLTYPE PULLDOWN [get_ports {BUS_DO_ECC[7]}]
+
 #BUS DI
 set_property PACKAGE_PIN F4  [get_ports {BUS_DI[0]}]
 set_property PACKAGE_PIN B1  [get_ports {BUS_DI[1]}]
