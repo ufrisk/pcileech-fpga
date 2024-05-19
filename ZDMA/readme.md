@@ -96,6 +96,10 @@ v4.15
   * [ZDMA](https://mega.nz/file/pD4XQKZJ#8RTqip8T2yXo1F8N0UgFikl4MEfaxtGotuZVabR_pGo) SHA256: `8084d838d2cd3715ffe52219a6faed599d40f228b0639eacdc337000cf89c419`
 
 v4.16
+* skipped
+
+v4.17
 * Bug fixes: stability improvements.
+* :warning: Upgrading to 4.17 will break compatibility with previous firmware for FPGA1 (Thunderbolt). New LeechDMA firmware for FPGA1 (v4+) must be flashed in conjunction with v4.17. FPGA1 v4+ firmware will be provided by ZDMA.
 * Download pre-built binaries below:
-  * [ZDMA](https://mega.nz/file/9bhlVKCK#Sgh_J8RL1FMePuOeBioHEmL4kHiL3iPlI_l9FiPvzq8) SHA256: `d72b31e0f78b597166e8a44409dcdce6d6fd12213886ae501445583980e624fd`
+  * [ZDMA](https://mega.nz/file/8fBxXTwJ#lUmyeT-wpeBH8wAlZtQrrI9unRYOIUCmA23MJ4kG2l4) SHA256: `2ccb460973fdd875d1d5190c81b0e9da0c5b3bc02cd39cedf1feb9585bb9adfe`
