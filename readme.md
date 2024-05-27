@@ -11,12 +11,13 @@ Supported Devices:
 =================
 PCILeech currently supports multiple FPGA based devices with most recent firmware versions - please see the table below:
 
-| Device                                | Connection   | Transfer Speed | Version | FPGA         | PCIe Version  | Project<br>Sponsor |
-| ------------------------------------- | ------------ | -------------- | --------| ------------ | ------------- | ------------------ |
-| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://shop.lambdaconcept.com) |
-| [ZDMA](ZDMA)                          | Thunderbolt3 | 1000 MB/s      | 4.17    | XC7A100T-484 | PCIe gen2 x4  | [💖](https://lightingz.store/) |
-| [LeetDMA](https://enigma-x1.com/)     | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1  | [💖](https://enigma-x1.com/)         |
-| [AC701/FT601](ac701_ft601)            | USB3         | 190 MB/s       | 4.15    | XC7A200T-676 | PCIe gen2 x4  |                    |
+| Device                                | Connection   | Transfer Speed | Version | FPGA         | PCIe Version    | Project<br>Sponsor                  |
+| ------------------------------------- | ------------ | -------------- | --------| ------------ | --------------- | ----------------------------------- |
+| [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://shop.lambdaconcept.com) |
+| [ZDMA](ZDMA)                          | Thunderbolt3 | 1000 MB/s      | 4.17    | XC7A100T-484 | PCIe gen2 x4    | [💖](https://lightingz.store/)       |
+| [GBOX](GBOX)                          | Thunderbolt3 | 220+ MB/s      | 4.15    | XC7A35T-484  | PCIe gen2 x1-x4 | [💖](https://lightingz.store/)       |
+| [LeetDMA](https://enigma-x1.com/)     | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://enigma-x1.com/)         |
+| [AC701/FT601](ac701_ft601)            | USB3         | 190 MB/s       | 4.15    | XC7A200T-676 | PCIe gen2 x4    |                                     |
 
 Please select the FPGA setup that best suits your needs from the above list. If performance and value for money is key the Screamer PCIe Squirrel is currently recommended. If performance is key alone ZDMA is a good pick.
 
