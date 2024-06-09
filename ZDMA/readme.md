@@ -40,6 +40,8 @@ Linux Driver:
 ===============
 ZDMA requires Linux driver to be compiled from source to a kernel module (.ko). [Download it here](https://mega.nz/file/xOZkgQJb#6BbC8mbE2_AHoRRoh58PuPQij0pZ_l6eJxvfPFME4MQ). Additionally ZDMA requires the file leechcore_driver.so. This file should be included in the latest downloads of PCILeech and MemProcFS.
 
+:warning: The Linux driver currently does not fully support IOMMU (enabled by default). This will result in failed tx. It's possible to disable it in BIOS settings or via kernel boot parameter.
+
 Flashing:
 =================
 Please note that this instruction applies to the built-in JTAG update port.
