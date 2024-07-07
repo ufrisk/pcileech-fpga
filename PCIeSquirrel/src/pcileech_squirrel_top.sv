@@ -160,7 +160,9 @@ module pcileech_squirrel_top #(
         .dfifo_cfg          ( dcfg.mp_pcie          ),
         .dfifo_tlp          ( dtlp.mp_pcie          ),
         .dfifo_pcie         ( dpcie.mp_pcie         ),
-        .dshadow2fifo       ( dshadow2fifo.shadow   )
+	.dshadow2fifo       ( dshadow2fifo.shadow   ),
+	.cfg_interrupt_msienable		(1'b1),
+	.cfg_interrupt_rdy			(1'b1)
     );
 
 endmodule
