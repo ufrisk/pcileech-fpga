@@ -11,19 +11,31 @@ Supported Devices:
 =================
 PCILeech currently supports multiple FPGA based devices with most recent firmware versions - please see the table below:
 
-| Device                                | Connection   | Transfer Speed | Version | FPGA         | PCIe Version    | Project<br>Sponsor                  |
-| ------------------------------------- | ------------ | -------------- | --------| ------------ | --------------- | ----------------------------------- |
+| Device                                | Connection   | Transfer Speed | Version | FPGA         | PCIe Version    | Project<br>Sponsor                   |
+| ------------------------------------- | ------------ | -------------- | --------| ------------ | --------------- | ------------------------------------ |
 | [Screamer PCIe Squirrel](PCIeSquirrel)| USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://shop.lambdaconcept.com) |
 | [ZDMA](ZDMA)                          | Thunderbolt3 | 1000 MB/s      | 4.17    | XC7A100T-484 | PCIe gen2 x4    | [💖](https://lightingz.store/)       |
 | [GBOX](GBOX)                          | Thunderbolt3 | 220+ MB/s      | 4.15    | XC7A35T-484  | PCIe gen2 x1-x4 | [💖](https://lightingz.store/)       |
 | [LeetDMA](https://enigma-x1.com/)     | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://enigma-x1.com/)         |
-| [AC701/FT601](ac701_ft601)            | USB3         | 190 MB/s       | 4.15    | XC7A200T-676 | PCIe gen2 x4    |                                     |
+| [Enigma X1](EnigmaX1)                 | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1    | [💖](https://enigma-x1.com/)         |
+| [ScreamerM2](ScreamerM2)              | USB3/USB-C   | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4*   | [💖](https://shop.lambdaconcept.com) |
+| [AC701/FT601](ac701_ft601)            | USB3         | 190 MB/s       | 4.15    | XC7A200T-676 | PCIe gen2 x4    |                                      |
 
-Please select the FPGA setup that best suits your needs from the above list. If performance and value for money is key the Screamer PCIe Squirrel is currently recommended. If performance is key alone ZDMA is a good pick.
+###### *) PCILeech FPGA uses PCIe x1 even if more PCIe lanes are available hardware-wise. This is sufficient to deliver neccessary performance.
 
-Please check out the individual FPGA projects in the table above for more information about the purchase, usage, building and flashing of the devices. Each device have different advantages and disadvantages.
+Select the FPGA setup that best suits your needs from the above list. If performance and value for money is key the Screamer PCIe Squirrel is currently recommended. If performance is key alone ZDMA is a good pick.
 
-The images below depicts:
+Check out the individual FPGA projects in the table above for more information about the purchase, usage, building and flashing of the devices. Each device have different advantages and disadvantages.
+
+**A special Thank You 💖 to the project hardware sponsors!**
+* [LambdaConcept](https://shop.lambdaconcept.com) - The original maker of custom PCILeech hardware and the maker of the [Screamer PCIe Squirrel](PCIeSquirrel).
+* [Enigma-X1](https://enigma-x1.com/) - Long time supporter and the maker of [Enigma X1](EnigmaX1) and [LeetDMA](https://enigma-x1.com/).
+* [LightingZ](https://lightingz.store/) - Maker of the fastest PCILeech hardwares, the [ZDMA](ZDMA) and [GBOX](GBOX).
+* [CaptainDMA](https://captaindma.com/) - Our most recent sponsor, maker of many PCILeech compatible hardwares including [M2 devices](https://captaindma.com/product/captain-dma-m-2/).
+
+Thank You [LambdaConcept](https://shop.lambdaconcept.com),  [Enigma-X1](https://enigma-x1.com/), [LightingZ](https://lightingz.store/) and [CaptainDMA](https://captaindma.com/) for supporting the PCILeech and MemProcFS projects 💖
+
+**The images below depicts:**
 * Top row: Screamer PCIe Squirrel.
 * Middle row: ZDMA and LeetDMA.
 * Bottom row: NeTV2, SP605 and AC701.
@@ -48,16 +60,6 @@ PCILeech also supports multiple FPGA based devices that may not have the most re
 | [SP605/FT601](sp605_ft601)             | USB3        | 75 MB/s        | 2.2     | PCIe gen1 x1  |
 | [Acorn/FT2232H](acorn_ft2232h)         | USB2        | 25 MB/s        | 4.9     | PCIe gen2 x4* |
 | [NeTV2](NeTV2)                         | UDP/IP      | 7 MB/s         | 4.12    | PCIe gen2 x4* |
-
-Some older FPGA projects have been discontinued and are no longer available.
-
-| Discontinued Device       | Connection  | Transfer Speed | Version | FPGA         | PCIe Version  |
-| ------------------------- | ----------- | -------------- | ------- | ------------ | ------------- |
-| Enigma X1                 | USB-C       | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1  |
-| PCIeScreamerR04           | USB-C       | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* |
-| ScreamerM2                | USB3/USB-C  | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4* |
-
-###### *) PCILeech FPGA uses PCIe x1 even if more PCIe lanes are available hardware-wise. This is sufficient to deliver neccessary performance.
 
 
 
