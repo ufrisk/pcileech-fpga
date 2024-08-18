@@ -18,7 +18,7 @@ PCILeech currently supports multiple FPGA based devices with most recent firmwar
 | [GBOX](GBOX)                               | Thunderbolt3 | 220+ MB/s      | 4.15    | XC7A35T-484  | PCIe gen2 x1-x4 | [💖](https://lightingz.store/)       |
 | [LeetDMA](https://enigma-x1.com/)          | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://enigma-x1.com/)         |
 | [CaptainDMA M2](CaptainDMA)                | USB-C        | 190 MB/s       | 4.15    | XC7A35T-325  | PCIe gen2 x1-x4 | [💖](https://www.captaindma.com/)    |
-| [CaptainDMA 35T](CaptainDMA)               | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://www.captaindma.com/)    |
+| [CaptainDMA 4.1th](CaptainDMA)             | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://www.captaindma.com/)    |
 | [CaptainDMA 75T](CaptainDMA)               | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1    | [💖](https://www.captaindma.com/)    |
 | [Enigma X1](EnigmaX1)                      | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1    | [💖](https://enigma-x1.com/)         |
 | [ScreamerM2](ScreamerM2)                   | USB3/USB-C   | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4*   | [💖](https://shop.lambdaconcept.com) |

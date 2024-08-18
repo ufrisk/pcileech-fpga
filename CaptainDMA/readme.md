@@ -26,7 +26,7 @@ To flash: Download the [CH347 FPGA Tool](https://github.com/WCHSoftGroup/ch347/r
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/7632ff874708db8ce94ab3f262e09e04ff90992c/captaindma_75t.png" height="300"/>
 
-CaptainDMA 75T is a standard PCIe board which is ideal when targeting desktop PCs with PCILeech. The Artix7 75T allows for more advanced firmware projects than the 35T due to the more powerful FPGA. The CaptainDMA 75T also offers an integrated update port for easy re-flashing and an on/off switch which allows the device to be powered off without removing it from the computer.
+CaptainDMA 75T is a standard PCIe board which is ideal when targeting desktop PCs with PCILeech. The Artix7 75T FPGA chip allows for more advanced firmware projects than the 35T due to the more powerful FPGA. The CaptainDMA 75T also offers an integrated update port for easy re-flashing and an on/off switch which allows the device to be powered off without removing it from the computer.
 
 To flash: Download the [CH347 FPGA Tool](https://github.com/WCHSoftGroup/ch347/releases/tag/CH347_OpenOCD_Release) and the firmware below. Start the WCH347 fpga flash tool as elevated admin and flash. Drivers for WCH347 may also have to be installed.
 
@@ -36,7 +36,7 @@ To flash: Download the [CH347 FPGA Tool](https://github.com/WCHSoftGroup/ch347/r
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/7632ff874708db8ce94ab3f262e09e04ff90992c/captaindma_4_1.png" height="300"/>
 
-CaptainDMA 4.1th is a standard PCIe board which is ideal when targeting desktop PCs with PCILeech. The CaptainDMA 4.1th also offers an integrated update port for easy re-flashing and an on/off switch which allows the device to be powered off without removing it from the computer.
+CaptainDMA 4.1th is a standard PCIe board which is ideal when targeting desktop PCs with PCILeech. The Artix7 35T FPGA chip is perfect for DMA and allows for all but the most advanced features. The CaptainDMA 4.1th also offers an integrated update port for easy re-flashing and an on/off switch which allows the device to be powered off without removing it from the computer.
 
 To flash: Follow the flash instructions of the PCIeSquirrel [here](https://github.com/ufrisk/pcileech-fpga/blob/master/PCIeSquirrel/readme.md), but use the firmware downloaded below.
 
@@ -53,4 +53,4 @@ Note that the below firmware is the default PCILeech firmware. It's meant for se
 | [CaptainDMA M2 x1](https://mega.nz/file/xfRVSYRa#wMtat6ofhrje9Sj92Mzkj0SoPGAxOkh-npO11OZeI5A) | 4.14             | a10b5171878e598069c01733cc5b48cdee7d77b0d48c072f7e88e21372e60d95 | [35t325_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/35t325_x1) |
 | [CaptainDMA M2 x4](https://mega.nz/file/wSQlgZ7I#WqqZ4jskXqePwFTByXRYMoecB7LviRfPivZJ2926-9s) | 4.15             | f53a409b754b4443e5156c2d9b7cbe62f5bbdcf9ca3d5ba243174f9d4b073073 | [35t325_x4](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/35t325_x4) |
 | [CaptainDMA 75T](https://mega.nz/file/9PpSmBqR#Mphh6YcmGqz8tiKySOAOvJeLaLlMN7L_7enoMxWbENw)   | 4.14             | 0c4e997c1212187dc74954cb2ff2b24ce2397831e6662b942ffba62f9077c503 | [35t484_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/35t484_x1) |
-| [CaptainDMA 4.1](https://mega.nz/file/YLgU3ZbB#ZQbaMbv-Evus2jF6NDJ8I0-tVrNudiwmq5QFuAsC9Ps)   | 4.14             | ef6e737fbabd08948dae52e9dfe4811f6792739e5827a308275648adabef85ab | [75t484_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/75t484_x1) |
+| [CaptainDMA 4.1th](https://mega.nz/file/YLgU3ZbB#ZQbaMbv-Evus2jF6NDJ8I0-tVrNudiwmq5QFuAsC9Ps) | 4.14             | ef6e737fbabd08948dae52e9dfe4811f6792739e5827a308275648adabef85ab | [75t484_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/75t484_x1) |
