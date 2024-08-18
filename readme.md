@@ -44,9 +44,9 @@ Thank You [LambdaConcept](https://shop.lambdaconcept.com),  [Enigma-X1](https://
 * Bottom row: NeTV2, SP605 and AC701.
 
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/19ae5834c61f267bfe440cb2a3b2894633078d0a/sqr-1.jpg" height="300"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/65984ae014a8caa659c2e297dbb77c6c67c0889a/zdma-250.jpg" height="300"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/19ae5834c61f267bfe440cb2a3b2894633078d0a/sqr-1.jpg" height="280"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/65984ae014a8caa659c2e297dbb77c6c67c0889a/zdma-250.jpg" height="280"/>
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_m2_2.png" height="215"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_75t.png" height="215"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/5d214db54bcba428690007d8705ed6b4012b15d5/leet-1.jpg" height="215"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_m2_2.png" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_75t.png" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/5d214db54bcba428690007d8705ed6b4012b15d5/leet-1.jpg" height="200"/>
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_sp605_front_x200.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_ac701_front_x200.jpg" height="200"/>
 
