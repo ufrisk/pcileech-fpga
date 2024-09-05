@@ -3,7 +3,7 @@
 //
 // Top module for the AC701 Artix-7 board (200t676).
 //
-// (c) Ulf Frisk, 2018-2024
+// (c) Ulf Frisk, 2019-2024
 // Author: Ulf Frisk, pcileech@frizk.net
 //
 
@@ -20,12 +20,12 @@ module pcileech_ac701_ft601_top #(
 	input			sysclk_p,
 	input			sysclk_n,
     input           ft601_clk,
-
+    
     // SYSTEM LEDs and BUTTONs
     input           gpio_sw_south,
     input           gpio_sw_north,
     output  [2:0]   gpio_led,
-
+    
     // PCI-E FABRIC
     output  [3:0]   pcie_tx_p,
     output  [3:0]   pcie_tx_n,
@@ -35,9 +35,10 @@ module pcileech_ac701_ft601_top #(
     input           pcie_clk_n,
     input           pcie_perst_n,
     output reg      pcie_wake_n = 1'b1,
-
+    
     // TO/FROM FT601 PADS
     output          ft601_rst_n,
+    
     inout   [31:0]  ft601_data,
     output  [3:0]   ft601_be,
     input           ft601_rxf_n,
@@ -49,22 +50,29 @@ module pcileech_ac701_ft601_top #(
     );
     
     // SYS
-	wire            clk;                // 100MHz
-    wire 			rst;
+    wire            clk;
+    wire            rst;
+    
+    // FIFO CTL <--> COM CTL
+    wire [63:0]     com_dout;
+    wire            com_dout_valid;
+    wire [255:0]    com_din;
+    wire            com_din_wr_en;
+    wire            com_din_ready;
     wire            led_com;
     wire            led_pcie;
     
     // FIFO CTL <--> COM CTL
     IfComToFifo     dcom_fifo();
-    
-    // PCIe <--> FIFOs
+	
+    // FIFO CTL <--> PCIe
     IfPCIeFifoCfg   dcfg();
     IfPCIeFifoTlp   dtlp();
     IfPCIeFifoCore  dpcie();
     IfShadow2Fifo   dshadow2fifo();
-	
+    
     // ----------------------------------------------------
-    // CLK 50MHz -> 100MHz:
+    // CLK 200MHz -> 100MHz:
     // ----------------------------------------------------
        
     clk_wiz i_clk_wiz(
@@ -72,19 +80,19 @@ module pcileech_ac701_ft601_top #(
 		.clk_in1_n          ( sysclk_n              ),
         .clkwiz_out_100     ( clk                   )
     );
+	
+    // ----------------------------------------------------
+    // TickCount64 CLK
+    // ----------------------------------------------------
     
-    // ----------------------------------------------------
-    // TickCount64 CLK and LED OUTPUT
-    // ----------------------------------------------------
-
     time tickcount64 = 0;
     always @ ( posedge clk )
         tickcount64 <= tickcount64 + 1;
-
-    OBUF led0_obuf(.O( gpio_led[0] ), .I( gpio_sw_south ^ gpio_sw_north ^ tickcount64[26] ));
-	OBUF led_ld1_obuf(.O(gpio_led[2]), .I(~led_pcie));
-    OBUF led_ld2_obuf(.O(gpio_led[1]), .I(~led_com));
-	
+    
+    OBUF led_ld0_obuf(.O( gpio_led[0] ), .I( gpio_sw_south ^ gpio_sw_north ^ tickcount64[26] ));
+    OBUF led_ld1_obuf(.O( gpio_led[2] ), .I( ~led_pcie ));
+    OBUF led_ld2_obuf(.O( gpio_led[1] ), .I( ~led_com ));
+    
     assign rst = gpio_sw_north | ((tickcount64 < 64) ? 1'b1 : 1'b0);
     assign ft601_rst_n = ~rst;
     
@@ -124,7 +132,8 @@ module pcileech_ac701_ft601_top #(
     ) i_pcileech_fifo (
         .clk                ( clk                   ),
         .rst                ( rst                   ),
-        .pcie_present       ( 1'b1                  ),
+        .rst_cfg_reload     ( 1'b0                  ),
+        .pcie_present       ( pcie_present          ),
         .pcie_perst_n       ( pcie_perst_n          ),
         // FIFO CTL <--> COM CTL
         .dcom               ( dcom_fifo.mp_fifo     ),

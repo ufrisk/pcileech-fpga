@@ -1,5 +1,5 @@
 #
-# Vivado generated .tcl for creating the pcileech_ac701_ft601 (ac701/ft601) vivado project.
+# Vivado generated .tcl for creating the pcileech_ac701_ft601 vivado project.
 # Run from within "Vivado Tcl Shell" with command: source vivado_generate_project.tcl -notrace
 #
 
@@ -67,16 +67,8 @@ if { $::argc > 0 } {
   }
 }
 
-# Check for paths and files needed for project creation
-set validate_required 0
-if { $validate_required } {
-  if { [checkRequiredFiles $origin_dir] } {
-    puts "Tcl file $script_file is valid. All files required for project creation is accesable. "
-  } else {
-    puts "Tcl file $script_file is not valid. Not all files required for project creation is accesable. "
-    return
-  }
-}
+# Set the directory path for the original project from where this script was exported
+set orig_proj_dir "[file normalize "$origin_dir/pcileech_ac701_ft601"]"
 
 # Create project
 create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7a200tfbg676-2
@@ -86,24 +78,25 @@ set proj_dir [get_property directory [current_project]]
 
 # Set project properties
 set obj [current_project]
+set_property -name "board_part" -value "xilinx.com:ac701:part0:1.4" -objects $obj
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
 set_property -name "enable_vhdl_2008" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
 set_property -name "ip_output_repo" -value "$proj_dir/${_xil_proj_name_}.cache/ip" -objects $obj
 set_property -name "mem.enable_memory_map_generation" -value "1" -objects $obj
-set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
+set_property -name "platform.board_id" -value "ac701" -objects $obj
 set_property -name "platform.description" -value "Vivado generated DSA" -objects $obj
 set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
-set_property -name "webtalk.activehdl_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.ies_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.modelsim_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.questa_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.riviera_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.vcs_export_sim" -value "27" -objects $obj
-set_property -name "webtalk.xcelium_export_sim" -value "4" -objects $obj
-set_property -name "webtalk.xsim_export_sim" -value "27" -objects $obj
+set_property -name "webtalk.activehdl_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.ies_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.modelsim_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.questa_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.riviera_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.vcs_export_sim" -value "2" -objects $obj
+set_property -name "webtalk.xcelium_export_sim" -value "1" -objects $obj
+set_property -name "webtalk.xsim_export_sim" -value "2" -objects $obj
 set_property -name "xpm_libraries" -value "XPM_CDC XPM_MEMORY" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
@@ -197,6 +190,25 @@ set imported_files [import_files -fileset sources_1 $files]
 # None
 # Set 'sources_1' fileset file properties for local files
 set file "bram_pcie_cfgspace/bram_pcie_cfgspace.xci"
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+
+# Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize "${origin_dir}/ip/clk_wiz.xci"]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+# Set 'sources_1' fileset file properties for remote files
+# None
+# Set 'sources_1' fileset file properties for local files
+set file "clk_wiz/clk_wiz.xci"
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
 set_property -name "registered_with_manager" -value "1" -objects $file_obj
@@ -456,25 +468,6 @@ if { ![get_property "is_locked" $file_obj] } {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/ip/clk_wiz.xci"]\
-]
-set imported_files [import_files -fileset sources_1 $files]
-# Set 'sources_1' fileset file properties for remote files
-# None
-# Set 'sources_1' fileset file properties for local files
-set file "clk_wiz/clk_wiz.xci"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
-set_property -name "registered_with_manager" -value "1" -objects $file_obj
-if { ![get_property "is_locked" $file_obj] } {
-  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
-}
-
-
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-# Import local files from the original project
-set files [list \
  [file normalize "${origin_dir}/ip/fifo_64_64.xci"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
@@ -599,11 +592,11 @@ set file_imported [import_files -fileset constrs_1 [list $file]]
 set file "src/pcileech_ac701_ft601.xdc"
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
-set_property -name "processing_order" -value "EARLY" -objects $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
-set_property -name "target_part" -value "xc7a200tfbg676-2" -objects $obj
+set_property -name "target_constrs_file" -value "$proj_dir/${_xil_proj_name_}.srcs/constrs_1/imports/src/pcileech_ac701_ft601.xdc" -objects $obj
+set_property -name "target_ucf" -value "$proj_dir/${_xil_proj_name_}.srcs/constrs_1/imports/src/pcileech_ac701_ft601.xdc" -objects $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -616,7 +609,6 @@ set obj [get_filesets sim_1]
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property -name "hbs.configure_design_for_hier_access" -value "1" -objects $obj
 set_property -name "top" -value "pcileech_ac701_ft601_top" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
@@ -632,10 +624,10 @@ set obj [get_filesets utils_1]
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
-    create_run -name synth_1 -part xc7a200tfbg676-2 -flow {Vivado Synthesis 2023} -strategy "Vivado Synthesis Defaults" -report_strategy {No Reports} -constrset constrs_1
+    create_run -name synth_1 -part xc7a200tfbg676-2 -flow {Vivado Synthesis 2017} -strategy "Vivado Synthesis Defaults" -report_strategy {No Reports} -constrset constrs_1
 } else {
   set_property strategy "Vivado Synthesis Defaults" [get_runs synth_1]
-  set_property flow "Vivado Synthesis 2023" [get_runs synth_1]
+  set_property flow "Vivado Synthesis 2017" [get_runs synth_1]
 }
 set obj [get_runs synth_1]
 set_property set_report_strategy_name 1 $obj
@@ -650,7 +642,6 @@ if { $obj != "" } {
 
 }
 set obj [get_runs synth_1]
-set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
 set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
 
 # set the current synth run
@@ -658,10 +649,10 @@ current_run -synthesis [get_runs synth_1]
 
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs -quiet impl_1] ""]} {
-    create_run -name impl_1 -part xc7a200tfbg676-2 -flow {Vivado Implementation 2023} -strategy "Vivado Implementation Defaults" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
+    create_run -name impl_1 -part xc7a200tfbg676-2 -flow {Vivado Implementation 2019} -strategy "Performance_ExtraTimingOpt" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
 } else {
-  set_property strategy "Vivado Implementation Defaults" [get_runs impl_1]
-  set_property flow "Vivado Implementation 2023" [get_runs impl_1]
+  set_property strategy "Performance_ExtraTimingOpt" [get_runs impl_1]
+  set_property flow "Vivado Implementation 2019" [get_runs impl_1]
 }
 set obj [get_runs impl_1]
 set_property set_report_strategy_name 1 $obj
@@ -864,11 +855,8 @@ set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
 set obj [get_runs impl_1]
-set_property -name "part" -value "xc7a200tfbg676-2" -objects $obj
-set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
+set_property -name "strategy" -value "Performance_ExtraTimingOpt" -objects $obj
 set_property -name "steps.phys_opt_design.is_enabled" -value "1" -objects $obj
-set_property -name "steps.post_route_phys_opt_design.is_enabled" -value "1" -objects $obj
-set_property -name "steps.post_route_phys_opt_design.args.directive" -value "AddRetime" -objects $obj
 set_property -name "steps.write_bitstream.args.bin_file" -value "1" -objects $obj
 set_property -name "steps.write_bitstream.args.readback_file" -value "0" -objects $obj
 set_property -name "steps.write_bitstream.args.verbose" -value "0" -objects $obj

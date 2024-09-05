@@ -124,4 +124,4 @@ v4.14
 
 v4.15
 * Bug fixes for PCIe x4 interface.
-* Download pre-built binary [here](https://mega.nz/file/UDYmEYZL#oiF3EvQymhMSwcu1D4JJH8v32vRvNg0_BYZ6GB6wVOw) SHA256: `7b99dc9fd91e8ecc6d97a72919745da2d58d977331cc7334dc0f899cbe93f896`
+* Download pre-built binary [here](https://mega.nz/file/EbpwHTKB#TIYE4UorBDvBEFG_Year-jC8UYz27sRNqJGfJxbKiOY) SHA256: `ea27d5588fdb2a8250bb30e35fda727d20441ec94b825cb6d473a608f25736e8`

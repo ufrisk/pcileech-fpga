@@ -234,8 +234,8 @@
         "CLKOUT6_SEQUENCE_NUMBER": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "CLKOUT7_SEQUENCE_NUMBER": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "USE_BOARD_FLOW": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
-        "CLK_IN1_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
-        "CLK_IN2_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
+        "CLK_IN1_BOARD_INTERFACE": [ { "value": "sys_diff_clock", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "CLK_IN2_BOARD_INTERFACE": [ { "value": "Custom", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "DIFF_CLK_IN1_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "DIFF_CLK_IN2_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "AUTO_PRIMITIVE": [ { "value": "MMCM", "resolve_type": "user", "usage": "all" } ],
@@ -584,7 +584,7 @@
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "artix7" } ],
-        "BASE_BOARD_PART": [ { "value": "" } ],
+        "BASE_BOARD_PART": [ { "value": "xilinx.com:ac701:part0:1.4" } ],
         "BOARD_CONNECTIONS": [ { "value": "" } ],
         "DEVICE": [ { "value": "xc7a200t" } ],
         "PACKAGE": [ { "value": "fbg676" } ],
@@ -604,7 +604,7 @@
         "OUTPUTDIR": [ { "value": "../../../../pcileech_ac701_ft601.gen/sources_1/ip/clk_wiz" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
-        "SWVERSION": [ { "value": "2023.2" } ],
+        "SWVERSION": [ { "value": "2023.2.2" } ],
         "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
       }
     },

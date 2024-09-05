@@ -179,7 +179,7 @@
         "OUTPUTDIR": [ { "value": "../../../../pcileech_ac701_ft601.gen/sources_1/ip/bram_pcie_cfgspace" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
-        "SWVERSION": [ { "value": "2023.2" } ],
+        "SWVERSION": [ { "value": "2023.2.2" } ],
         "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
       }
     },

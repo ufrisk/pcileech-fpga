@@ -382,7 +382,7 @@
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "artix7" } ],
-        "BASE_BOARD_PART": [ { "value": "" } ],
+        "BASE_BOARD_PART": [ { "value": "xilinx.com:ac701:part0:1.4" } ],
         "BOARD_CONNECTIONS": [ { "value": "" } ],
         "DEVICE": [ { "value": "xc7a200t" } ],
         "PACKAGE": [ { "value": "fbg676" } ],
@@ -400,7 +400,7 @@
         "OUTPUTDIR": [ { "value": "../../../../pcileech_ac701_ft601.gen/sources_1/ip/fifo_43_43_clk2" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
-        "SWVERSION": [ { "value": "2023.2" } ],
+        "SWVERSION": [ { "value": "2023.2.2" } ],
         "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
       }
     },
