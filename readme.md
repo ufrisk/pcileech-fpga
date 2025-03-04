@@ -17,9 +17,6 @@ PCILeech currently supports multiple FPGA based devices with most recent firmwar
 | [ZDMA](ZDMA)                               | Thunderbolt3 | 1000 MB/s      | 4.17    | XC7A100T-484 | PCIe gen2 x4    | [💖](https://lightningz.net/)       |
 | [GBOX](GBOX)                               | Thunderbolt3 | 220+ MB/s      | 4.15    | XC7A35T-484  | PCIe gen2 x1-x4 | [💖](https://lightningz.net/)       |
 | [LeetDMA](https://enigma-x1.com/)          | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://enigma-x1.com/)         |
-| [CaptainDMA M2](CaptainDMA)                | USB-C        | 190 MB/s       | 4.15    | XC7A35T-325  | PCIe gen2 x1-x4 | [💖](https://www.captaindma.com/)    |
-| [CaptainDMA 4.1th](CaptainDMA)             | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://www.captaindma.com/)    |
-| [CaptainDMA 75T](CaptainDMA)               | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1    | [💖](https://www.captaindma.com/)    |
 | [Enigma X1](EnigmaX1)                      | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1    | [💖](https://enigma-x1.com/)         |
 | [ScreamerM2](ScreamerM2)                   | USB3/USB-C   | 190 MB/s       | 4.14    | XC7A35T-325  | PCIe gen2 x4*   | [💖](https://shop.lambdaconcept.com) |
 | [AC701/FT601](ac701_ft601)                 | USB3         | 190 MB/s       | 4.15    | XC7A200T-676 | PCIe gen2 x4    |                                      |
@@ -40,15 +37,12 @@ Thank You [LambdaConcept](https://shop.lambdaconcept.com),  [Enigma-X1](https://
 
 **The images below depicts:**
 * Top row: LambdaConcept Screamer PCIe Squirrel and ZDMA.
-* Middle row: CaptainDMA M2, CaptainDMA 75T and LeetDMA.
-* Bottom row: NeTV2, SP605 and AC701.
+* Bottom row: LeetDMA, SP605 and AC701.
 
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/19ae5834c61f267bfe440cb2a3b2894633078d0a/sqr-1.jpg" height="280"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/65984ae014a8caa659c2e297dbb77c6c67c0889a/zdma-250.jpg" height="280"/>
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_m2_2.png" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_75t.png" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/5d214db54bcba428690007d8705ed6b4012b15d5/leet-1.jpg" height="200"/>
-
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_sp605_front_x200.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_ac701_front_x200.jpg" height="200"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/5d214db54bcba428690007d8705ed6b4012b15d5/leet-1.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_sp605_front_x200.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_ac701_front_x200.jpg" height="200"/>
 
 
 
