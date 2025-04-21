@@ -44,6 +44,8 @@ To flash: Follow the flash instructions of the PCIeSquirrel [here](https://githu
 
 ## CaptainDMA 100T
 
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/94a0e66d31a1d7ece571767dd3e8a9e1e3ad5943/captaindma_100t.png" height="300"/>
+
 CaptainDMA 100T is a standard PCIe board which is ideal when targeting desktop PCs with PCILeech. The Artix7 100T FPGA chip allows for the most advanced firmware projects for which the 75T may not be powerful enough. The CaptainDMA 100T provides a very good speed. The CaptainDMA 100T also offers an integrated update port for easy re-flashing and an on/off switch which allows the device to be powered off without removing it from the computer.
 
 To flash: Download the [CH347 FPGA Tool](https://github.com/WCHSoftGroup/ch347/releases/tag/CH347_OpenOCD_Release) and the firmware below. Start the WCH347 fpga flash tool as elevated admin and flash. Drivers for WCH347 may also have to be installed.
