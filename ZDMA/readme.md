@@ -19,7 +19,7 @@ For information about other supported FPGA based devices please check out [PCILe
 
 The Hardware: LightingZDMA
 ========================
-The LightingZDMA PCIe gen2 x4 board contains a powerful Artix7 100T FPGA which allows for good performance and also interesting applications besides PCILeech/MemProcFS. The LightingZDMA may be purchased from: [lightingz.store](https://lightningz.net/). For more information about the hardware please check out [lightingz.store](https://lightningz.net/). Please note that the LightingZDMA is sold by a 3rd party and not by the PCILeech project itself!
+The LightingZDMA PCIe gen2 x4 board contains a powerful Artix7 100T FPGA which allows for good performance and also interesting applications besides PCILeech/MemProcFS. The LightingZDMA may be purchased from: [lightningz.net](https://lightningz.net/). For more information about the hardware please check out [lightningz.net](https://lightningz.net/). Please note that the LightingZDMA is sold by a 3rd party and not by the PCILeech project itself!
 
 The picture below depicts an LightingZDMA. The ZDMA contains a Thunderbolt port for data transfer and an update port for easy updating without the need for additional hardware.
 
