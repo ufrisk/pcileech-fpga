@@ -1,6 +1,6 @@
 GBOX - PCIe to PCIe over OCuLink:
 =================================
-This project contains software and HDL code for the [GBOX device](https://lightingz.store/).
+This project contains software and HDL code for the [GBOX device](https://lightningz.net/).
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
@@ -19,7 +19,7 @@ For information about other supported FPGA based devices please check out [PCILe
 
 The Hardware: GBOX
 ==================
-The GBOX PCIe gen2 x1-x4 hardware contains an Artix7 35T FPGA which allows for good performance and also interesting applications besides PCILeech/MemProcFS. The GBOX may be purchased from: [lightingz.store](https://lightingz.store/). For more information about the hardware please check out [lightingz.store](https://lightingz.store/). Please note that the GBOX is sold by a 3rd party and not by the PCILeech project itself!
+The GBOX PCIe gen2 x1-x4 hardware contains an Artix7 35T FPGA which allows for good performance and also interesting applications besides PCILeech/MemProcFS. The GBOX may be purchased from: [lightningz.net](https://lightningz.net/). For more information about the hardware please check out [lightningz.net](https://lightningz.net/). Please note that the GBOX is sold by a 3rd party and not by the PCILeech project itself!
 
 The GBOX contains a two OCuLink PCIe ports for data transfer and an update port for easy updating without the need for additional hardware.
 
