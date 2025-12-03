@@ -4,7 +4,7 @@ This project contains software and HDL code for the [Screamer PCIe Squirrel PCIe
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
-> :warning: **3rd party boards** not listed on this Github may not always be compatible with the firmware. It would depend on the 3rd party hardware vendor. No support can be given on 3rd party boards not mentioned on this Github. **If you purchase a 3rd party board please consider [sponsoring](https://github.com/sponsors/ufrisk)** this project with a small sum since the 3rd party vendor does not.
+> :warning: **3rd party boards** not listed on this Github may not always be compatible with the firmware. It would depend on the 3rd party hardware vendor. No support can be given on 3rd party boards not mentioned on this Github.
 
 
 Capabilities:
@@ -52,14 +52,7 @@ Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
 
-
-Support PCILeech/MemProcFS development:
-=======================================
 **Thank You [LambdaConcept](https://lambdaconcept.com/) for sponsoring the PCILeech project :sparkling_heart:**
-
-Some other hardware sellers have chosen not to support the project! If you think PCILeech and/or MemProcFS is awesome or if you had a use for it it's now also possible to support the project via Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk).
- 
-To all my sponsors, Thank You :sparkling_heart:
 
 
 Releases / Version History:

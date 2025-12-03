@@ -64,13 +64,3 @@ PCILeech also supports multiple FPGA based devices that may not have the most re
 | [SP605/FT601](sp605_ft601)             | USB3        | 75 MB/s        | 2.2     | PCIe gen1 x1  |
 | [Acorn/FT2232H](acorn_ft2232h)         | USB2        | 25 MB/s        | 4.9     | PCIe gen2 x4* |
 | [NeTV2](NeTV2)                         | UDP/IP      | 7 MB/s         | 4.12    | PCIe gen2 x4* |
-
-
-
-Support PCILeech/MemProcFS development:
-=======================================
-PCILeech and MemProcFS are hobby projects of mine. I put a lot of time and energy into my projects. The time being most of my spare time. If you think PCILeech and/or MemProcFS are awesome tools and/or if you had a use for them it's now possible to contribute.
-
- - Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk)
- 
-To all my sponsors, Thank You :sparkling_heart:

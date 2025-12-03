@@ -78,14 +78,7 @@ Other Notes:
 ============
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
 
-
-Support PCILeech/MemProcFS development:
-=======================================
 **Thank You LightingZDMA for supporting the PCILeech project :sparkling_heart:**
-
-Some other hardware sellers have chosen not to support the project! If you think PCILeech and/or MemProcFS is awesome or if you had a use for it it's now possible to support the project via Github Sponsors: [`https://github.com/sponsors/ufrisk`](https://github.com/sponsors/ufrisk).
-
-To all my sponsors, Thank You :sparkling_heart:
 
 
 Releases / Version History:
