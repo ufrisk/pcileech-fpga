@@ -1,6 +1,6 @@
 PCIeScreamerR04 and ScreamerM2:
 =================
-This project contains software and HDL code for the [PCIeScreamerR04 PCIe board](https://shop.lambdaconcept.com) and the [ScreamerM2 FPGA M.2. board](https://shop.lambdaconcept.com).
+This project contains software and HDL code for the PCIeScreamerR04 PCIe board and the ScreamerM2 FPGA M.2. board.
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
 
@@ -21,7 +21,7 @@ For information about other supported FPGA based devices please check out [PCILe
 
 The Hardware: ScreamerM2
 ========================
-LambdaConcept ScreamerM2 M.2 Key M board. ([LambdaConcept](http://shop.lambdaconcept.com))
+LambdaConcept ScreamerM2 M.2 Key M board.
 
 For more information about the hardware, and alternative software, [LambdaConcept ScreamerM2 Wiki](http://docs.lambdaconcept.com/screamer/index.html).
 
@@ -66,8 +66,6 @@ The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on th
 Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
-
-**Thank You [LambdaConcept](https://shop.lambdaconcept.com/) for sponsoring the PCILeech project :sparkling_heart:**
 
 
 Releases / Version History:
