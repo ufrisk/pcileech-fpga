@@ -1,10 +1,8 @@
 Screamer PCIe Squirrel:
 =================
-This project contains software and HDL code for the [Screamer PCIe Squirrel PCIe board](https://shop.lambdaconcept.com).
+This project contains software and HDL code for the Screamer PCIe Squirrel PCIe board.
 
 Once flashed it may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) or [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/) to perform DMA attacks, dump memory or perform research.
-
-> :warning: **3rd party boards** not listed on this Github may not always be compatible with the firmware. It would depend on the 3rd party hardware vendor. No support can be given on 3rd party boards not mentioned on this Github.
 
 
 Capabilities:
@@ -21,7 +19,7 @@ For information about other supported FPGA based devices please check out [PCILe
 
 The Hardware: Screamer PCIe Squirrel
 ========================
-LambdaConcept PCIe Screamer Squirrel. ([LambdaConcept](http://shop.lambdaconcept.com))
+LambdaConcept PCIe Screamer Squirrel.
 
 For more information about the hardware, and alternative software, [LambdaConcept PCIe Screamer Squirrel Wiki](http://docs.lambdaconcept.com/screamer/index.html).
 
@@ -51,8 +49,6 @@ The PCIe device will show as Xilinx Ethernet Adapter with Device ID 0x0666 on th
 Other Notes:
 =================
 The completed solution contains Xilinx proprietary IP cores licensed under the Xilinx CORE LICENSE AGREEMENT. This project as-is published on Github contains no Xilinx proprietary IP. Published source code are licensed under the MIT License. The end user that have downloaded the no-charge Vivado WebPACK from Xilinx will have the proper licenses and will be able to re-generate Xilinx proprietary IP cores by running the build detailed above.
-
-**Thank You [LambdaConcept](https://lambdaconcept.com/) for sponsoring the PCILeech project :sparkling_heart:**
 
 
 Releases / Version History:
