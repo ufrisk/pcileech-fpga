@@ -1,8 +1,7 @@
 PCILeech FPGA Summary:
 =================
 PCILeech FPGA contains software and HDL code for FPGA based devices that may be used together with the [PCILeech Direct Memory Access (DMA) Attack Toolkit](https://github.com/ufrisk/pcileech/) and [MemProcFS - The Memory Process File System](https://github.com/ufrisk/MemProcFS/).
-FPGA based hardware provides full access to 64-bit memory space without having to rely on a kernel module running on the target system. 
-FPGA based devices may also send raw PCIe Transaction Layer Packets TLPs - allowing for more specialized research.
+FPGA based hardware provides full access to 64-bit memory space and may also send raw PCIe Transaction Layer Packets TLPs - allowing for more specialized research.
 
 
 
@@ -36,14 +35,14 @@ Check out the individual FPGA projects in the table above for more information a
 Thank You [CaptainDMA](https://captaindma.com/), [LightingZ](https://lightningz.net/) and [Enigma-X1](https://enigma-x1.com/) for supporting the PCILeech and MemProcFS projects 💖
 
 **The images below depicts:**
-* Top row: LambdaConcept Screamer PCIe Squirrel and ZDMA.
-* Middle row: CaptainDMA M2, CaptainDMA 100T and LeetDMA.
+* Top row: CaptainDMA 100T and ZDMA.
+* Middle row: CaptainDMA M2 and LeetDMA.
 * Bottom row: NeTV2, SP605 and AC701.
 
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/19ae5834c61f267bfe440cb2a3b2894633078d0a/sqr-1.jpg" height="280"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/94a0e66d31a1d7ece571767dd3e8a9e1e3ad5943/captaindma_100t.png" height="280"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/65984ae014a8caa659c2e297dbb77c6c67c0889a/zdma-250.jpg" height="280"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/94a0e66d31a1d7ece571767dd3e8a9e1e3ad5943/captaindma_100t.png" height="250"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/65984ae014a8caa659c2e297dbb77c6c67c0889a/zdma-250.jpg" height="250"/>
 
-<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_m2_2.png" height="180"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/94a0e66d31a1d7ece571767dd3e8a9e1e3ad5943/captaindma_100t.png" height="180"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/5d214db54bcba428690007d8705ed6b4012b15d5/leet-1.jpg" height="180"/>
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/91288318c4824ba73a25bb1320b7b970dab9a243/captaindma_m2_2.png" height="180"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/5d214db54bcba428690007d8705ed6b4012b15d5/leet-1.jpg" height="180"/>
 
 <img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/2032adf8761dfdfc8bad86b08c2385b2497070be/_gh_netv2_1.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_sp605_front_x200.jpg" height="200"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/66612319445e565edd215d6a1d9f4d84f1e845e7/_gh_ac701_front_x200.jpg" height="200"/>
 
