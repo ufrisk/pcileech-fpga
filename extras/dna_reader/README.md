@@ -123,13 +123,24 @@ Host PC                    FPGA
 3. Synthesize and implement
 4. Generate bitstream
 
-**Host Tool:**
+**Host Tool (Windows with Visual Studio 2022):**
 
-```bash
-cd ../dna_reader
-# Compile with PCILeech library
-g++ xilinx_dna_final.cpp -o xilinx_dna_final -lpcileech
-```
+The host communication program is intentionally minimal - a single C++ file (`xilinx_dna_final.cpp`) that can be easily compiled with Visual Studio 2022.
+
+**Visual Studio 2022 Compilation:**
+
+1. Create a new **Console App** project in Visual Studio 2022
+2. Add `xilinx_dna_final.cpp` to the project
+3. Configure project settings:
+   - Set **Configuration Type** to `Application (.exe)`
+   - Add PCILeech library include paths and linker dependencies
+4. Build the project to generate `xilinx_dna_final.exe`
+
+**Minimal Program Design:**
+- The entire program fits in one C++ file for simplicity
+- No complex dependencies beyond PCILeech library
+- Direct register access for maximum efficiency
+- Lightweight and easy to integrate into existing projects
 
 ---
 
@@ -252,13 +263,24 @@ DNA = 000000110010010011001000000100101110111000011011010000101100 (0x00624c812e
 3. 综合和实现
 4. 生成比特流
 
-**上位机工具：**
+**上位机工具（Windows + Visual Studio 2022）：**
 
-```bash
-cd ../dna_reader
-# 使用 PCILeech 库编译
-g++ xilinx_dna_final.cpp -o xilinx_dna_final -lpcileech
-```
+上位机通讯程序设计得非常精简 - 仅一个 C++ 文件 (`xilinx_dna_final.cpp`)，可使用 Visual Studio 2022 轻松编译。
+
+**Visual Studio 2022 编译步骤：**
+
+1. 在 Visual Studio 2022 中创建新的 **控制台应用** 项目
+2. 将 `xilinx_dna_final.cpp` 添加到项目中
+3. 配置项目设置：
+   - 设置 **配置类型** 为 `应用程序 (.exe)`
+   - 添加 PCILeech 库的包含路径和链接器依赖项
+4. 构建项目生成 `xilinx_dna_final.exe`
+
+**精简程序设计特点：**
+- 整个程序仅一个 C++ 文件，简洁明了
+- 除 PCILeech 库外无复杂依赖
+- 直接寄存器访问，效率最大化
+- 轻量级，易于集成到现有项目中
 
 ### 参考资料
 
