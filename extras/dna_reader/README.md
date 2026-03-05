@@ -78,7 +78,7 @@ The DNA value is available immediately after FPGA configuration and remains stab
 
 #### 3. xilinx_dna_final.cpp - Host Communication Tool
 
-The host-side application reads DNA values from the FPGA through PCILeech's register interface.
+The host-side application reads DNA values from the FPGA through fpga's register interface.
 
 **Usage:**
 
@@ -133,14 +133,18 @@ The host communication program is intentionally minimal - a single C++ file (`xi
 2. Add `xilinx_dna_final.cpp` to the project
 3. Configure project settings:
    - Set **Configuration Type** to `Application (.exe)`
-   - Add PCILeech library include paths and linker dependencies
 4. Build the project to generate `xilinx_dna_final.exe`
 
 **Minimal Program Design:**
 - The entire program fits in one C++ file for simplicity
-- No complex dependencies beyond PCILeech library
-- Direct register access for maximum efficiency
+- No complex dependencies - only requires FTD3XX.dll at runtime
+- Direct USB communication via FTD3XX library for maximum efficiency
 - Lightweight and easy to integrate into existing projects
+
+**Runtime Requirements:**
+- FTD3XX.dll must be available in the same directory or system PATH
+- Compatible with FTDI FT60x/FT601 USB 3.0 controllers
+- No PCILeech library dependency - pure FTD3XX-based communication
 
 ---
 
@@ -218,7 +222,7 @@ DNA 值在 FPGA 配置后立即可用且保持稳定。
 
 #### 3. xilinx_dna_final.cpp - 上位机通讯工具
 
-上位机应用程序通过 PCILeech 的寄存器接口从 FPGA 读取 DNA 值。
+上位机应用程序通过寄存器接口从 FPGA 读取 DNA 值。
 
 **使用方法：**
 
@@ -273,14 +277,18 @@ DNA = 000000110010010011001000000100101110111000011011010000101100 (0x00624c812e
 2. 将 `xilinx_dna_final.cpp` 添加到项目中
 3. 配置项目设置：
    - 设置 **配置类型** 为 `应用程序 (.exe)`
-   - 添加 PCILeech 库的包含路径和链接器依赖项
 4. 构建项目生成 `xilinx_dna_final.exe`
 
 **精简程序设计特点：**
 - 整个程序仅一个 C++ 文件，简洁明了
-- 除 PCILeech 库外无复杂依赖
-- 直接寄存器访问，效率最大化
+- 无复杂依赖 - 仅需运行时 FTD3XX.dll
+- 通过 FTD3XX 库直接进行 USB 通信，效率最大化
 - 轻量级，易于集成到现有项目中
+
+**运行时要求：**
+- FTD3XX.dll 必须位于相同目录或系统 PATH 中
+- 兼容 FTDI FT60x/FT601 USB 3.0 控制器
+- 无需 PCILeech 库 - 纯 FTD3XX 通信
 
 ### 参考资料
 
