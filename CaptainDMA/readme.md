@@ -52,6 +52,22 @@ To flash: Download the [CH347 FPGA Tool](https://github.com/WCHSoftGroup/ch347/r
 
 
 
+## CaptainDMA M2 100T
+
+<img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/457e517f28f3dacb702435bf9a247de79fe3bcf7/captaindma_m2_100t_1.jpg" height="215"/><img src="https://gist.githubusercontent.com/ufrisk/c5ba7b360335a13bbac2515e5e7bb9d7/raw/457e517f28f3dacb702435bf9a247de79fe3bcf7/captaindma_m2_100t_2.jpg" height="215"/>
+
+CaptainDMA M2 100T is a M2 key M device based on Artix7 100T. The much more powerful Artix7 100T FPGA, compared to the CaptainDMA M2, allows for the most advanced firmware projects.
+
+The CaptainDMA M2 100T is ideal when Thunderbolt is targeted together with the CaptainDMA 100T Thunderbolt enclosure; or when targeting NVMe slots in desktop computers. The CaptainDMA M2 100T is slightly oversized and if used in a laptop NVMe setting (without Thunderbolt) it's recommended to ensure it will fit.
+
+To flash the CaptainDMA M2 100T you'd require a separate M2-FW flash module. It's recommended to use the CaptainDMA M2 flash module. Note that the direction of the flash module is different from the CaptainDMA M2.
+
+To flash: Download the [CH347 FPGA Tool](https://github.com/WCHSoftGroup/ch347/releases/tag/CH347_OpenOCD_Release) and the firmware below. Start the WCH347 fpga flash tool as elevated admin and flash. Drivers for WCH347 may also have to be installed.
+
+The firmware fully compatible with the firmware of the full sized CaptainDMA 100T PCI Express device pictured above.
+
+
+
 ## Firmware
 
 Find firmware for the different CaptainDMA devices below. Make sure you download the firmware for the correct device, otherwise it will not work. Note that the CaptainDMA M2 x4 device have version 4.15 since it contains a bug fix applicable to x4 devices only. The other devices have version 4.14.
@@ -65,3 +81,4 @@ Note that the below firmware is the default PCILeech firmware. It's meant for se
 | [CaptainDMA 75T](https://mega.nz/file/YLgU3ZbB#ZQbaMbv-Evus2jF6NDJ8I0-tVrNudiwmq5QFuAsC9Ps)   | 4.14             | ef6e737fbabd08948dae52e9dfe4811f6792739e5827a308275648adabef85ab | [75t484_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/75t484_x1) |
 | [CaptainDMA 4.1th](https://mega.nz/file/9PpSmBqR#Mphh6YcmGqz8tiKySOAOvJeLaLlMN7L_7enoMxWbENw) | 4.14             | 0c4e997c1212187dc74954cb2ff2b24ce2397831e6662b942ffba62f9077c503 | [35t484_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/35t484_x1) |
 | [CaptainDMA 100T](https://mega.nz/file/Va5BRI6T#Xq9DEiKnRGlwURAIwsyEW8CtjMoX_3AkHyRt6UhOmes)  | 4.14             | 14693f8cd4a3383bf3b292870fa345f31c01009751a48242af31d27729466b89 | [100t484_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/100t484_x1) |
+| [CaptainDMA&nbsp;100T&nbsp;M2](https://mega.nz/file/Va5BRI6T#Xq9DEiKnRGlwURAIwsyEW8CtjMoX_3AkHyRt6UhOmes)  | 4.14             | 14693f8cd4a3383bf3b292870fa345f31c01009751a48242af31d27729466b89 | [100t484_x1](https://github.com/ufrisk/pcileech-fpga-dev/tree/master/CaptainDMA/100t484_x1) |
