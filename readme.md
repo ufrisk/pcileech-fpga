@@ -14,7 +14,7 @@ PCILeech currently supports multiple FPGA based devices with most recent firmwar
 | [ZDMA](ZDMA)                               | Thunderbolt3 | 1000 MB/s      | 4.17    | XC7A100T-484 | PCIe gen2 x4    | [💖](https://lightningz.net/)       |
 | [GBOX](GBOX)                               | Thunderbolt3 | 220+ MB/s      | 4.15    | XC7A35T-484  | PCIe gen2 x1-x4 | [💖](https://lightningz.net/)       |
 | [CaptainDMA M2](CaptainDMA)                | USB-C        | 190 MB/s       | 4.15    | XC7A35T-325  | PCIe gen2 x1-x4 | [💖](https://www.captaindma.com/)   |
-| [CaptainDMA M2 100T](CaptainDMA)           | USB-C        | 220 MB/s       | 4.14    | XC7A100T-484 | PCIe gen2 x1    | [💖](https://www.captaindma.com/)   |
+| [CaptainDMA&nbsp;M2&nbsp;100T](CaptainDMA) | USB-C        | 220 MB/s       | 4.14    | XC7A100T-484 | PCIe gen2 x1    | [💖](https://www.captaindma.com/)   |
 | [CaptainDMA 4.1th](CaptainDMA)             | USB-C        | 190 MB/s       | 4.14    | XC7A35T-484  | PCIe gen2 x1    | [💖](https://www.captaindma.com/)   |
 | [CaptainDMA 75T](CaptainDMA)               | USB-C        | 200 MB/s       | 4.14    | XC7A75T-484  | PCIe gen2 x1    | [💖](https://www.captaindma.com/)   |
 | [CaptainDMA 100T](CaptainDMA)              | USB-C        | 220 MB/s       | 4.14    | XC7A100T-484 | PCIe gen2 x1    | [💖](https://www.captaindma.com/)   |
