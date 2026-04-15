@@ -595,7 +595,7 @@ module pcileech_tlps128_bar_rdengine(
     wire [11:0] rd_rsp_bc       = rd_rsp_ctx[85:74];
     wire [15:0] rd_rsp_reqid    = rd_rsp_ctx[47:32];
     wire [7:0]  rd_rsp_tag      = rd_rsp_ctx[55:48];
-    wire [6:0]  rd_rsp_lowaddr  = rd_rsp_ctx[6:0];
+    wire [6:0]  rd_rsp_lowaddr  = rd_rsp_first ? rd_rsp_ctx[6:0] : 7'b0;      // only first completion carries original lower addr (PCIe spec)
     wire [31:0] rd_rsp_addr     = rd_rsp_ctx[31:0];
     wire [31:0] rd_rsp_data_bs  = { rd_rsp_data[7:0], rd_rsp_data[15:8], rd_rsp_data[23:16], rd_rsp_data[31:24] };
     

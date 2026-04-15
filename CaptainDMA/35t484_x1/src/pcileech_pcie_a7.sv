@@ -104,7 +104,7 @@ module pcileech_pcie_a7(
     );
     
     pcileech_tlps128_dst64 i_pcileech_tlps128_dst64(
-        .rst                        ( rst                       ),
+        .rst                        ( rst_subsys                ),
         .clk_pcie                   ( clk_pcie                  ),
         .tlp_tx                     ( tlp_tx.source             ),
         .tlps_in                    ( tlps_tx.sink              )
