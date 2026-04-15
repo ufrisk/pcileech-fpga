@@ -38,11 +38,6 @@ module pcileech_pcie_cfg_a7(
     wire            in_empty;
     wire            in_valid;
     
-    reg [63:0]      in_data64;
-    wire [31:0]     in_data32   = in_data64[63:32];
-    wire [15:0]     in_data16   = in_data64[31:16];
-    wire [3:0]      in_type     = in_data64[15:12];
-	
     fifo_64_64 i_fifo_pcie_cfg_tx(
         .rst            ( rst                   ),
         .wr_clk         ( clk_sys               ),
