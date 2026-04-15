@@ -273,7 +273,7 @@ module pcileech_pcie_cfg_a7(
     assign ctx.pl_transmit_hot_rst          = rw[183];
     assign ctx.pl_downstream_deemph_source  = rw[184];
     
-    assign ctx.cfg_interrupt_di             = rw[199:192];
+    assign ctx.cfg_interrupt_di             = cfg_interrupt_do;  // use host-programmed MSI data
     assign ctx.cfg_pciecap_interrupt_msgnum = rw[204:200];
     assign ctx.cfg_interrupt_assert         = rw[205];
     assign ctx.cfg_interrupt                = rw[206] | intr_req;
