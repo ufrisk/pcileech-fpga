@@ -15,7 +15,7 @@ module pcileech_pcie_tlp_a7(
     input                   clk_pcie,
     input                   clk_sys,
     IfPCIeFifoTlp.mp_pcie   dfifo,
-    
+
     // PCIe core receive/transmit data
     IfAXIS128.source        tlps_tx,
     IfAXIS128.sink_lite     tlps_rx,
@@ -23,22 +23,61 @@ module pcileech_pcie_tlp_a7(
     IfShadow2Fifo.shadow    dshadow2fifo,
     input [15:0]            pcie_id
     );
-    
+
     IfAXIS128 tlps_bar_rsp();
     IfAXIS128 tlps_cfg_rsp();
-    
+
+    // HDA MSI interrupt signals
+    wire        hda_cfg_interrupt;
+    wire        hda_cfg_interrupt_assert;
+    wire [7:0]  hda_cfg_interrupt_di;
+    wire        hda_cfg_interrupt_rdy;
+    wire        hda_cfg_interrupt_msienable;
+    wire        hda_cfg_interrupt_msixenable;
+
+    // Convert HDA MSI cfg_interrupt signals to FIFO format for transmission.
+    // The FPGA config module handles the actual MSI TLP generation.
+    reg [63:0] hda_msi_fifo_data;
+    reg        hda_msi_fifo_valid;
+    wire       hda_msi_fifo_ready;
+
+    always @(posedge clk_pcie) begin
+        if (rst) begin
+            hda_msi_fifo_valid <= 1'b0;
+            hda_msi_fifo_data  <= 64'h0;
+        end else if (hda_cfg_interrupt && hda_cfg_interrupt_assert && !hda_msi_fifo_valid) begin
+            // Capture MSI interrupt request: type (4 bits) + data (8 bits) + padding
+            hda_msi_fifo_valid <= 1'b1;
+            hda_msi_fifo_data  <= {56'h0, hda_cfg_interrupt_di};
+        end else if (hda_msi_fifo_ready && hda_msi_fifo_valid) begin
+            hda_msi_fifo_valid <= 1'b0;
+        end
+    end
+
+    // Drive cfg_interrupt status back to BAR controller
+    assign hda_cfg_interrupt_rdy = 1'b1;  // Always ready to accept interrupt requests
+    assign hda_cfg_interrupt_msienable = 1'b1;  // Assume MSI enabled (device has MSI cap)
+    assign hda_cfg_interrupt_msixenable = 1'b0;  // MSI-X not used for HDA
+
     // ------------------------------------------------------------------------
     // Convert received TLPs from PCIe core and transmit onwards:
     // ------------------------------------------------------------------------
     IfAXIS128 tlps_filtered();
-    
+
     pcileech_tlps128_bar_controller i_pcileech_tlps128_bar_controller(
         .rst            ( rst                           ),
         .clk            ( clk_pcie                      ),
         .bar_en         ( dshadow2fifo.bar_en           ),
         .pcie_id        ( pcie_id                       ),
         .tlps_in        ( tlps_rx                       ),
-        .tlps_out       ( tlps_bar_rsp.source           )
+        .tlps_out       ( tlps_bar_rsp.source           ),
+        // HDA MSI interrupt signals
+        .cfg_interrupt          ( hda_cfg_interrupt          ),
+        .cfg_interrupt_assert   ( hda_cfg_interrupt_assert   ),
+        .cfg_interrupt_di       ( hda_cfg_interrupt_di       ),
+        .cfg_interrupt_rdy      ( hda_cfg_interrupt_rdy      ),
+        .cfg_interrupt_msienable( hda_cfg_interrupt_msienable),
+        .cfg_interrupt_msixenable( hda_cfg_interrupt_msixenable )
     );
     
     pcileech_tlps128_cfgspace_shadow i_pcileech_tlps128_cfgspace_shadow(
