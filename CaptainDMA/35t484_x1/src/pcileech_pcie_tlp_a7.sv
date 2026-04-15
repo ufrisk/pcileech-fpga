@@ -21,24 +21,31 @@ module pcileech_pcie_tlp_a7(
     IfAXIS128.sink_lite     tlps_rx,
     IfAXIS128.sink          tlps_static,
     IfShadow2Fifo.shadow    dshadow2fifo,
-    input [15:0]            pcie_id
+    input [15:0]            pcie_id,
+    // HDA MSI interrupt
+    output                  cfg_interrupt,
+    output                  cfg_interrupt_assert,
+    output [7:0]            cfg_interrupt_di
     );
-    
+
     IfAXIS128 tlps_bar_rsp();
     IfAXIS128 tlps_cfg_rsp();
-    
+
     // ------------------------------------------------------------------------
     // Convert received TLPs from PCIe core and transmit onwards:
     // ------------------------------------------------------------------------
     IfAXIS128 tlps_filtered();
-    
+
     pcileech_tlps128_bar_controller i_pcileech_tlps128_bar_controller(
-        .rst            ( rst                           ),
-        .clk            ( clk_pcie                      ),
-        .bar_en         ( dshadow2fifo.bar_en           ),
-        .pcie_id        ( pcie_id                       ),
-        .tlps_in        ( tlps_rx                       ),
-        .tlps_out       ( tlps_bar_rsp.source           )
+        .rst                ( rst                           ),
+        .clk                ( clk_pcie                      ),
+        .bar_en             ( dshadow2fifo.bar_en           ),
+        .pcie_id            ( pcie_id                       ),
+        .tlps_in            ( tlps_rx                       ),
+        .tlps_out           ( tlps_bar_rsp.source           ),
+        .cfg_interrupt      ( cfg_interrupt                 ),
+        .cfg_interrupt_assert( cfg_interrupt_assert         ),
+        .cfg_interrupt_di   ( cfg_interrupt_di              )
     );
     
     pcileech_tlps128_cfgspace_shadow i_pcileech_tlps128_cfgspace_shadow(

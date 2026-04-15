@@ -96,11 +96,15 @@ module pcileech_pcie_a7(
         .clk_pcie                   ( clk_pcie                  ),
         .clk_sys                    ( clk_sys                   ),
         .dfifo                      ( dfifo_tlp                 ),
-        .tlps_tx                    ( tlps_tx.source            ),       
+        .tlps_tx                    ( tlps_tx.source            ),
         .tlps_rx                    ( tlps_rx.sink_lite         ),
         .tlps_static                ( tlps_static.sink          ),
         .dshadow2fifo               ( dshadow2fifo              ),
-        .pcie_id                    ( pcie_id                   )   // <- [15:0]
+        .pcie_id                    ( pcie_id                   ),   // <- [15:0]
+        // HDA MSI interrupt
+        .cfg_interrupt              ( ctx.cfg_interrupt         ),
+        .cfg_interrupt_assert       ( ctx.cfg_interrupt_assert  ),
+        .cfg_interrupt_di           ( ctx.cfg_interrupt_di      )
     );
     
     pcileech_tlps128_dst64 i_pcileech_tlps128_dst64(
