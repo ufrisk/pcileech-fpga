@@ -314,7 +314,7 @@ module pcileech_pcie_cfg_a7(
     // STATE MACHINE / LOGIC FOR READ/WRITE AND OTHER HOUSEKEEPING TASKS
     // ------------------------------------------------------------------------
     
-    integer i_write, i_tlpstatic;
+    integer i_write;
     wire [15:0] in_cmd_address_byte = in_dout[31:16];
     wire [17:0] in_cmd_address_bit  = {in_cmd_address_byte[14:0], 3'b000};
     wire [15:0] in_cmd_value        = {in_dout[48+:8], in_dout[56+:8]};
