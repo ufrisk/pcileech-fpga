@@ -17,7 +17,8 @@ module pcileech_pcie_cfg_a7(
     IfPCIeFifoCfg.mp_pcie   dfifo,
     IfPCIeSignals.mpm       ctx,
     IfAXIS128.source        tlps_static,
-    output [15:0]           pcie_id
+    output [15:0]           pcie_id,
+    input                   intr_req
     );
 
     // ----------------------------------------------------
@@ -280,7 +281,7 @@ module pcileech_pcie_cfg_a7(
     assign ctx.cfg_interrupt_di             = rw[199:192];
     assign ctx.cfg_pciecap_interrupt_msgnum = rw[204:200];
     assign ctx.cfg_interrupt_assert         = rw[205];
-    assign ctx.cfg_interrupt                = rw[206];
+    assign ctx.cfg_interrupt                = rw[206] | intr_req;
     assign ctx.cfg_interrupt_stat           = rw[207];
 
     assign ctx.cfg_pm_force_state           = rw[209:208];

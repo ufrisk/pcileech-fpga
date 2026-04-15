@@ -46,16 +46,12 @@ module pcileech_tlps128_bar_controller(
     input [15:0]            pcie_id,
     IfAXIS128.sink_lite     tlps_in,
     IfAXIS128.source        tlps_out,
-    // HDA MSI interrupt
-    output                  cfg_interrupt,
-    output                  cfg_interrupt_assert,
-    output [7:0]            cfg_interrupt_di
+    // HDA MSI interrupt request
+    output                  intr_req
 );
 
-    // HDA MSI interrupt defaults (idle)
-    assign cfg_interrupt        = 1'b0;
-    assign cfg_interrupt_assert = 1'b0;
-    assign cfg_interrupt_di     = 8'h0;
+    // HDA MSI interrupt request defaults (idle)
+    assign intr_req         = 1'b0;
 
     // ------------------------------------------------------------------------
     // 1: TLP RECEIVE:
