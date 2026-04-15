@@ -341,7 +341,6 @@ module pcileech_tlps128_src128(
     wire [1:0]      rxf_eof_dw      = rxf_user[20:19];
     wire [6:0]      rxf_bar_hit     = rxf_user[8:2];
     
-    wire [3:0]      rx_keep_dw; 
     
     assign rxf_ready = !(rxd_valid && rxf_eof && (rxf_eof_dw >= 2)) || !rxf_valid;
     
