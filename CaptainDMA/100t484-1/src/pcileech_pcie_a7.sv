@@ -46,6 +46,8 @@ module pcileech_pcie_a7(
     IfAXIS128               tlps_static();       // static tlp transmit from cfg->tlp
     wire [15:0]             pcie_id;
     wire                    user_lnk_up;
+    wire                    intr_req;            // interrupt request pulse from TLP to CFG
+    wire [7:0]              intr_msi_data = 8'h00; // MSI message data (tied to 0; MSI payload from config space)
     
     // system interface
     wire pcie_clk_c;
@@ -78,7 +80,8 @@ module pcileech_pcie_a7(
         .ctx                        ( ctx                       ),
         .tlps_static                ( tlps_static.source        ),
         .pcie_id                    ( pcie_id                   ),   // -> [15:0]
-        .intr_req                   ( intr_req                  )
+        .intr_req                   ( intr_req                  ),
+        .intr_msi_data              ( intr_msi_data             )
     );
     
     // ----------------------------------------------------------------------------
@@ -91,8 +94,6 @@ module pcileech_pcie_a7(
         .tlp_rx                     ( tlp_rx.sink               ),
         .tlps_out                   ( tlps_rx.source_lite       )
     );
-    
-    wire intr_req;
 
     pcileech_pcie_tlp_a7 i_pcileech_pcie_tlp_a7(
         .rst                        ( rst_subsys                ),

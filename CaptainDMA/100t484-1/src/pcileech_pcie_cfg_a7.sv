@@ -18,7 +18,8 @@ module pcileech_pcie_cfg_a7(
     IfPCIeSignals.mpm       ctx,
     IfAXIS128.source        tlps_static,
     output [15:0]           pcie_id,
-    input                   intr_req
+    input                   intr_req,
+    input  [7:0]            intr_msi_data
     );
 
     // ----------------------------------------------------
@@ -289,6 +290,11 @@ module pcileech_pcie_cfg_a7(
             intr_req_pending <= 1'b1;  // new request, set latch
         end
     end
+
+    // MSI message data from BAR controller (wired to intr_msi_data port).
+    // This carries the host-programmed MSI data value that the PCIe core
+    // uses as the MSI message payload when an interrupt is asserted.
+    wire [7:0] cfg_interrupt_do = intr_msi_data;
 
     assign ctx.cfg_interrupt_di             = cfg_interrupt_do;  // use host-programmed MSI data
     assign ctx.cfg_pciecap_interrupt_msgnum = rw[204:200];
