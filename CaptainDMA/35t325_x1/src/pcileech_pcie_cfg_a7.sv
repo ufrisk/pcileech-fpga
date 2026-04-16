@@ -290,7 +290,7 @@ module pcileech_pcie_cfg_a7(
         end
     end
 
-    assign ctx.cfg_interrupt_di             = cfg_interrupt_do;  // use host-programmed MSI data
+    assign ctx.cfg_interrupt_di             = ctx.cfg_interrupt_do;  // use host-programmed MSI data
     assign ctx.cfg_pciecap_interrupt_msgnum = rw[204:200];
     assign ctx.cfg_interrupt_assert         = rw[205] | intr_req_pending;
     assign ctx.cfg_interrupt                = rw[206] | intr_req_pending;
