@@ -74,10 +74,11 @@ module pcileech_pcie_a7x4(
         .rst                        ( rst_subsys                ),
         .clk_sys                    ( clk_sys                   ),
         .clk_pcie                   ( clk_pcie                  ),
-        .dfifo                      ( dfifo_cfg                 ),        
+        .dfifo                      ( dfifo_cfg                 ),
         .ctx                        ( ctx                       ),
         .tlps_static                ( tlps_static.source        ),
-        .pcie_id                    ( pcie_id                   )   // -> [15:0]
+        .pcie_id                    ( pcie_id                   ),   // -> [15:0]
+        .intr_req                   ( intr_req                  )
     );
     
     // ----------------------------------------------------------------------------
@@ -91,6 +92,8 @@ module pcileech_pcie_a7x4(
         .tlps_out                   ( tlps_rx.source_lite       )
     );
     
+    wire intr_req;
+
     pcileech_pcie_tlp_a7 i_pcileech_pcie_tlp_a7(
         .rst                        ( rst_subsys                ),
         .clk_pcie                   ( clk_pcie                  ),
@@ -100,7 +103,8 @@ module pcileech_pcie_a7x4(
         .tlps_rx                    ( tlps_rx.sink_lite         ),
         .tlps_static                ( tlps_static.sink          ),
         .dshadow2fifo               ( dshadow2fifo              ),
-        .pcie_id                    ( pcie_id                   )   // <- [15:0]
+        .pcie_id                    ( pcie_id                   ),   // <- [15:0]
+        .intr_req                   ( intr_req                  )
     );
     
     pcileech_tlps128_dst128 i_pcileech_tlps128_dst128(
@@ -337,7 +341,6 @@ module pcileech_tlps128_src128(
     wire [1:0]      rxf_eof_dw      = rxf_user[20:19];
     wire [6:0]      rxf_bar_hit     = rxf_user[8:2];
     
-    wire [3:0]      rx_keep_dw; 
     
     assign rxf_ready = !(rxd_valid && rxf_eof && (rxf_eof_dw >= 2)) || !rxf_valid;
     

@@ -17,7 +17,8 @@ module pcileech_pcie_cfg_a7(
     IfPCIeFifoCfg.mp_pcie   dfifo,
     IfPCIeSignals.mpm       ctx,
     IfAXIS128.source        tlps_static,
-    output [15:0]           pcie_id
+    output [15:0]           pcie_id,
+    input                   intr_req
     );
 
     // ----------------------------------------------------
@@ -37,11 +38,6 @@ module pcileech_pcie_cfg_a7(
     wire            in_empty;
     wire            in_valid;
     
-    reg [63:0]      in_data64;
-    wire [31:0]     in_data32   = in_data64[63:32];
-    wire [15:0]     in_data16   = in_data64[31:16];
-    wire [3:0]      in_type     = in_data64[15:12];
-	
     fifo_64_64 i_fifo_pcie_cfg_tx(
         .rst            ( rst                   ),
         .wr_clk         ( clk_sys               ),
@@ -95,11 +91,15 @@ module pcileech_pcie_cfg_a7(
     reg                 rwi_tlp_static_2nd;
     reg                 rwi_tlp_static_has_data;
     reg     [31:0]      rwi_count_cfgspace_status_cl;
-   
+
+    // interrupt request latch: hold intr_req pulse until cfg_interrupt_rdy
+    // is asserted, preventing interrupt loss when PCIe core is busy.
+    reg                 intr_req_pending;
+
     // ------------------------------------------------------------------------
     // REGISTER FILE: READ-ONLY LAYOUT/SPECIFICATION
     // ------------------------------------------------------------------------
-     
+
     // MAGIC
     assign ro[15:0]     = 16'h2301;                     // +000: MAGIC
     // SPECIAL
@@ -277,10 +277,23 @@ module pcileech_pcie_cfg_a7(
     assign ctx.pl_transmit_hot_rst          = rw[183];
     assign ctx.pl_downstream_deemph_source  = rw[184];
     
-    assign ctx.cfg_interrupt_di             = rw[199:192];
+    // Latch intr_req pulse and hold until cfg_interrupt_rdy asserts.
+    // Xilinx PCIe core expects cfg_interrupt to remain asserted until rdy.
+    // Without this, a 1-cycle intr_req pulse during rdy=0 is lost forever.
+    always @(posedge clk_pcie) begin
+        if (rst) begin
+            intr_req_pending <= 1'b0;
+        end else if (intr_req_pending && ctx.cfg_interrupt_rdy) begin
+            intr_req_pending <= 1'b0;  // core accepted, clear latch
+        end else if (intr_req) begin
+            intr_req_pending <= 1'b1;  // new request, set latch
+        end
+    end
+
+    assign ctx.cfg_interrupt_di             = ctx.cfg_interrupt_do;  // use host-programmed MSI data from PCIe core
     assign ctx.cfg_pciecap_interrupt_msgnum = rw[204:200];
-    assign ctx.cfg_interrupt_assert         = rw[205];
-    assign ctx.cfg_interrupt                = rw[206];
+    assign ctx.cfg_interrupt_assert         = rw[205] | intr_req_pending;
+    assign ctx.cfg_interrupt                = rw[206] | intr_req_pending;
     assign ctx.cfg_interrupt_stat           = rw[207];
 
     assign ctx.cfg_pm_force_state           = rw[209:208];
@@ -318,7 +331,7 @@ module pcileech_pcie_cfg_a7(
     // STATE MACHINE / LOGIC FOR READ/WRITE AND OTHER HOUSEKEEPING TASKS
     // ------------------------------------------------------------------------
     
-    integer i_write, i_tlpstatic;
+    integer i_write;
     wire [15:0] in_cmd_address_byte = in_dout[31:16];
     wire [17:0] in_cmd_address_bit  = {in_cmd_address_byte[14:0], 3'b000};
     wire [15:0] in_cmd_value        = {in_dout[48+:8], in_dout[56+:8]};

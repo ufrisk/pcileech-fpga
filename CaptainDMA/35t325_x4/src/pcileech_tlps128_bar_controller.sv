@@ -45,9 +45,12 @@ module pcileech_tlps128_bar_controller(
     input                   bar_en,
     input [15:0]            pcie_id,
     IfAXIS128.sink_lite     tlps_in,
-    IfAXIS128.source        tlps_out
+    IfAXIS128.source        tlps_out,
+    // HDA MSI interrupt request
+    output                  intr_req
 );
-    
+
+
     // ------------------------------------------------------------------------
     // 1: TLP RECEIVE:
     // Receive incoming BAR requests from the TLP stream:
@@ -80,6 +83,9 @@ module pcileech_tlps128_bar_controller(
     wire [87:0] rd_rsp_ctx;
     wire [31:0] rd_rsp_data;
     wire        rd_rsp_valid;
+
+    wire [6:0]  bar_intr_req;
+    assign intr_req = |bar_intr_req;
         
     pcileech_tlps128_bar_rdengine i_pcileech_tlps128_bar_rdengine(
         .rst            ( rst                           ),
@@ -146,7 +152,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[0] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[0]                ),
         .rd_rsp_data    ( bar_rsp_data[0]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[0]              )
+        .rd_rsp_valid   ( bar_rsp_valid[0]              ),
+        .intr_req       ( bar_intr_req[0]               )
     );
     
     pcileech_bar_impl_loopaddr i_bar1(
@@ -161,10 +168,11 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[1] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[1]                ),
         .rd_rsp_data    ( bar_rsp_data[1]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[1]              )
+        .rd_rsp_valid   ( bar_rsp_valid[1]              ),
+        .intr_req       ( bar_intr_req[1]               )
     );
     
-    pcileech_bar_impl_none i_bar2(
+    pcileech_bar_impl_msi i_bar2(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),
@@ -176,7 +184,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[2] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[2]                ),
         .rd_rsp_data    ( bar_rsp_data[2]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[2]              )
+        .rd_rsp_valid   ( bar_rsp_valid[2]              ),
+        .intr_req       ( bar_intr_req[2]               )
     );
     
     pcileech_bar_impl_none i_bar3(
@@ -191,7 +200,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[3] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[3]                ),
         .rd_rsp_data    ( bar_rsp_data[3]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[3]              )
+        .rd_rsp_valid   ( bar_rsp_valid[3]              ),
+        .intr_req       ( bar_intr_req[3]               )
     );
     
     pcileech_bar_impl_none i_bar4(
@@ -206,7 +216,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[4] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[4]                ),
         .rd_rsp_data    ( bar_rsp_data[4]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[4]              )
+        .rd_rsp_valid   ( bar_rsp_valid[4]              ),
+        .intr_req       ( bar_intr_req[4]               )
     );
     
     pcileech_bar_impl_none i_bar5(
@@ -221,7 +232,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[5] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[5]                ),
         .rd_rsp_data    ( bar_rsp_data[5]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[5]              )
+        .rd_rsp_valid   ( bar_rsp_valid[5]              ),
+        .intr_req       ( bar_intr_req[5]               )
     );
     
     pcileech_bar_impl_none i_bar6_optrom(
@@ -236,7 +248,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[6] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[6]                ),
         .rd_rsp_data    ( bar_rsp_data[6]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[6]              )
+        .rd_rsp_valid   ( bar_rsp_valid[6]              ),
+        .intr_req       ( bar_intr_req[6]               )
     );
 
 
@@ -595,7 +608,7 @@ module pcileech_tlps128_bar_rdengine(
     wire [11:0] rd_rsp_bc       = rd_rsp_ctx[85:74];
     wire [15:0] rd_rsp_reqid    = rd_rsp_ctx[47:32];
     wire [7:0]  rd_rsp_tag      = rd_rsp_ctx[55:48];
-    wire [6:0]  rd_rsp_lowaddr  = rd_rsp_ctx[6:0];
+    wire [6:0]  rd_rsp_lowaddr  = rd_rsp_first ? rd_rsp_ctx[6:0] : 7'b0;
     wire [31:0] rd_rsp_addr     = rd_rsp_ctx[31:0];
     wire [31:0] rd_rsp_data_bs  = { rd_rsp_data[7:0], rd_rsp_data[15:8], rd_rsp_data[23:16], rd_rsp_data[31:24] };
     
@@ -690,8 +703,11 @@ module pcileech_bar_impl_none(
     // outgoing BAR read replies:
     output bit [87:0]   rd_rsp_ctx,
     output bit [31:0]   rd_rsp_data,
-    output bit          rd_rsp_valid
+    output bit          rd_rsp_valid,
+    output              intr_req
 );
+
+    assign intr_req = 1'b0;
 
     initial rd_rsp_ctx = 0;
     initial rd_rsp_data = 0;
@@ -722,8 +738,11 @@ module pcileech_bar_impl_loopaddr(
     // outgoing BAR read replies:
     output bit [87:0]   rd_rsp_ctx,
     output bit [31:0]   rd_rsp_data,
-    output bit          rd_rsp_valid
+    output bit          rd_rsp_valid,
+    output              intr_req
 );
+
+    assign intr_req = 1'b0;
 
     bit [87:0]      rd_req_ctx_1;
     bit [31:0]      rd_req_addr_1;
@@ -761,8 +780,11 @@ module pcileech_bar_impl_zerowrite4k(
     // outgoing BAR read replies:
     output bit [87:0]   rd_rsp_ctx,
     output bit [31:0]   rd_rsp_data,
-    output bit          rd_rsp_valid
+    output bit          rd_rsp_valid,
+    output              intr_req
 );
+
+    assign intr_req = 1'b0;
 
     bit [87:0]  drd_req_ctx;
     bit         drd_req_valid;
@@ -789,5 +811,70 @@ module pcileech_bar_impl_zerowrite4k(
         .doutb  ( doutb             ),
         .enb    ( rd_req_valid      )
     );
+
+endmodule
+
+
+// ------------------------------------------------------------------------
+// BAR implementation: MSI doorbell interrupt generator.
+// Write to offset 0x00 to trigger an MSI interrupt (the written value is
+// the MSI vector/data). Read offset 0x00 to read back the last written
+// value. This allows software to configure and verify the interrupt path.
+// Latency = 2CLKs (matches loopaddr/zerowrite4k for pipeline consistency).
+// ------------------------------------------------------------------------
+module pcileech_bar_impl_msi(
+    input               rst,
+    input               clk,
+    // incoming BAR writes:
+    input [31:0]        wr_addr,
+    input [3:0]         wr_be,
+    input [31:0]        wr_data,
+    input               wr_valid,
+    // incoming BAR reads:
+    input  [87:0]       rd_req_ctx,
+    input  [31:0]       rd_req_addr,
+    input               rd_req_valid,
+    // outgoing BAR read replies:
+    output bit [87:0]   rd_rsp_ctx,
+    output bit [31:0]   rd_rsp_data,
+    output bit          rd_rsp_valid,
+    // MSI interrupt request
+    output              intr_req
+);
+
+    bit [31:0]      doorbell;
+    bit             intr_req_reg;
+    bit [31:0]      doorbell_q;
+    bit             rd_req_valid_q;
+
+    // 2-cycle latency for reads (matches other BAR impls)
+    always @ ( posedge clk ) begin
+        doorbell_q          <= doorbell;
+        rd_req_valid_q      <= rd_req_valid;
+        rd_rsp_ctx          <= rd_req_ctx;
+        rd_rsp_data         <= doorbell_q;
+        rd_rsp_valid        <= rd_req_valid_q;
+    end
+
+    // Doorbell register: write updates value and triggers interrupt pulse
+    always @ ( posedge clk ) begin
+        if ( rst ) begin
+            doorbell    <= 32'h0;
+            intr_req_reg <= 1'b0;
+        end
+        else if ( wr_valid ) begin
+            // Apply byte enables
+            if ( wr_be[0] ) doorbell[7:0]   <= wr_data[7:0];
+            if ( wr_be[1] ) doorbell[15:8]  <= wr_data[15:8];
+            if ( wr_be[2] ) doorbell[23:16] <= wr_data[23:16];
+            if ( wr_be[3] ) doorbell[31:24] <= wr_data[31:24];
+            intr_req_reg <= 1'b1;
+        end
+        else begin
+            intr_req_reg <= 1'b0;
+        end
+    end
+
+    assign intr_req = intr_req_reg;
 
 endmodule

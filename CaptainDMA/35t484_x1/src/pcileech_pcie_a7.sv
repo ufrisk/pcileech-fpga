@@ -74,10 +74,11 @@ module pcileech_pcie_a7(
         .rst                        ( rst_subsys                ),
         .clk_sys                    ( clk_sys                   ),
         .clk_pcie                   ( clk_pcie                  ),
-        .dfifo                      ( dfifo_cfg                 ),        
+        .dfifo                      ( dfifo_cfg                 ),
         .ctx                        ( ctx                       ),
         .tlps_static                ( tlps_static.source        ),
-        .pcie_id                    ( pcie_id                   )   // -> [15:0]
+        .pcie_id                    ( pcie_id                   ),   // -> [15:0]
+        .intr_req                   ( intr_req                  )
     );
     
     // ----------------------------------------------------------------------------
@@ -91,20 +92,23 @@ module pcileech_pcie_a7(
         .tlps_out                   ( tlps_rx.source_lite       )
     );
     
+    wire intr_req;
+
     pcileech_pcie_tlp_a7 i_pcileech_pcie_tlp_a7(
         .rst                        ( rst_subsys                ),
         .clk_pcie                   ( clk_pcie                  ),
         .clk_sys                    ( clk_sys                   ),
         .dfifo                      ( dfifo_tlp                 ),
-        .tlps_tx                    ( tlps_tx.source            ),       
+        .tlps_tx                    ( tlps_tx.source            ),
         .tlps_rx                    ( tlps_rx.sink_lite         ),
         .tlps_static                ( tlps_static.sink          ),
         .dshadow2fifo               ( dshadow2fifo              ),
-        .pcie_id                    ( pcie_id                   )   // <- [15:0]
+        .pcie_id                    ( pcie_id                   ),   // <- [15:0]
+        .intr_req                   ( intr_req                  )
     );
     
     pcileech_tlps128_dst64 i_pcileech_tlps128_dst64(
-        .rst                        ( rst                       ),
+        .rst                        ( rst_subsys                ),
         .clk_pcie                   ( clk_pcie                  ),
         .tlp_tx                     ( tlp_tx.source             ),
         .tlps_in                    ( tlps_tx.sink              )
