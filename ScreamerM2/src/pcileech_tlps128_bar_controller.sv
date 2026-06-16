@@ -45,7 +45,8 @@ module pcileech_tlps128_bar_controller(
     input                   bar_en,
     input [15:0]            pcie_id,
     IfAXIS128.sink_lite     tlps_in,
-    IfAXIS128.source        tlps_out
+    IfAXIS128.source        tlps_out,
+    output                  intr_req
 );
     
     // ------------------------------------------------------------------------
@@ -80,6 +81,9 @@ module pcileech_tlps128_bar_controller(
     wire [87:0] rd_rsp_ctx;
     wire [31:0] rd_rsp_data;
     wire        rd_rsp_valid;
+
+    wire [6:0]  bar_intr_req;
+    assign intr_req = |bar_intr_req;
         
     pcileech_tlps128_bar_rdengine i_pcileech_tlps128_bar_rdengine(
         .rst            ( rst                           ),
@@ -146,7 +150,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[0] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[0]                ),
         .rd_rsp_data    ( bar_rsp_data[0]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[0]              )
+        .rd_rsp_valid   ( bar_rsp_valid[0]              ),
+        .intr_req       ( bar_intr_req[0]               )
     );
     
     pcileech_bar_impl_loopaddr i_bar1(
@@ -161,7 +166,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[1] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[1]                ),
         .rd_rsp_data    ( bar_rsp_data[1]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[1]              )
+        .rd_rsp_valid   ( bar_rsp_valid[1]              ),
+        .intr_req       ( bar_intr_req[1]               )
     );
     
     pcileech_bar_impl_none i_bar2(
@@ -176,7 +182,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[2] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[2]                ),
         .rd_rsp_data    ( bar_rsp_data[2]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[2]              )
+        .rd_rsp_valid   ( bar_rsp_valid[2]              ),
+        .intr_req       ( bar_intr_req[2]               )
     );
     
     pcileech_bar_impl_none i_bar3(
@@ -191,7 +198,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[3] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[3]                ),
         .rd_rsp_data    ( bar_rsp_data[3]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[3]              )
+        .rd_rsp_valid   ( bar_rsp_valid[3]              ),
+        .intr_req       ( bar_intr_req[3]               )
     );
     
     pcileech_bar_impl_none i_bar4(
@@ -206,7 +214,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[4] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[4]                ),
         .rd_rsp_data    ( bar_rsp_data[4]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[4]              )
+        .rd_rsp_valid   ( bar_rsp_valid[4]              ),
+        .intr_req       ( bar_intr_req[4]               )
     );
     
     pcileech_bar_impl_none i_bar5(
@@ -221,7 +230,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[5] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[5]                ),
         .rd_rsp_data    ( bar_rsp_data[5]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[5]              )
+        .rd_rsp_valid   ( bar_rsp_valid[5]              ),
+        .intr_req       ( bar_intr_req[5]               )
     );
     
     pcileech_bar_impl_none i_bar6_optrom(
@@ -236,7 +246,8 @@ module pcileech_tlps128_bar_controller(
         .rd_req_valid   ( rd_req_valid && rd_req_bar[6] ),
         .rd_rsp_ctx     ( bar_rsp_ctx[6]                ),
         .rd_rsp_data    ( bar_rsp_data[6]               ),
-        .rd_rsp_valid   ( bar_rsp_valid[6]              )
+        .rd_rsp_valid   ( bar_rsp_valid[6]              ),
+        .intr_req       ( bar_intr_req[6]               )
     );
 
 
@@ -690,12 +701,14 @@ module pcileech_bar_impl_none(
     // outgoing BAR read replies:
     output bit [87:0]   rd_rsp_ctx,
     output bit [31:0]   rd_rsp_data,
-    output bit          rd_rsp_valid
+    output bit          rd_rsp_valid,
+    output              intr_req
 );
 
     initial rd_rsp_ctx = 0;
     initial rd_rsp_data = 0;
     initial rd_rsp_valid = 0;
+    assign intr_req = 1'b0;
 
 endmodule
 
@@ -722,7 +735,8 @@ module pcileech_bar_impl_loopaddr(
     // outgoing BAR read replies:
     output bit [87:0]   rd_rsp_ctx,
     output bit [31:0]   rd_rsp_data,
-    output bit          rd_rsp_valid
+    output bit          rd_rsp_valid,
+    output              intr_req
 );
 
     bit [87:0]      rd_req_ctx_1;
@@ -737,6 +751,8 @@ module pcileech_bar_impl_loopaddr(
         rd_rsp_data     <= rd_req_addr_1;
         rd_rsp_valid    <= rd_req_valid_1;
     end    
+
+    assign intr_req = 1'b0;
 
 endmodule
 
@@ -761,7 +777,8 @@ module pcileech_bar_impl_zerowrite4k(
     // outgoing BAR read replies:
     output bit [87:0]   rd_rsp_ctx,
     output bit [31:0]   rd_rsp_data,
-    output bit          rd_rsp_valid
+    output bit          rd_rsp_valid,
+    output              intr_req
 );
 
     bit [87:0]  drd_req_ctx;
@@ -789,5 +806,7 @@ module pcileech_bar_impl_zerowrite4k(
         .doutb  ( doutb             ),
         .enb    ( rd_req_valid      )
     );
+
+    assign intr_req = 1'b0;
 
 endmodule

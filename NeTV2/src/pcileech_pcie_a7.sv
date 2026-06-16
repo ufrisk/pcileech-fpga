@@ -46,6 +46,7 @@ module pcileech_pcie_a7(
     IfTlp64         tlp_static();       // static tlp transmit from cfg->tlp
     IfShadow2Tlp    dshadow2tlp();
     wire            user_lnk_up;
+    wire            intr_req;
     
     // system interface
     wire pcie_clk_c;
@@ -77,7 +78,8 @@ module pcileech_pcie_a7(
         .dfifo                      ( dfifo_cfg                 ),        
         .ctx                        ( ctx                       ),
         .cfg_tlpcfg                 ( cfg_tlpcfg                ),
-        .tlp_static                 ( tlp_static                )
+        .tlp_static                 ( tlp_static                ),
+        .intr_req                   ( intr_req                  )
     );
     
     // ----------------------------------------------------------------------------
@@ -94,7 +96,8 @@ module pcileech_pcie_a7(
         .cfg_tlpcfg                 ( cfg_tlpcfg                ),
         .tlp_static                 ( tlp_static                ),
         .dshadow2fifo               ( dshadow2fifo_tlp          ),
-        .dshadow2tlp                ( dshadow2tlp.tlp           )
+        .dshadow2tlp                ( dshadow2tlp.tlp           ),
+        .intr_req                   ( intr_req                  )
     );
     
     // ----------------------------------------------------------------------------

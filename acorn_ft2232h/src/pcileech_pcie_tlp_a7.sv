@@ -23,8 +23,11 @@ module pcileech_pcie_tlp_a7(
     IfCfg_TlpCfg.tlp        cfg_tlpcfg,
     IfTlp64.sink            tlp_static,
     IfShadow2Fifo.tlp       dshadow2fifo,
-    IfShadow2Tlp.tlp        dshadow2tlp
+    IfShadow2Tlp.tlp        dshadow2tlp,
+    output                  intr_req
     );
+    
+    assign intr_req = 1'b0;
     
     // ------------------------------------------------------------------------
     // Convert received TLPs from PCIe core and transmit onwards to FT601

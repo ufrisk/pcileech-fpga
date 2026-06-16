@@ -17,7 +17,8 @@ module pcileech_pcie_cfg_a7(
     IfPCIeFifoCfg.mp_pcie   dfifo,
     IfPCIeSignals.mpm       ctx,
     IfCfg_TlpCfg.cfg        cfg_tlpcfg,
-    IfTlp64.source          tlp_static
+    IfTlp64.source          tlp_static,
+    input                   intr_req
     );
 
     // ----------------------------------------------------
@@ -94,6 +95,7 @@ module pcileech_pcie_cfg_a7(
     reg                 rwi_tlp_static_valid;
     reg                 rwi_tlp_static_has_data;
     reg     [31:0]      rwi_count_cfgspace_status_cl;
+    reg                 intr_req_pending;
    
     // ------------------------------------------------------------------------
     // REGISTER FILE: READ-ONLY LAYOUT/SPECIFICATION
@@ -277,10 +279,20 @@ module pcileech_pcie_cfg_a7(
     assign ctx.pl_transmit_hot_rst          = rw[183];
     assign ctx.pl_downstream_deemph_source  = rw[184];
     
+    always @(posedge clk_pcie) begin
+        if (rst) begin
+            intr_req_pending <= 1'b0;
+        end else if (intr_req_pending && ctx.cfg_interrupt_rdy) begin
+            intr_req_pending <= 1'b0;
+        end else if (intr_req) begin
+            intr_req_pending <= 1'b1;
+        end
+    end
+
     assign ctx.cfg_interrupt_di             = rw[199:192];
     assign ctx.cfg_pciecap_interrupt_msgnum = rw[204:200];
-    assign ctx.cfg_interrupt_assert         = rw[205];
-    assign ctx.cfg_interrupt                = rw[206];
+    assign ctx.cfg_interrupt_assert         = rw[205] | intr_req_pending;
+    assign ctx.cfg_interrupt                = rw[206] | intr_req_pending;
     assign ctx.cfg_interrupt_stat           = rw[207];
 
     assign ctx.cfg_pm_force_state           = rw[209:208];
