@@ -204,13 +204,13 @@ module pcileech_pcie_cfg_a7(
             rw[17]      <= 0;                       //       CFG WR EN
             rw[18]      <= 0;                       //       WAIT FOR PCIe CFG SPACE RD/WR COMPLETION BEFORE ACCEPT NEW FIFO READ/WRITES
             rw[19]      <= 0;                       //       TLP_STATIC TX ENABLE
-            rw[20]      <= 0;                       //       CFGSPACE_STATUS_REGISTER_AUTO_CLEAR [master abort flag]
+            rw[20]      <= `PCILEECH_CFGSPACE_STATUS_REGISTER_AUTO_CLEAR;                       //       CFGSPACE_STATUS_REGISTER_AUTO_CLEAR [master abort flag]
             rw[27:21]   <= 0;                       //       RESERVED FUTURE
             rw[31:28]   <= 4'hf;                    //       PCIe TLP TX ENABLE FOR MUX CHANNEL 0-3 [MUX[0] == RW[28] ..].
             // SIZEOF / BYTECOUNT [little-endian]
             rw[63:32]   <= $bits(rw) >> 3;          // +004: bytecount [little endian]
             // DSN
-            rw[127:64]  <= 64'h0000000101000A35;    // +008: cfg_dsn
+            rw[127:64]  <= `PCILEECH_CFG_DSN;    // +008: cfg_dsn
             // PCIe CFG MGMT
             rw[159:128] <= 0;                       // +010: cfg_mgmt_di
             rw[169:160] <= 0;                       // +014: cfg_mgmt_dwaddr
@@ -233,10 +233,10 @@ module pcileech_pcie_cfg_a7(
             rw[206]     <= 0;                       //       cfg_interrupt
             rw[207]     <= 0;                       //       cfg_interrupt_stat
             // PCIe CTRL
-            rw[209:208] <= 0;                       // +01A: cfg_pm_force_state
-            rw[210]     <= 0;                       //       cfg_pm_force_state_en
-            rw[211]     <= 0;                       //       cfg_pm_halt_aspm_l0s
-            rw[212]     <= 0;                       //       cfg_pm_halt_aspm_l1
+            rw[209:208] <= `PCILEECH_CFG_PM_FORCE_STATE;                       // +01A: cfg_pm_force_state
+            rw[210]     <= `PCILEECH_CFG_PM_FORCE_STATE_EN;                       //       cfg_pm_force_state_en
+            rw[211]     <= `PCILEECH_CFG_PM_HALT_ASPM_L0S;                       //       cfg_pm_halt_aspm_l0s
+            rw[212]     <= `PCILEECH_CFG_PM_HALT_ASPM_L1;                       //       cfg_pm_halt_aspm_l1
             rw[213]     <= 0;                       //       cfg_pm_send_pme_to
             rw[214]     <= 0;                       //       cfg_pm_wake
             rw[215]     <= 0;                       //       cfg_trn_pending

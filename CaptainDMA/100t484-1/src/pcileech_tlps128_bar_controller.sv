@@ -134,7 +134,7 @@ module pcileech_tlps128_bar_controller(
                         bar_rsp_valid[6] ? bar_rsp_data[6] : 0;
     assign rd_rsp_valid = bar_rsp_valid[0] || bar_rsp_valid[1] || bar_rsp_valid[2] || bar_rsp_valid[3] || bar_rsp_valid[4] || bar_rsp_valid[5] || bar_rsp_valid[6];
     
-    pcileech_bar_impl_zerowrite4k i_bar0(
+    `PCILEECH_BAR_IMPL_0 i_bar0(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),
@@ -149,7 +149,7 @@ module pcileech_tlps128_bar_controller(
         .rd_rsp_valid   ( bar_rsp_valid[0]              )
     );
     
-    pcileech_bar_impl_loopaddr i_bar1(
+    `PCILEECH_BAR_IMPL_1 i_bar1(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),
@@ -164,7 +164,7 @@ module pcileech_tlps128_bar_controller(
         .rd_rsp_valid   ( bar_rsp_valid[1]              )
     );
     
-    pcileech_bar_impl_none i_bar2(
+    `PCILEECH_BAR_IMPL_2 i_bar2(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),
@@ -179,7 +179,7 @@ module pcileech_tlps128_bar_controller(
         .rd_rsp_valid   ( bar_rsp_valid[2]              )
     );
     
-    pcileech_bar_impl_none i_bar3(
+    `PCILEECH_BAR_IMPL_3 i_bar3(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),
@@ -194,7 +194,7 @@ module pcileech_tlps128_bar_controller(
         .rd_rsp_valid   ( bar_rsp_valid[3]              )
     );
     
-    pcileech_bar_impl_none i_bar4(
+    `PCILEECH_BAR_IMPL_4 i_bar4(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),
@@ -209,7 +209,7 @@ module pcileech_tlps128_bar_controller(
         .rd_rsp_valid   ( bar_rsp_valid[4]              )
     );
     
-    pcileech_bar_impl_none i_bar5(
+    `PCILEECH_BAR_IMPL_5 i_bar5(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),
@@ -224,7 +224,7 @@ module pcileech_tlps128_bar_controller(
         .rd_rsp_valid   ( bar_rsp_valid[5]              )
     );
     
-    pcileech_bar_impl_none i_bar6_optrom(
+    `PCILEECH_BAR_IMPL_6 i_bar6_optrom(
         .rst            ( rst                           ),
         .clk            ( clk                           ),
         .wr_addr        ( wr_addr                       ),

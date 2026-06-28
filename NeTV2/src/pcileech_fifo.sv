@@ -191,7 +191,7 @@ module pcileech_fifo #(
     reg     [239:0]     rw;
     
     // special non-user accessible registers 
-    reg     [77:0]      _pcie_core_config = { 1'b0, 1'b1, 1'b1, 1'b1, 1'b0, 1'b0, 8'h02, 16'h0666, 16'h10EE, 16'h0007, 16'h10EE };
+    reg     [77:0]      _pcie_core_config = { 1'b0, 1'b1, 1'b1, 1'b1, 1'b0, 1'b0, `PCILEECH_CFG_REV_ID, `PCILEECH_CFG_DEV_ID, `PCILEECH_CFG_VEND_ID, `PCILEECH_CFG_SUBSYS_ID, `PCILEECH_CFG_SUBSYS_VEND_ID };
     time                _cmd_timer_inactivity_base;
     reg                 rwi_drp_rd_en;
     reg                 rwi_drp_wr_en;
@@ -257,18 +257,18 @@ module pcileech_fifo #(
             rw[127:96]  <= 0;                           // +00C: cmd_send_count [little-endian]
             // PCIE INITIAL CONFIG (SPECIAL BITSTREAM)
             // NB! "initial" CLK0 values may also be changed in: '_pcie_core_config = {...};' [important on PCIeScreamer].
-            rw[143:128] <= 16'h10EE;                    // +010: CFG_SUBSYS_VEND_ID (NOT IMPLEMENTED)
-            rw[159:144] <= 16'h0007;                    // +012: CFG_SUBSYS_ID (NOT IMPLEMENTED)
-            rw[175:160] <= 16'h10EE;                    // +014: CFG_VEND_ID (NOT IMPLEMENTED)
-            rw[191:176] <= 16'h0666;                    // +016: CFG_DEV_ID (NOT IMPLEMENTED)
-            rw[199:192] <= 8'h02;                       // +018: CFG_REV_ID (NOT IMPLEMENTED)
+            rw[143:128] <= `PCILEECH_CFG_SUBSYS_VEND_ID;                    // +010: CFG_SUBSYS_VEND_ID (NOT IMPLEMENTED)
+            rw[159:144] <= `PCILEECH_CFG_SUBSYS_ID;                    // +012: CFG_SUBSYS_ID (NOT IMPLEMENTED)
+            rw[175:160] <= `PCILEECH_CFG_VEND_ID;                    // +014: CFG_VEND_ID (NOT IMPLEMENTED)
+            rw[191:176] <= `PCILEECH_CFG_DEV_ID;                    // +016: CFG_DEV_ID (NOT IMPLEMENTED)
+            rw[199:192] <= `PCILEECH_CFG_REV_ID;                       // +018: CFG_REV_ID (NOT IMPLEMENTED)
             rw[200]     <= 1'b1;                        // +019: PCIE CORE RESET
             rw[201]     <= 1'b0;                        //       PCIE SUBSYSTEM RESET
             rw[202]     <= 1'b1;                        //       CFGTLP PROCESSING ENABLE
-            rw[203]     <= 1'b1;                        //       CFGTLP ZERO DATA
+            rw[203]     <= `PCILEECH_CFGTLP_ZERO_DATA;                        //       CFGTLP ZERO DATA
             rw[204]     <= 1'b1;                        //       CFGTLP FILTER TLP FROM USER
             rw[205]     <= 1'b1;                        //       CLK_IS_ENABLED [if clk not started _pcie_core_config[77] will remain zero].
-            rw[206]     <= 1'b0;                        //       CFGTLP PCIE WRITE ENABLE
+            rw[206]     <= `PCILEECH_CFGTLP_PCIE_WRITE_ENABLE;                        //       CFGTLP PCIE WRITE ENABLE
             rw[207:207] <= 0;                           //       SLACK
             // PCIe DRP, PRSNT#, PERST#
             rw[208+:16] <= 0;                           // +01A: DRP: pcie_drp_di

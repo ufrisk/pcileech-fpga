@@ -10,6 +10,8 @@
 `ifndef _pcileech_header_svh_
 `define _pcileech_header_svh_
 
+`include "pcileech_device_config.svh"
+
 `define _bs16(v)   {{v}[7:0], {v}[15:8]}
 `define _bs32(v)   {{v}[7:0], {v}[15:8], {v}[23:16], {v}[31:24]}
 
