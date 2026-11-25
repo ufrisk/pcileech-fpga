@@ -60,6 +60,6 @@ PCILeech also supports multiple FPGA based devices that may not have the most re
 | [SP605/FT601](sp605_ft601)             | USB3        | 75 MB/s        | 2.2     | PCIe gen1 x1  |
 | [Acorn/FT2232H](acorn_ft2232h)         | USB2        | 25 MB/s        | 4.9     | PCIe gen2 x4* |
 | [NeTV2](NeTV2)                         | UDP/IP      | 7 MB/s         | 4.12    | PCIe gen2 x4* |
-| [Screamer PCIe Squirrel](PCIeSquirrel) | USB-C       | 190 MB/s       | 4.14    | XC7A35T-484   |
-| [ScreamerM2](ScreamerM2)               | USB3/USB-C  | 190 MB/s       | 4.14    | XC7A35T-325   |
+| [Screamer PCIe Squirrel](PCIeSquirrel) | USB-C       | 190 MB/s       | 4.14    | PCIe gen2 x1  |
+| [ScreamerM2](ScreamerM2)               | USB3/USB-C  | 190 MB/s       | 4.14    | PCIe gen2 x1  |
 
